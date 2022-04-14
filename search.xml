@@ -1,30 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Hello World</title>
-    <url>/2022/04/08/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
+    <title>Centos7 Nat模式静态Ip配置</title>
+    <url>/2022/04/14/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h1 id="Centos7-Nat模式静态Ip配置"><a href="#Centos7-Nat模式静态Ip配置" class="headerlink" title="Centos7 Nat模式静态Ip配置"></a>Centos7 Nat模式静态Ip配置</h1><p>虚拟机软件：VMware16</p>
+<h3 id="一：修改虚拟网络编辑器"><a href="#一：修改虚拟网络编辑器" class="headerlink" title="一：修改虚拟网络编辑器"></a>一：修改虚拟网络编辑器</h3><p>1.进入虚拟网络编辑器，设置Vmnet8子网IP网段</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
 
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203443.png" style="width: 60%;" />
 
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>2.进入NAT设置，设置网关IP</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203512.png" style="width: 60%;" />
 
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<h3 id="二：修改虚拟机网络配置文件"><a href="#二：修改虚拟机网络配置文件" class="headerlink" title="二：修改虚拟机网络配置文件"></a>二：修改虚拟机网络配置文件</h3><p>1.查看虚拟机使用的网络配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ip addr</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:94:37:5a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.182.10/24 brd 192.168.10.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::8982:7848:648f:b491/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p>说明使用的配置文件是ens33，当前ip为192.168.182.10</p>
+<p>2.编辑相应的网络配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# vi /etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+
+<p>3.修改文件内容</p>
+<p>注意等于号左右两边不能有空格</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">修改配置</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static   // 1.修改为静态模式</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable-privacy</span><br><span class="line">NAME=ens33</span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes   // 2.开机自动启动网卡</span><br><span class="line">UUID=434ca492-505e-437f-b12a-6ff774c97f19</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加配置</span></span><br><span class="line">IPADDR=192.168.10.10   // static静态ip地址</span><br><span class="line">NETMASK=255.255.255.0    // 子网掩码（固定一致即可）</span><br><span class="line">GATEWAY=192.168.10.2    // 网关，与虚拟机VMnet8中设置的网关一致即可</span><br><span class="line">DNS1=114.114.114.114     // dns地址解析（固定一致即可）</span><br></pre></td></tr></table></figure>
+
+<h3 id="三：重启网卡重新加载配置文件"><a href="#三：重启网卡重新加载配置文件" class="headerlink" title="三：重启网卡重新加载配置文件"></a>三：重启网卡重新加载配置文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# systemctl restart network.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="四：验证网络"><a href="#四：验证网络" class="headerlink" title="四：验证网络"></a>四：验证网络</h3><p>1.查看当ip地址</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ip addr</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:94:37:5a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.10.10/24 brd 192.168.10.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::8982:7848:648f:b491/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p>2.验证网络是否通畅</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ping www.baidu.com</span><br><span class="line">PING www.a.shifen.com (36.152.44.96) 56(84) bytes of data.</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=1 ttl=128 time=23.0 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=2 ttl=128 time=22.9 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=3 ttl=128 time=23.2 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=4 ttl=128 time=23.2 ms</span><br></pre></td></tr></table></figure>
+
+<p>静态网络Ip配置完成</p>
+<p>安装网络工具包，安装后可使用ifconfig命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# yum -y install net-tools</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>技术</category>
+        <category>Linux</category>
       </categories>
       <tags>
-        <tag>编程</tag>
-        <tag>感悟</tag>
+        <tag>静态IP</tag>
       </tags>
   </entry>
 </search>

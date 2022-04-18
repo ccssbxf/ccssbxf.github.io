@@ -3,7 +3,7 @@
   <entry>
     <title>Centos7 Nat模式静态Ip配置</title>
     <url>/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<h1 id="Centos7-Nat模式静态Ip配置"><a href="#Centos7-Nat模式静态Ip配置" class="headerlink" title="Centos7 Nat模式静态Ip配置"></a>Centos7 Nat模式静态Ip配置</h1><p>虚拟机软件：VMware16</p>
+    <content><![CDATA[<p>虚拟机软件：VMware16</p>
 <h3 id="一：修改虚拟网络编辑器"><a href="#一：修改虚拟网络编辑器" class="headerlink" title="一：修改虚拟网络编辑器"></a>一：修改虚拟网络编辑器</h3><p>1.进入虚拟网络编辑器，设置Vmnet8子网IP网段</p>
 <img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
 

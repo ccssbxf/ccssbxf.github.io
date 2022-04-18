@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Centos7 Nat模式静态Ip配置虚拟机软件：VMware16 一：修改虚拟网络编辑器1.进入虚拟网络编辑器，设置Vmnet8子网IP网段       2.进入NAT设置，设置网关IP   二：修改虚拟机网络配置文件1.查看虚拟机使用的网络配置文件 12345678910111213[root@localhost &#x2F;]# ip addr1: lo: &lt;LOOPBACK,UP,LOWER_">
+<meta name="description" content="虚拟机软件：VMware16 一：修改虚拟网络编辑器1.进入虚拟网络编辑器，设置Vmnet8子网IP网段       2.进入NAT设置，设置网关IP   二：修改虚拟机网络配置文件1.查看虚拟机使用的网络配置文件 12345678910111213[root@localhost &#x2F;]# ip addr1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qd">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Centos7 Nat模式静态Ip配置">
 <meta property="og:url" content="https://wwsbd.gitee.io/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="Centos7 Nat模式静态Ip配置虚拟机软件：VMware16 一：修改虚拟网络编辑器1.进入虚拟网络编辑器，设置Vmnet8子网IP网段       2.进入NAT设置，设置网关IP   二：修改虚拟机网络配置文件1.查看虚拟机使用的网络配置文件 12345678910111213[root@localhost &#x2F;]# ip addr1: lo: &lt;LOOPBACK,UP,LOWER_">
+<meta property="og:description" content="虚拟机软件：VMware16 一：修改虚拟网络编辑器1.进入虚拟网络编辑器，设置Vmnet8子网IP网段       2.进入NAT设置，设置网关IP   二：修改虚拟机网络配置文件1.查看虚拟机使用的网络配置文件 12345678910111213[root@localhost &#x2F;]# ip addr1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qd">
 <meta property="og:locale">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203443.png">
 <meta property="og:image" content="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203512.png">
 <meta property="article:published_time" content="2020-09-30T12:23:32.000Z">
-<meta property="article:modified_time" content="2022-04-16T07:20:27.506Z">
+<meta property="article:modified_time" content="2022-04-18T11:05:47.494Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="静态IP">
 <meta name="twitter:card" content="summary">
@@ -411,7 +411,7 @@
       
 
       
-        <h1 id="Centos7-Nat模式静态Ip配置"><a href="#Centos7-Nat模式静态Ip配置" class="headerlink" title="Centos7 Nat模式静态Ip配置"></a>Centos7 Nat模式静态Ip配置</h1><p>虚拟机软件：VMware16</p>
+        <p>虚拟机软件：VMware16</p>
 <h3 id="一：修改虚拟网络编辑器"><a href="#一：修改虚拟网络编辑器" class="headerlink" title="一：修改虚拟网络编辑器"></a>一：修改虚拟网络编辑器</h3><p>1.进入虚拟网络编辑器，设置Vmnet8子网IP网段</p>
 <img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
 
@@ -617,7 +617,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos7-Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE"><span class="nav-number">1.</span> <span class="nav-text">Centos7 Nat模式静态Ip配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E4%BF%AE%E6%94%B9%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">1.0.1.</span> <span class="nav-text">一：修改虚拟网络编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E4%BF%AE%E6%94%B9%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.0.2.</span> <span class="nav-text">二：修改虚拟机网络配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%EF%BC%9A%E9%87%8D%E5%90%AF%E7%BD%91%E5%8D%A1%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">1.0.3.</span> <span class="nav-text">三：重启网卡重新加载配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%EF%BC%9A%E9%AA%8C%E8%AF%81%E7%BD%91%E7%BB%9C"><span class="nav-number">1.0.4.</span> <span class="nav-text">四：验证网络</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E4%BF%AE%E6%94%B9%E8%99%9A%E6%8B%9F%E7%BD%91%E7%BB%9C%E7%BC%96%E8%BE%91%E5%99%A8"><span class="nav-number">1.</span> <span class="nav-text">一：修改虚拟网络编辑器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E4%BF%AE%E6%94%B9%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">二：修改虚拟机网络配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%EF%BC%9A%E9%87%8D%E5%90%AF%E7%BD%91%E5%8D%A1%E9%87%8D%E6%96%B0%E5%8A%A0%E8%BD%BD%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">三：重启网卡重新加载配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%EF%BC%9A%E9%AA%8C%E8%AF%81%E7%BD%91%E7%BB%9C"><span class="nav-number">4.</span> <span class="nav-text">四：验证网络</span></a></li></ol></div>
             
 
           </div>

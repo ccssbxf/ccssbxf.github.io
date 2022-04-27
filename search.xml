@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Shell脚本配置集群免密登录</title>
+    <url>/2022/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
+    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
+<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
+
+<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
+<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>免密登录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSH免密登录配置</title>
+    <url>/2021/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>1.在每台主机上执行以下命令生成公私钥（一路回车即可）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>2.发送公钥到集群所有主机（包括本机）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称</span><br></pre></td></tr></table></figure>
+
+<p>3.当ssh端口非22端口时</p>
+<p>需要将步骤2中的端口22更改为目标端口，并且需要执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;Port 目标端口&quot; &gt;&gt;  ~/.ssh/config</span><br></pre></td></tr></table></figure>
+
+<p>4.验证免密登录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh ip或者主机名称</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>免密登录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos7 Nat模式静态Ip配置</title>
     <url>/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>虚拟机软件：VMware16</p>
@@ -42,46 +82,6 @@
       </categories>
       <tags>
         <tag>静态IP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Shell脚本配置集群免密登录</title>
-    <url>/2022/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
-    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
-<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
-
-<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
-<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>免密登录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SSH免密登录配置</title>
-    <url>/2021/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>1.在每台主机上执行以下命令生成公私钥（一路回车即可）</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>2.发送公钥到集群所有主机（包括本机）</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称</span><br></pre></td></tr></table></figure>
-
-<p>3.当ssh端口非22端口时</p>
-<p>需要将步骤2中的端口22更改为目标端口，并且需要执行以下命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;Port 目标端口&quot; &gt;&gt;  ~/.ssh/config</span><br></pre></td></tr></table></figure>
-
-<p>4.验证免密登录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh ip或者主机名称</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>免密登录</tag>
       </tags>
   </entry>
 </search>

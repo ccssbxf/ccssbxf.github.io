@@ -1,46 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Shell脚本配置集群免密登录</title>
-    <url>/2022/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
-    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
-<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
-
-<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
-<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>免密登录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>SSH免密登录配置</title>
-    <url>/2021/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>1.在每台主机上执行以下命令生成公私钥（一路回车即可）</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>2.发送公钥到集群所有主机（包括本机）</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称</span><br></pre></td></tr></table></figure>
-
-<p>3.当ssh端口非22端口时</p>
-<p>需要将步骤2中的端口22更改为目标端口，并且需要执行以下命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;Port 目标端口&quot; &gt;&gt;  ~/.ssh/config</span><br></pre></td></tr></table></figure>
-
-<p>4.验证免密登录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh ip或者主机名称</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>免密登录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Centos7 Nat模式静态Ip配置</title>
     <url>/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>虚拟机软件：VMware16</p>
@@ -82,6 +42,143 @@
       </categories>
       <tags>
         <tag>静态IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>SSH免密登录配置</title>
+    <url>/2021/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>1.在每台主机上执行以下命令生成公私钥（一路回车即可）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>2.发送公钥到集群所有主机（包括本机）</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称</span><br></pre></td></tr></table></figure>
+
+<p>3.当ssh端口非22端口时</p>
+<p>需要将步骤2中的端口22更改为目标端口，并且需要执行以下命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &quot;Port 目标端口&quot; &gt;&gt;  ~/.ssh/config</span><br></pre></td></tr></table></figure>
+
+<p>4.验证免密登录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh ip或者主机名称</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>免密登录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Idea常用插件</title>
+    <url>/2021/Idea%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</url>
+    <content><![CDATA[<p>idea版本2021.1，有的插件在不同的idea版本下可能没有</p>
+<h4 id="Alibaba-Java-Code-Guidelines"><a href="#Alibaba-Java-Code-Guidelines" class="headerlink" title="Alibaba Java Code Guidelines"></a>Alibaba Java Code Guidelines</h4><p>阿里巴巴代码规范检测。不符合代码规范的地方会有波浪线，鼠标移上去就会有相应的提示，有些问题甚至可以快速修复。</p>
+<h4 id="Auto-filling-Java-call-arguments"><a href="#Auto-filling-Java-call-arguments" class="headerlink" title="Auto filling Java call arguments"></a>Auto filling Java call arguments</h4><p>调用一个函数，使用 Alt+Enter 组合键，调出 “Auto fill call parameters” 自动使用该函数定义的参数名填充。</p>
+<h4 id="BashSupport-Pro"><a href="#BashSupport-Pro" class="headerlink" title="BashSupport Pro"></a>BashSupport Pro</h4><p>在idea里编写、运行shell脚本</p>
+<h4 id="CamelCase"><a href="#CamelCase" class="headerlink" title="CamelCase"></a>CamelCase</h4><p>使用快捷键shift+alt+u，进行多种格式转换</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143410.png" style="width: 80%;" />
+
+
+
+<h4 id="CodeGlance"><a href="#CodeGlance" class="headerlink" title="CodeGlance"></a>CodeGlance</h4><p>代码缩略图</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143448.png" style="width: 80%;" />
+
+
+
+<h4 id="Codota"><a href="#Codota" class="headerlink" title="Codota"></a>Codota</h4><p>代码智能提示</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143510.png" style="width: 80%;" />
+
+<p>并且可查看代码的例子</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143550.png" style="width: 80%;" />
+
+<h4 id="GenerateAllSetter"><a href="#GenerateAllSetter" class="headerlink" title="GenerateAllSetter"></a>GenerateAllSetter</h4><p>通过快捷键alt+enter，自动调用所有 Setter 函数（可填充默认值）</p>
+<h4 id="GenerateSerialVersionUID"><a href="#GenerateSerialVersionUID" class="headerlink" title="GenerateSerialVersionUID"></a>GenerateSerialVersionUID</h4><p>使用快捷键alt+insert，自动生成序列化 ID</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143623.png" style="width: 80%;" />
+
+<h4 id="GsonFormatPlus"><a href="#GsonFormatPlus" class="headerlink" title="GsonFormatPlus"></a>GsonFormatPlus</h4><p>JSON字符串转实体类。新建一个实体类，使用快捷键alt+s调出插件画面</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143642.png" style="width: 80%;" />
+
+<h4 id="IDE-Eval-Reset"><a href="#IDE-Eval-Reset" class="headerlink" title="IDE Eval Reset"></a>IDE Eval Reset</h4><p>idea以及其他可试用插件的破解工具，一直刷新试用期。先要在File-&gt;Settings-&gt;Plugins-&gt;设置的图标-&gt;Manage Plugin Repositories中添加仓库地址 <a href="https://plugins.zhile.io/">https://plugins.zhile.io</a></p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143704.png" style="width: 80%;" />
+
+<h4 id="JRebel-and-XRebel-for-Intellij"><a href="#JRebel-and-XRebel-for-Intellij" class="headerlink" title="JRebel and XRebel for Intellij"></a>JRebel and XRebel for Intellij</h4><p>热部署插件，代码修改后按快捷键ctrl+f9编译一下代码即可生效</p>
+<h4 id="LeetCode-Editor-Pro"><a href="#LeetCode-Editor-Pro" class="headerlink" title="LeetCode Editor Pro"></a>LeetCode Editor Pro</h4><p>leetcode刷题插件</p>
+<h4 id="Maven-Helper"><a href="#Maven-Helper" class="headerlink" title="Maven Helper"></a>Maven Helper</h4><p>方便 maven 项目解决 jar 冲突，打开pom.xml文件，点击下方的</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143732.png" style="width: 80%;" />
+
+<p>切换到此视图即可进行相应操作：</p>
+<ol>
+<li><p>Conflicts（查看冲突）</p>
+</li>
+<li><p>All Dependencies as List（列表形式查看所有依赖）</p>
+</li>
+<li><p>All Dependencies as Tree（树形式查看所有依赖）</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143752.png" style="width: 80%;" /></li>
+</ol>
+<h4 id="MyBatis-Log-Plugin"><a href="#MyBatis-Log-Plugin" class="headerlink" title="MyBatis Log Plugin"></a>MyBatis Log Plugin</h4><p>查看执行的sql语句</p>
+<p>在配置文件中添加如下配置：</p>
+<p>#org.apache.ibatis.logging.stdout.StdOutImpl 控制台打印 sql 语句方便调试 sql 语句执行错误<br>#org.apache.ibatis.logging.log4j2.Log4j2Impl 这个不在控制台打印查询结果，但是在 log4j 中打印<br># log-impl: org.apache.ibatis.logging.stdout.StdOutImpl<br>log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl</p>
+<p>mybatis.configuration.log-impl&#x3D;org.apache.ibatis.logging.stdout.StdOutImpl</p>
+<p>启动项目，只要控制台有sql语句打印，该插件都会将sql自动拼装打印出来，并且可以根据mapper.xml文件中定义的id来搜索</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143816.png" style="width: 80%;" />
+
+<h4 id="MyBatisCodeHelperPro-Marketplace-Edition"><a href="#MyBatisCodeHelperPro-Marketplace-Edition" class="headerlink" title="MyBatisCodeHelperPro(Marketplace Edition)"></a>MyBatisCodeHelperPro(Marketplace Edition)</h4><p>使用教程：<a href="https://gejun123456.github.io/MyBatisCodeHelper-Pro">https://gejun123456.github.io/MyBatisCodeHelper-Pro</a></p>
+<ul>
+<li><strong>通过方法名 (不需要方法的返回值和参数 会自动推导出来) 来生成 sql 可以生成大部分单表操作的 sql 只需要一个方法的名字即可 会自动补全好方法的参数和返回值 和 springdatajpa 的语句基本一致</strong></li>
+<li><strong>xml sql 几乎所有地方都有自动提示，sql 正确性检测，插件会识别 mybatis 的一系列标签 如 include trim set where，在这些标签之后的 sql 可以自动提示数据库的字段，检测 sql 的正确性，从此不用担心 sql 写错</strong></li>
+<li><strong>直接从 Intellij 自带的数据库或者配置一个数据库生成 crud 代码 自动检测好 useGeneratedkey 自动配置好模块的文件夹 只用添加包名就可以生成代码了</strong></li>
+<li><strong>xml 代码格式化</strong></li>
+<li>从 java 类生成建表语句</li>
+<li>数据库添加字段后可以继续生成，不会修改之前已经在接口或 xml 添加的自定义的方法 无需再去进行手动的添加</li>
+<li>mybatis 接口和 xml 的互相跳转 支持一个 mybatis 接口对应多个 xml</li>
+<li>mybatis 接口中的方法名重构支持</li>
+<li>xml 中的 param 的自动提示 if test 的自动提示 resultMap refid 等的自动提示</li>
+<li>resultMap 中的 property 的自动提示，检测，重构</li>
+<li>resultMap 中 column 自动提示，检测</li>
+<li>xml 中 refid，resultMap 等的跳转到定义</li>
+<li>检测没有使用的 xml 可一键删除</li>
+<li>检测 mybatis 接口中方法是否有实现，没有则报红 可创建一个空的 xml</li>
+<li>mybatis 接口中一键添加 param 注解</li>
+<li>mybatis 接口一键生成 xml</li>
+<li>完整的 typeAlias 支持</li>
+<li>param 检测 检测 #{ 中的内容是否有误</li>
+<li>ognl 支持 if test when test foreach bind 中的自动补全，跳转和检测</li>
+<li>支持 spring 将 mapper 注入到 spring 中 intellij 的 spring 注入不再报错 支持 springboot</li>
+<li>一键生成 mybatis 接口的 testcase 无需启动 spring，复杂 sql 可进行快速测试</li>
+<li>一键生成表关联的 join</li>
+<li>一键从 sql 语句中 导出 resultMap</li>
+</ul>
+<h4 id="POJO-to-JSON"><a href="#POJO-to-JSON" class="headerlink" title="POJO to JSON"></a>POJO to JSON</h4><p>实体类转json，在类里右键</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143920.png" style="width: 80%;" />
+
+<h4 id="RestfulTool"><a href="#RestfulTool" class="headerlink" title="RestfulTool"></a>RestfulTool</h4><p>找到项目里的接口，使用快捷键ctrl+alt+&#x2F;快速搜索接口</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143938.png" style="width: 80%;" />
+
+<h4 id="Translation"><a href="#Translation" class="headerlink" title="Translation"></a>Translation</h4><p>翻译</p>
+<h4 id="Vue-js"><a href="#Vue-js" class="headerlink" title="Vue.js"></a>Vue.js</h4><p>开发前端vue使用</p>
+<h4 id="Private-Notes"><a href="#Private-Notes" class="headerlink" title="Private Notes"></a>Private Notes</h4><p>添加注释， 按下Alt + Enter鼠标移出点击即可保存<br>已有私人注释 按下Alt + Enter即可快速编辑<br>Alt + p 可快速添加或者编辑私人注释<br>Alt + o 展示私人注释的其它操作<br>右键菜单私人注释查看操作</p>
+]]></content>
+      <categories>
+        <category>Idea</category>
+      </categories>
+      <tags>
+        <tag>Idea</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shell脚本配置集群免密登录</title>
+    <url>/2022/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
+    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
+<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
+
+<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
+<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>免密登录</tag>
       </tags>
   </entry>
 </search>

@@ -1,6 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Centos7 Nat模式静态Ip配置</title>
+    <url>/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>虚拟机软件：VMware16</p>
+<h3 id="一：修改虚拟网络编辑器"><a href="#一：修改虚拟网络编辑器" class="headerlink" title="一：修改虚拟网络编辑器"></a>一：修改虚拟网络编辑器</h3><p>1.进入虚拟网络编辑器，设置Vmnet8子网IP网段</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
+
+
+
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203443.png" style="width: 60%;" />
+
+<p>2.进入NAT设置，设置网关IP</p>
+<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203512.png" style="width: 60%;" />
+
+<h3 id="二：修改虚拟机网络配置文件"><a href="#二：修改虚拟机网络配置文件" class="headerlink" title="二：修改虚拟机网络配置文件"></a>二：修改虚拟机网络配置文件</h3><p>1.查看虚拟机使用的网络配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ip addr</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:94:37:5a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.182.10/24 brd 192.168.10.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::8982:7848:648f:b491/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p>说明使用的配置文件是ens33，当前ip为192.168.182.10</p>
+<p>2.编辑相应的网络配置文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# vi /etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
+
+<p>3.修改文件内容</p>
+<p>注意等于号左右两边不能有空格</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">修改配置</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static   // 1.修改为静态模式</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable-privacy</span><br><span class="line">NAME=ens33</span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes   // 2.开机自动启动网卡</span><br><span class="line">UUID=434ca492-505e-437f-b12a-6ff774c97f19</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加配置</span></span><br><span class="line">IPADDR=192.168.10.10   // static静态ip地址</span><br><span class="line">NETMASK=255.255.255.0    // 子网掩码（固定一致即可）</span><br><span class="line">GATEWAY=192.168.10.2    // 网关，与虚拟机VMnet8中设置的网关一致即可</span><br><span class="line">DNS1=114.114.114.114     // dns地址解析（固定一致即可）</span><br></pre></td></tr></table></figure>
+
+<h3 id="三：重启网卡重新加载配置文件"><a href="#三：重启网卡重新加载配置文件" class="headerlink" title="三：重启网卡重新加载配置文件"></a>三：重启网卡重新加载配置文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# systemctl restart network.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="四：验证网络"><a href="#四：验证网络" class="headerlink" title="四：验证网络"></a>四：验证网络</h3><p>1.查看当ip地址</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ip addr</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:94:37:5a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.10.10/24 brd 192.168.10.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::8982:7848:648f:b491/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<p>2.验证网络是否通畅</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ping www.baidu.com</span><br><span class="line">PING www.a.shifen.com (36.152.44.96) 56(84) bytes of data.</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=1 ttl=128 time=23.0 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=2 ttl=128 time=22.9 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=3 ttl=128 time=23.2 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=4 ttl=128 time=23.2 ms</span><br></pre></td></tr></table></figure>
+
+<p>静态网络Ip配置完成</p>
+<p>安装网络工具包，安装后可使用ifconfig命令</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# yum -y install net-tools</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>静态IP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shell脚本配置集群免密登录</title>
+    <url>/2022/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
+    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
+<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
+
+<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
+<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>免密登录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Idea常用插件</title>
     <url>/2021/Idea%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</url>
     <content><![CDATA[<p>idea版本2021.1，有的插件在不同的idea版本下可能没有</p>
@@ -98,50 +159,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Centos7 Nat模式静态Ip配置</title>
-    <url>/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>虚拟机软件：VMware16</p>
-<h3 id="一：修改虚拟网络编辑器"><a href="#一：修改虚拟网络编辑器" class="headerlink" title="一：修改虚拟网络编辑器"></a>一：修改虚拟网络编辑器</h3><p>1.进入虚拟网络编辑器，设置Vmnet8子网IP网段</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
-
-
-
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203443.png" style="width: 60%;" />
-
-<p>2.进入NAT设置，设置网关IP</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203512.png" style="width: 60%;" />
-
-<h3 id="二：修改虚拟机网络配置文件"><a href="#二：修改虚拟机网络配置文件" class="headerlink" title="二：修改虚拟机网络配置文件"></a>二：修改虚拟机网络配置文件</h3><p>1.查看虚拟机使用的网络配置文件</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ip addr</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:94:37:5a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.182.10/24 brd 192.168.10.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::8982:7848:648f:b491/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
-
-<p>说明使用的配置文件是ens33，当前ip为192.168.182.10</p>
-<p>2.编辑相应的网络配置文件</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# vi /etc/sysconfig/network-scripts/ifcfg-ens33</span><br></pre></td></tr></table></figure>
-
-<p>3.修改文件内容</p>
-<p>注意等于号左右两边不能有空格</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">修改配置</span></span><br><span class="line">TYPE=Ethernet</span><br><span class="line">PROXY_METHOD=none</span><br><span class="line">BROWSER_ONLY=no</span><br><span class="line">BOOTPROTO=static   // 1.修改为静态模式</span><br><span class="line">DEFROUTE=yes</span><br><span class="line">IPV4_FAILURE_FATAL=no</span><br><span class="line">IPV6INIT=yes</span><br><span class="line">IPV6_AUTOCONF=yes</span><br><span class="line">IPV6_DEFROUTE=yes</span><br><span class="line">IPV6_FAILURE_FATAL=no</span><br><span class="line">IPV6_ADDR_GEN_MODE=stable-privacy</span><br><span class="line">NAME=ens33</span><br><span class="line">DEVICE=ens33</span><br><span class="line">ONBOOT=yes   // 2.开机自动启动网卡</span><br><span class="line">UUID=434ca492-505e-437f-b12a-6ff774c97f19</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">添加配置</span></span><br><span class="line">IPADDR=192.168.10.10   // static静态ip地址</span><br><span class="line">NETMASK=255.255.255.0    // 子网掩码（固定一致即可）</span><br><span class="line">GATEWAY=192.168.10.2    // 网关，与虚拟机VMnet8中设置的网关一致即可</span><br><span class="line">DNS1=114.114.114.114     // dns地址解析（固定一致即可）</span><br></pre></td></tr></table></figure>
-
-<h3 id="三：重启网卡重新加载配置文件"><a href="#三：重启网卡重新加载配置文件" class="headerlink" title="三：重启网卡重新加载配置文件"></a>三：重启网卡重新加载配置文件</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# systemctl restart network.service</span><br></pre></td></tr></table></figure>
-
-<h3 id="四：验证网络"><a href="#四：验证网络" class="headerlink" title="四：验证网络"></a>四：验证网络</h3><p>1.查看当ip地址</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ip addr</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:94:37:5a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.10.10/24 brd 192.168.10.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::8982:7848:648f:b491/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
-
-<p>2.验证网络是否通畅</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ping www.baidu.com</span><br><span class="line">PING www.a.shifen.com (36.152.44.96) 56(84) bytes of data.</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=1 ttl=128 time=23.0 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=2 ttl=128 time=22.9 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=3 ttl=128 time=23.2 ms</span><br><span class="line">64 bytes from 36.152.44.96 (36.152.44.96): icmp_seq=4 ttl=128 time=23.2 ms</span><br></pre></td></tr></table></figure>
-
-<p>静态网络Ip配置完成</p>
-<p>安装网络工具包，安装后可使用ifconfig命令</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# yum -y install net-tools</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>静态IP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SSH免密登录配置</title>
     <url>/2021/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>1.在每台主机上执行以下命令生成公私钥（一路回车即可）</p>
@@ -156,23 +173,6 @@
 
 <p>4.验证免密登录</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh ip或者主机名称</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>免密登录</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Shell脚本配置集群免密登录</title>
-    <url>/2022/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
-    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
-<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
-
-<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
-<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
 ]]></content>
       <categories>
         <category>Linux</category>

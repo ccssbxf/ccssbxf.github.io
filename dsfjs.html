@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>合租费用均摊计算器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f1f1f1;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>合租费用均摊计算器</h1>
+
+    <div>
+        <label for="totalElectricityBill">费用:</label>
+        <input type="text" id="totalElectricityBill">
+    </div>
+
+    <div id="userListContainer">
+        <div>
+            <label for="room">房间:</label>
+            <input type="text" id="roomInput">
+
+            <label for="days">天数（多月的话用英文的逗号隔开）:</label>
+            <input type="text" id="daysInput">
+
+            <button onclick="addUser()">添加房间</button>
+        </div>
+    </div>
+
+    <table id="resultTable">
+        <tr>
+            <th>房间</th>
+            <th>个人天数</th>
+            <th>总天数</th>
+            <th>计算公式</th>
+            <th>费用</th>
+        </tr>
+    </table>
+
+    <script>
+        var userList = [];
+
+        function addUser() {
+            var roomInput = document.getElementById("roomInput");
+            var daysInput = document.getElementById("daysInput");
+
+            var room = roomInput.value;
+            var days = daysInput.value.replace(/\s/g, '').split(",");
+
+            userList.push({ room: room, days: days });
+
+            roomInput.value = "";
+            daysInput.value = "";
+
+            updateTable();
+        }
+
+        function updateTable() {
+            var totalElectricityBill = parseFloat(document.getElementById("totalElectricityBill").value);
+            var totalDays = 0;
+
+            userList.forEach(function(user) {
+                var days = user.days.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
+                totalDays += days;
+            });
+
+            var table = document.getElementById("resultTable");
+            table.innerHTML = "";
+            var headerRow = table.insertRow(0);
+            headerRow.innerHTML = "<th>房间</th><th>个人天数</th><th>总天数</th><th>计算公式</th><th>费用</th>";
+
+            userList.forEach(function(user) {
+                var days = user.days.reduce(function(a, b) { return parseInt(a) + parseInt(b); }, 0);
+                var roomElectricity = (totalElectricityBill / totalDays) * days;
+                roomElectricity = Math.floor(roomElectricity * 100) / 100;
+
+                var row = table.insertRow(-1);
+                if(user.days.length>1){
+                    row.innerHTML = "<td>" + user.room + "</td><td>" + user.days.join("+")+"="+days + "</td><td>" + totalDays + "</td><td>" + totalElectricityBill + "/" + totalDays + "*" + days + "</td><td>" + roomElectricity + "</td>";
+                }else{
+                    row.innerHTML = "<td>" + user.room + "</td><td>" + days + "</td><td>" + totalDays + "</td><td>" + totalElectricityBill + "/" + totalDays + "*" + days + "</td><td>" + roomElectricity + "</td>";
+                }
+                
+            });
+        }
+    </script>
+</body>
+</html>

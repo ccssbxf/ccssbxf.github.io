@@ -5,14 +5,20 @@
     <url>/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>虚拟机软件：VMware16</p>
 <h3 id="一：修改虚拟网络编辑器"><a href="#一：修改虚拟网络编辑器" class="headerlink" title="一：修改虚拟网络编辑器"></a>一：修改虚拟网络编辑器</h3><p>1.进入虚拟网络编辑器，设置Vmnet8子网IP网段</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
+<img src="https://fastly.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
 
 
 
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203443.png" style="width: 60%;" />
+
+
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220414203443.png" style="width: 60%;" />
+
+
+
+
 
 <p>2.进入NAT设置，设置网关IP</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220414203512.png" style="width: 60%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220414203512.png" style="width: 60%;" />
 
 <h3 id="二：修改虚拟机网络配置文件"><a href="#二：修改虚拟机网络配置文件" class="headerlink" title="二：修改虚拟机网络配置文件"></a>二：修改虚拟机网络配置文件</h3><p>1.查看虚拟机使用的网络配置文件</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">[root@localhost /]# ip addr</span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 ::1/128 scope host </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">2: ens33: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc pfifo_fast state UP group default qlen 1000</span><br><span class="line">    link/ether 00:0c:29:94:37:5a brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 192.168.182.10/24 brd 192.168.10.255 scope global noprefixroute ens33</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::8982:7848:648f:b491/64 scope link noprefixroute </span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
@@ -69,35 +75,35 @@
 <h4 id="Auto-filling-Java-call-arguments"><a href="#Auto-filling-Java-call-arguments" class="headerlink" title="Auto filling Java call arguments"></a>Auto filling Java call arguments</h4><p>调用一个函数，使用 Alt+Enter 组合键，调出 “Auto fill call parameters” 自动使用该函数定义的参数名填充。</p>
 <h4 id="BashSupport-Pro"><a href="#BashSupport-Pro" class="headerlink" title="BashSupport Pro"></a>BashSupport Pro</h4><p>在idea里编写、运行shell脚本</p>
 <h4 id="CamelCase"><a href="#CamelCase" class="headerlink" title="CamelCase"></a>CamelCase</h4><p>使用快捷键shift+alt+u，进行多种格式转换</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143410.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143410.png" style="width: 80%;" />
 
 
 
 <h4 id="CodeGlance"><a href="#CodeGlance" class="headerlink" title="CodeGlance"></a>CodeGlance</h4><p>代码缩略图</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143448.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143448.png" style="width: 80%;" />
 
 
 
 <h4 id="Codota"><a href="#Codota" class="headerlink" title="Codota"></a>Codota</h4><p>代码智能提示</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143510.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143510.png" style="width: 80%;" />
 
 <p>并且可查看代码的例子</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143550.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143550.png" style="width: 80%;" />
 
 <h4 id="GenerateAllSetter"><a href="#GenerateAllSetter" class="headerlink" title="GenerateAllSetter"></a>GenerateAllSetter</h4><p>通过快捷键alt+enter，自动调用所有 Setter 函数（可填充默认值）</p>
 <h4 id="GenerateSerialVersionUID"><a href="#GenerateSerialVersionUID" class="headerlink" title="GenerateSerialVersionUID"></a>GenerateSerialVersionUID</h4><p>使用快捷键alt+insert，自动生成序列化 ID</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143623.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143623.png" style="width: 80%;" />
 
 <h4 id="GsonFormatPlus"><a href="#GsonFormatPlus" class="headerlink" title="GsonFormatPlus"></a>GsonFormatPlus</h4><p>JSON字符串转实体类。新建一个实体类，使用快捷键alt+s调出插件画面</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143642.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143642.png" style="width: 80%;" />
 
 <h4 id="IDE-Eval-Reset"><a href="#IDE-Eval-Reset" class="headerlink" title="IDE Eval Reset"></a>IDE Eval Reset</h4><p>idea以及其他可试用插件的破解工具，一直刷新试用期。先要在File-&gt;Settings-&gt;Plugins-&gt;设置的图标-&gt;Manage Plugin Repositories中添加仓库地址 <a href="https://plugins.zhile.io/">https://plugins.zhile.io</a></p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143704.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143704.png" style="width: 80%;" />
 
 <h4 id="JRebel-and-XRebel-for-Intellij"><a href="#JRebel-and-XRebel-for-Intellij" class="headerlink" title="JRebel and XRebel for Intellij"></a>JRebel and XRebel for Intellij</h4><p>热部署插件，代码修改后按快捷键ctrl+f9编译一下代码即可生效</p>
 <h4 id="LeetCode-Editor-Pro"><a href="#LeetCode-Editor-Pro" class="headerlink" title="LeetCode Editor Pro"></a>LeetCode Editor Pro</h4><p>leetcode刷题插件</p>
 <h4 id="Maven-Helper"><a href="#Maven-Helper" class="headerlink" title="Maven Helper"></a>Maven Helper</h4><p>方便 maven 项目解决 jar 冲突，打开pom.xml文件，点击下方的</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143732.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143732.png" style="width: 80%;" />
 
 <p>切换到此视图即可进行相应操作：</p>
 <ol>
@@ -106,14 +112,14 @@
 <li><p>All Dependencies as List（列表形式查看所有依赖）</p>
 </li>
 <li><p>All Dependencies as Tree（树形式查看所有依赖）</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143752.png" style="width: 80%;" /></li>
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143752.png" style="width: 80%;" /></li>
 </ol>
 <h4 id="MyBatis-Log-Plugin"><a href="#MyBatis-Log-Plugin" class="headerlink" title="MyBatis Log Plugin"></a>MyBatis Log Plugin</h4><p>查看执行的sql语句</p>
 <p>在配置文件中添加如下配置：</p>
 <p>#org.apache.ibatis.logging.stdout.StdOutImpl 控制台打印 sql 语句方便调试 sql 语句执行错误<br>#org.apache.ibatis.logging.log4j2.Log4j2Impl 这个不在控制台打印查询结果，但是在 log4j 中打印<br># log-impl: org.apache.ibatis.logging.stdout.StdOutImpl<br>log-impl: org.apache.ibatis.logging.log4j2.Log4j2Impl</p>
 <p>mybatis.configuration.log-impl&#x3D;org.apache.ibatis.logging.stdout.StdOutImpl</p>
 <p>启动项目，只要控制台有sql语句打印，该插件都会将sql自动拼装打印出来，并且可以根据mapper.xml文件中定义的id来搜索</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143816.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143816.png" style="width: 80%;" />
 
 <h4 id="MyBatisCodeHelperPro-Marketplace-Edition"><a href="#MyBatisCodeHelperPro-Marketplace-Edition" class="headerlink" title="MyBatisCodeHelperPro(Marketplace Edition)"></a>MyBatisCodeHelperPro(Marketplace Edition)</h4><p>使用教程：<a href="https://gejun123456.github.io/MyBatisCodeHelper-Pro">https://gejun123456.github.io/MyBatisCodeHelper-Pro</a></p>
 <ul>
@@ -142,10 +148,10 @@
 <li>一键从 sql 语句中 导出 resultMap</li>
 </ul>
 <h4 id="POJO-to-JSON"><a href="#POJO-to-JSON" class="headerlink" title="POJO to JSON"></a>POJO to JSON</h4><p>实体类转json，在类里右键</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143920.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143920.png" style="width: 80%;" />
 
 <h4 id="RestfulTool"><a href="#RestfulTool" class="headerlink" title="RestfulTool"></a>RestfulTool</h4><p>找到项目里的接口，使用快捷键ctrl+alt+&#x2F;快速搜索接口</p>
-<img src="https://cdn.jsdelivr.net/gh/ccssbxf/img/blog/20220430143938.png" style="width: 80%;" />
+<img src="https://gcore.jsdelivr.net/gh/ccssbxf/img/blog/20220430143938.png" style="width: 80%;" />
 
 <h4 id="Translation"><a href="#Translation" class="headerlink" title="Translation"></a>Translation</h4><p>翻译</p>
 <h4 id="Vue-js"><a href="#Vue-js" class="headerlink" title="Vue.js"></a>Vue.js</h4><p>开发前端vue使用</p>
@@ -179,6 +185,97 @@
       </categories>
       <tags>
         <tag>免密登录</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HBase在线动态新增节点、删除节点</title>
+    <url>/2022/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/</url>
+    <content><![CDATA[<h2 id="一：新增节点"><a href="#一：新增节点" class="headerlink" title="一：新增节点"></a>一：新增节点</h2><p>注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下</p>
+<p>1.拷贝集群原有节点的HBase包到新节点相同路径下</p>
+<p>2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上</p>
+<p>3.在新节点启动HBase</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hbase-daemon.sh start regionserver</span><br></pre></td></tr></table></figure>
+
+<p>4.查看HBase集群状态</p>
+<p>进入hbase shell，执行status查看状态，可以看到新节点已加入集群</p>
+<p>5.数据平衡</p>
+<p>hbase shell里执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br><span class="line">（下面这个是手动触发避免业务高峰期执行）</span><br><span class="line">balancer</span><br></pre></td></tr></table></figure>
+
+<p>等命令执行完成，新加入的节点上已经有region，可以通过HBase管理页面看到</p>
+<h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>1.在要下线的节点（比如我这里下线hadoop104），在hadoop104执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graceful_stop.sh hadoop104</span><br></pre></td></tr></table></figure>
+
+<p>该命令会自动关闭 Load Balancer（banlance_switch），然后转移该 regionserver 维护的 region 到其他节点，将该节点关闭。除此之外，你还可以查看 remove 的过程，已经 assigned 了多少个 Region，还剩多少个 Region，每个 Region 的 Assigned 耗时，最终完成之后需要手动打开 load balancer [hbase shell 执行banlance_switch true]</p>
+<p>2.删除&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件里的相应节点</p>
+<p>3.启用负载平衡器</p>
+<p>hbase shell里执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>HBase</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hadoop在线动态新增节点、删除节点</title>
+    <url>/2022/Hadoop%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/</url>
+    <content><![CDATA[<h2 id="一：新增节点"><a href="#一：新增节点" class="headerlink" title="一：新增节点"></a>一：新增节点</h2><p>1.按原有数据节点配置一台新的数据节点（包括最初搭建集群的系统参数修改、时钟同步等操作）</p>
+<p>2.配置节点主机映射，比如新增hadoop104节点，则在原有节点的&#x2F;etc&#x2F;hosts文件里添加映射信息，并将该文件分发到新节点</p>
+<p>3.将新节点与集群内原有节点做免密登录</p>
+<p>4.拷贝原数据节点上的环境变量配置、JDK、Hadoop安装包等到新节点相同路径下</p>
+<p>5.在namenode修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hadoop-3.2.2&#x2F;etc&#x2F;hadoop&#x2F;workers文件，新增hadoop104节点，并分发到所有节点上</p>
+<p>6.查看hdfs-site.xml配置项dfs.datanode.data.dir的值，该值为数据节点存储数据的目录，如果新节点的这些目录有数据，将其清理干净</p>
+<p>7.启动新节点上的进程</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs --daemon start datanode</span><br><span class="line">yarn --daemon start nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>8.刷新节点配置，让新节点能被集群感知到</p>
+<p>在namenode执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs dfsadmin -refreshNodes</span><br></pre></td></tr></table></figure>
+
+<p>9.可以在hadoop管理页面或者使用命令hdfs dfsadmin -report，查看新节点是否加入hdfs集群，使用yarn node -list查看新节点是否加入yarn集群</p>
+<p>10.平衡节点数据</p>
+<p>在namenode节点执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#对hdfs负载设置均衡，因为默认的数据传输带宽比较低，可以设置为64M  </span><br><span class="line">hdfs dfsadmin -setBalancerBandwidth 67108864 </span><br><span class="line"></span><br><span class="line">#默认balancer的threshold为10%，即各个节点与集群总的存储使用率相差不超过10%，我们可将其设置为5%</span><br><span class="line">start-balancer.sh -threshold 5</span><br></pre></td></tr></table></figure>
+
+<p>注意：</p>
+<p>1）如果不 balance，那么 cluster 会把新的数据都存放在新的 node 上，这样会降低 mapred 的工作效率<br>2）设置平衡阈值，默认是 10%，值越低各节点越平衡，但消耗时间也更长<br>3）设置 balance 的带宽，默认只有 1M&#x2F;s</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.balance.bandwidthPerSec&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;64m&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p>11.通过Hadoop管理页面或者hdfs dfsadmin -report命令，查看数据迁移情况</p>
+<h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>注：如果节点想要动态正常下线，除非预先在hdfs-site.xml文件配置了dfs.hosts.exclude，以及yarn-site.xml配置了yarn.resourcemanager.nodes.exclude-path 。否则就只能采用直接在要下线的数据节点进行停止进程，让集群认为这台数据节点进程掉了，自动进行副本转移（采用停进程的方式不能一次性下3台及以上，最好一台台操作）。</p>
+<p>1.在dfs.hosts.exclude配置的路径的文件里，添加要下线的机器，一行一个</p>
+<p>比如我的配置项</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">　　&lt;!--dfs.hosts.exclude定义的文件内容为,每个需要下线的机器，一行一个--&gt;</span><br><span class="line">　　&lt;name&gt;dfs.hosts.exclude&lt;/name&gt;</span><br><span class="line">　　&lt;value&gt;/home/zhouhj/app/hadoop-3.2.2/etc/hadoop/excludes&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p>2.刷新节点配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs dfsadmin -refreshNodes</span><br><span class="line">yarn rmadmin -refreshNodes</span><br></pre></td></tr></table></figure>
+
+<p>3.观察集群情况</p>
+<p>此时在Hadoop管理页面可以看到Decommissioning Nodes的数量为刚刚在excludes里添加的数量，等副本迁移完成之后，这些节点状态会变成Decommissioned。或者使用hadoop dfsadmin -report以及yarn node -list查看，也能看到相关信息</p>
+<p>4.待观察到节点状态变成Decommissioned之后，就可以停这台节点上的进程了</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs --daemon stop datanode</span><br><span class="line">yarn --daemon stop nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>5.在&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hadoop-3.2.2&#x2F;etc&#x2F;hadoop&#x2F;workers中删除对应节点</p>
+<h2 id="三：重新加入删除的节点"><a href="#三：重新加入删除的节点" class="headerlink" title="三：重新加入删除的节点"></a>三：重新加入删除的节点</h2><p>1.在excludes文件中删除相关节点</p>
+<p>2.在&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hadoop-3.2.2&#x2F;etc&#x2F;hadoop&#x2F;workers中加入对应节点</p>
+<p>3.在节点上启动进程</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs --daemon start datanode</span><br><span class="line">yarn --daemon start nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>4.刷新节点配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs dfsadmin -refreshNodes</span><br><span class="line">yarn rmadmin -refreshNodes</span><br></pre></td></tr></table></figure>
+
+<p>5.平衡节点数据</p>
+<p>参考新增节点平衡数据</p>
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>Hadoop</tag>
       </tags>
   </entry>
 </search>

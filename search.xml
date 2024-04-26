@@ -344,6 +344,8 @@
 
 <p>详见官网</p>
 <p><a href="https://phoenix.apache.org/udf.html">https://phoenix.apache.org/udf.html</a></p>
+<h4 id="4-使用函数"><a href="#4-使用函数" class="headerlink" title="4.使用函数"></a>4.使用函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0: jdbc:phoenix:&gt; select rk(&#x27;abc&#x27;) as id;</span><br><span class="line">+---------+</span><br><span class="line">|   ID    |</span><br><span class="line">+---------+</span><br><span class="line">| 0593abc% |</span><br><span class="line">+---------+</span><br><span class="line">1 row selected (0.007 seconds)</span><br><span class="line">也可传入字段例如</span><br><span class="line">select * from xxx where id like rk(user_no);</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Phoenix</category>

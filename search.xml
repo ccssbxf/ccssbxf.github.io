@@ -320,7 +320,7 @@
   </entry>
   <entry>
     <title>Phoenix自定义函数UDF</title>
-    <url>/2024/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/</url>
+    <url>/2023/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/</url>
     <content><![CDATA[<h2 id="以自定义函数生成rowkey前缀为例"><a href="#以自定义函数生成rowkey前缀为例" class="headerlink" title="以自定义函数生成rowkey前缀为例"></a>以自定义函数生成rowkey前缀为例</h2><h3 id="一：依赖"><a href="#一：依赖" class="headerlink" title="一：依赖"></a>一：依赖</h3><p>要自定义phoenix函数，必须有以下依赖</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.phoenix<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>phoenix-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--对应的phoenix的版本号--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="HBase," />
+  <meta name="keywords" content="Hadoop,Phoenix,UDF," />
 
 
 
@@ -79,18 +79,22 @@
 
 
 
-<meta name="description" content="一：新增节点注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下 1.拷贝集群原有节点的HBase包到新节点相同路径下 2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上 3.在新节点启动HBase 1hbase-d">
+<meta name="description" content="以自定义函数生成rowkey前缀为例一：依赖要自定义phoenix函数，必须有以下依赖 123456&lt;dependency&gt;    &lt;groupId&gt;org.apache.phoenix&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;phoenix-core&lt;&#x2F;artifactId&gt;    &lt;!--对应的phoenix的版本号-">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HBase在线动态新增节点、删除节点">
-<meta property="og:url" content="https://wwsbd.gitee.io/2022/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/index.html">
+<meta property="og:title" content="Phoenix自定义函数UDF">
+<meta property="og:url" content="https://wwsbd.gitee.io/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="一：新增节点注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下 1.拷贝集群原有节点的HBase包到新节点相同路径下 2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上 3.在新节点启动HBase 1hbase-d">
+<meta property="og:description" content="以自定义函数生成rowkey前缀为例一：依赖要自定义phoenix函数，必须有以下依赖 123456&lt;dependency&gt;    &lt;groupId&gt;org.apache.phoenix&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;phoenix-core&lt;&#x2F;artifactId&gt;    &lt;!--对应的phoenix的版本号-">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-07-21T14:30:56.000Z">
-<meta property="article:modified_time" content="2024-04-25T03:28:16.108Z">
+<meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240428143156.png">
+<meta property="article:published_time" content="2023-04-26T03:00:52.000Z">
+<meta property="article:modified_time" content="2024-04-28T06:32:09.401Z">
 <meta property="article:author" content="ZhouHJ">
-<meta property="article:tag" content="HBase">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="Phoenix">
+<meta property="article:tag" content="UDF">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240428143156.png">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="https://wwsbd.gitee.io/2022/HBase在线动态新增节点、删除节点/"/>
+  <link rel="canonical" href="https://wwsbd.gitee.io/2023/大数据/Phoenix自定义函数UDF/"/>
 
 
 
 <meta name="baidu-site-verification" content="code-rwSzNFPlRv" />
 
-  <title>HBase在线动态新增节点、删除节点 | 万万使不得</title>
+  <title>Phoenix自定义函数UDF | 万万使不得</title>
   
 
 
@@ -297,7 +301,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2022/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/">
+    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -314,7 +318,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HBase在线动态新增节点、删除节点</h1>
+          <h1 class="post-title" itemprop="name headline">Phoenix自定义函数UDF</h1>
         
 
         <div class="post-meta">
@@ -326,8 +330,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-21T22:30:56+08:00">
-                2022-07-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-04-26T11:00:52+08:00">
+                2023-04-26
               </time>
             
 
@@ -349,8 +353,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hadoop/" itemprop="url" rel="index">
-                    <span itemprop="name">Hadoop</span>
+                  <a href="/categories/Phoenix/" itemprop="url" rel="index">
+                    <span itemprop="name">Phoenix</span>
                   </a>
                 </span>
 
@@ -386,28 +390,35 @@
       
 
       
-        <h2 id="一：新增节点"><a href="#一：新增节点" class="headerlink" title="一：新增节点"></a>一：新增节点</h2><p>注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下</p>
-<p>1.拷贝集群原有节点的HBase包到新节点相同路径下</p>
-<p>2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上</p>
-<p>3.在新节点启动HBase</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase-daemon.sh start regionserver</span><br></pre></td></tr></table></figure>
+        <h2 id="以自定义函数生成rowkey前缀为例"><a href="#以自定义函数生成rowkey前缀为例" class="headerlink" title="以自定义函数生成rowkey前缀为例"></a>以自定义函数生成rowkey前缀为例</h2><h3 id="一：依赖"><a href="#一：依赖" class="headerlink" title="一：依赖"></a>一：依赖</h3><p>要自定义phoenix函数，必须有以下依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.phoenix<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>phoenix-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--对应的phoenix的版本号--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<p>4.查看HBase集群状态</p>
-<p>进入hbase shell，执行status查看状态，可以看到新节点已加入集群</p>
-<p>5.数据平衡</p>
-<p>hbase shell里执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br><span class="line">（下面这个是手动触发避免业务高峰期执行）</span><br><span class="line">balancer</span><br></pre></td></tr></table></figure>
+<h3 id="二：代码"><a href="#二：代码" class="headerlink" title="二：代码"></a>二：代码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zhouhj.tools.phoenix.udf;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.expression.Expression;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.expression.function.ScalarFunction;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.parse.FunctionParseNode;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.tuple.Tuple;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.types.PDataType;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.types.PVarchar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.security.MessageDigest;</span><br><span class="line"><span class="keyword">import</span> java.security.NoSuchAlgorithmException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="meta">@FunctionParseNode</span>.BuiltInFunction(</span><br><span class="line">        name = <span class="string">&quot;rk&quot;</span>,</span><br><span class="line">        args = &#123;<span class="meta">@FunctionParseNode</span>.Argument(</span><br><span class="line">                allowedTypes = &#123;PVarchar.class&#125;</span><br><span class="line">        )&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RowKeyFunction</span> <span class="keyword">extends</span> <span class="title class_">ScalarFunction</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">NAME</span> <span class="operator">=</span> <span class="string">&quot;rk&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RowKeyFunction</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RowKeyFunction</span><span class="params">(List&lt;Expression&gt; children)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(children);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> NAME;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">evaluate</span><span class="params">(Tuple tuple, ImmutableBytesWritable ptr)</span> &#123;</span><br><span class="line">        <span class="type">Expression</span> <span class="variable">idExp</span> <span class="operator">=</span> <span class="built_in">this</span>.getIdExpression();</span><br><span class="line">        <span class="keyword">if</span> (!idExp.evaluate(tuple, ptr)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">userId</span> <span class="operator">=</span> (String) PVarchar.INSTANCE.toObject(ptr, idExp.getSortOrder());</span><br><span class="line">            <span class="type">String</span> <span class="variable">rowKey</span> <span class="operator">=</span> <span class="built_in">this</span>.getRowKey(userId, <span class="string">&quot;%&quot;</span>);</span><br><span class="line">            ptr.set(PVarchar.INSTANCE.toBytes(rowKey));</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> PDataType <span class="title function_">getDataType</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> PVarchar.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Expression <span class="title function_">getIdExpression</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.children.get(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">getRowKey</span><span class="params">(String userId, String def)</span> &#123;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="comment">//此处省略业务</span></span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>等命令执行完成，新加入的节点上已经有region，可以通过HBase管理页面看到</p>
-<h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>1.在要下线的节点（比如我这里下线hadoop104），在hadoop104执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graceful_stop.sh hadoop104</span><br></pre></td></tr></table></figure>
+<h3 id="三：打包"><a href="#三：打包" class="headerlink" title="三：打包"></a>三：打包</h3><p>1.将自定义函数打成jar包</p>
+<p>2.将自定义函数里用到的第三方的lib包也要拿出来（除HBase、Hadoop、Phoenix相关包以外）。比如额外引入了hutool且自定义函数里使用了的话，就需要hutool的lib包</p>
+<h3 id="四：部署"><a href="#四：部署" class="headerlink" title="四：部署"></a>四：部署</h3><h4 id="1-配置修改"><a href="#1-配置修改" class="headerlink" title="1.配置修改"></a>1.配置修改</h4><p>修改hbase-site.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;!-- phoenix支持自定义函数 -- &gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;phoenix.functions.allowUserDefinedFunctions&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 自定义函数，存储jar的hdfs目录 -- &gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;hbase.dynamic.jars.dir&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;填写准备放自定义jar的地方，除了这个路径，jar放在其他路径哪怕指定了都没用。默认值是$&#123;hbase.rootdir&#125;/lib&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 
-<p>该命令会自动关闭 Load Balancer（banlance_switch），然后转移该 regionserver 维护的 region 到其他节点，将该节点关闭。除此之外，你还可以查看 remove 的过程，已经 assigned 了多少个 Region，还剩多少个 Region，每个 Region 的 Assigned 耗时，最终完成之后需要手动打开 load balancer [hbase shell 执行banlance_switch true]</p>
-<p>2.删除&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件里的相应节点</p>
-<p>3.启用负载平衡器</p>
-<p>hbase shell里执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br></pre></td></tr></table></figure>
+<h4 id="2-包部署"><a href="#2-包部署" class="headerlink" title="2.包部署"></a>2.包部署</h4><p>将自定义的jar包和所依赖的jar包，放到hbase.dynamic.jars.dir配置的路径下</p>
+<h4 id="3-函数注册"><a href="#3-函数注册" class="headerlink" title="3.函数注册"></a>3.函数注册</h4><p>进入phoenix客户端</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">注册永久函数</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span> <span class="keyword">using</span> jar <span class="string">&#x27;hdfs://mycluster/hbase/lib/PhoenixUDF.jar&#x27;</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span> <span class="keyword">using</span> jar <span class="string">&#x27;/hbase/lib/PhoenixUDF.jar&#x27;</span>;</span><br><span class="line"></span><br><span class="line">如果目录下没有其他包里的类会冲突的话，可以不需要指定jar</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span>;</span><br><span class="line"></span><br><span class="line">注册临时函数</span><br><span class="line"><span class="keyword">CREATE</span> TEMPORARY <span class="keyword">FUNCTION</span> ...</span><br><span class="line"></span><br><span class="line">如果注册路径错了，需要删除函数，使用以下语句</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> IF <span class="keyword">EXISTS</span> rk;</span><br></pre></td></tr></table></figure>
 
+<p>注意：</p>
+<p>1.如果使用jdbc连接，需要指定phoenix.functions.allowUserDefinedFunctions的值，例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">props</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">props.setProperty(<span class="string">&quot;phoenix.functions.allowUserDefinedFunctions&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line"><span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:phoenix:localhost&quot;</span>, props);</span><br></pre></td></tr></table></figure>
+
+<p>2.如果是在程序中，如java、jdbc等使用到该函数，程序运行时，会将该jar复制到本地的hbase.local.dir路径下，默认是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;hbase.local.dir&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;$&#123;hbase.tmp.dir&#125;/local/&lt;/value&gt;</span><br><span class="line">  &lt;description&gt;Directory on the local filesystem to be used</span><br><span class="line">    as a local storage.&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+
+<p>详见官网</p>
+<p><a target="_blank" rel="noopener" href="https://phoenix.apache.org/udf.html">https://phoenix.apache.org/udf.html</a></p>
+<h4 id="4-使用函数"><a href="#4-使用函数" class="headerlink" title="4.使用函数"></a>4.使用函数</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">0: jdbc:phoenix:&gt; select rk(&#x27;abc&#x27;) as id;</span><br><span class="line">+---------+</span><br><span class="line">|   ID    |</span><br><span class="line">+---------+</span><br><span class="line">| 0593abc% |</span><br><span class="line">+---------+</span><br><span class="line">1 row selected (0.007 seconds)</span><br><span class="line">也可传入字段例如</span><br><span class="line">select * from xxx where id like rk(user_no);</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-补充说明"><a href="#5-补充说明" class="headerlink" title="5.补充说明"></a>5.补充说明</h4><p>1.自定义jar包只能放在hbase-site.xml里配置的hbase.dynamic.jars.dir路径下，放其他路径哪怕注册函数时使用using jar的语法指定了路径也不行</p>
+<p>2.注册函数后，第一次使用自定义函数时，phoenix客户端会将hbase.dynamic.jars.dir路径下的所有jar包，下载到本地的hbase.local.dir路径作为本地缓存。后续如果Phoenix客户端重启，如果本地这个jar包存在的话，会从本地加载这个类到内存。所以，如果自定义函数有修改需要换包的话，这个路径下的包记得删除让他重新从hdfs上拉取。</p>
+<p>3.查看有哪些自定义函数<br>select * from SYSTEM.”FUNCTION”;</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240428143156.png" alt="image-20240428143007559"></p>
 
       
     </div>
@@ -425,7 +436,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/HBase/" rel="tag"># HBase</a>
+            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+          
+            <a href="/tags/Phoenix/" rel="tag"># Phoenix</a>
+          
+            <a href="/tags/UDF/" rel="tag"># UDF</a>
           
         </div>
       
@@ -438,8 +453,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/Hadoop%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/" rel="next" title="Hadoop在线动态新增节点、删除节点">
-                <i class="fa fa-chevron-left"></i> Hadoop在线动态新增节点、删除节点
+              <a href="/2023/Java/class%E6%96%87%E4%BB%B6%E6%89%93%E6%88%90jar%E5%8C%85/" rel="next" title="class文件打成jar包">
+                <i class="fa fa-chevron-left"></i> class文件打成jar包
               </a>
             
           </div>
@@ -448,8 +463,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2022/Hadoop%20HA%E9%9B%86%E7%BE%A4%E4%B8%A4%E4%B8%AANameNode%E9%83%BD%E6%98%AFstandby%E7%8A%B6%E6%80%81/" rel="prev" title="Hadoop HA集群两个NameNode都是standby状态">
-                Hadoop HA集群两个NameNode都是standby状态 <i class="fa fa-chevron-right"></i>
+              <a href="/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%20DataNode%E8%8A%82%E7%82%B9%E4%B8%8B%E7%BA%BF%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/" rel="prev" title="Hadoop DataNode节点下线速度优化">
+                Hadoop DataNode节点下线速度优化 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -585,7 +600,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">一：新增节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">二：删除节点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0%E7%94%9F%E6%88%90rowkey%E5%89%8D%E7%BC%80%E4%B8%BA%E4%BE%8B"><span class="nav-number">1.</span> <span class="nav-text">以自定义函数生成rowkey前缀为例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E4%BE%9D%E8%B5%96"><span class="nav-number">1.1.</span> <span class="nav-text">一：依赖</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">二：代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%EF%BC%9A%E6%89%93%E5%8C%85"><span class="nav-number">1.3.</span> <span class="nav-text">三：打包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%EF%BC%9A%E9%83%A8%E7%BD%B2"><span class="nav-number">1.4.</span> <span class="nav-text">四：部署</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E9%85%8D%E7%BD%AE%E4%BF%AE%E6%94%B9"><span class="nav-number">1.4.1.</span> <span class="nav-text">1.配置修改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E5%8C%85%E9%83%A8%E7%BD%B2"><span class="nav-number">1.4.2.</span> <span class="nav-text">2.包部署</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%87%BD%E6%95%B0%E6%B3%A8%E5%86%8C"><span class="nav-number">1.4.3.</span> <span class="nav-text">3.函数注册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E4%BD%BF%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">1.4.4.</span> <span class="nav-text">4.使用函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E8%A1%A5%E5%85%85%E8%AF%B4%E6%98%8E"><span class="nav-number">1.4.5.</span> <span class="nav-text">5.补充说明</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

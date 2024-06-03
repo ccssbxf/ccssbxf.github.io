@@ -1,8 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>CommandLine 解析命令行参数</title>
+    <url>/2024/Java/CommandLine%20%E8%A7%A3%E6%9E%90%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/</url>
+    <content><![CDATA[<h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-cli<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-cli<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.cli.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ZhouHJ</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2024/4/29 16:23</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CommandLineDemo</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">HELP_OPT</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Option</span>(<span class="string">&quot;h&quot;</span>, <span class="string">&quot;help&quot;</span>, <span class="literal">false</span>, <span class="string">&quot;使用信息&quot;</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">TYPE_OPT</span> <span class="operator">=</span> Option.builder(<span class="string">&quot;t&quot;</span>)</span><br><span class="line">            .longOpt(<span class="string">&quot;type&quot;</span>)</span><br><span class="line">            <span class="comment">//.required()</span></span><br><span class="line">            .hasArg()</span><br><span class="line">            .desc(<span class="string">&quot;指定业务类型&quot;</span>)</span><br><span class="line">            .build();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">DATE_OPT</span> <span class="operator">=</span> Option.builder(<span class="string">&quot;D&quot;</span>)</span><br><span class="line">            .argName(<span class="string">&quot;property=value&quot;</span>)</span><br><span class="line">            .hasArgs()</span><br><span class="line">            .valueSeparator(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">            .desc(<span class="string">&quot;指定日期&quot;</span>).build();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Options <span class="title function_">getOptions</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Options</span> <span class="variable">options</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Options</span>();</span><br><span class="line">        options.addOption(TYPE_OPT);</span><br><span class="line">        options.addOption(HELP_OPT);</span><br><span class="line">        options.addOption(DATE_OPT);</span><br><span class="line">        <span class="keyword">return</span> options;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printUsage</span><span class="params">(Options options)</span> &#123;</span><br><span class="line">        <span class="type">HelpFormatter</span> <span class="variable">helper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HelpFormatter</span>();</span><br><span class="line">        helper.printHelp(<span class="string">&quot;demo&quot;</span>, options);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ParseException &#123;</span><br><span class="line">        <span class="type">CommandLine</span> <span class="variable">cmd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultParser</span>().parse(getOptions(), args);</span><br><span class="line">        <span class="keyword">if</span> (cmd.hasOption(HELP_OPT)) &#123;</span><br><span class="line">            printUsage(getOptions());</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">type</span> <span class="operator">=</span> cmd.getOptionValue(TYPE_OPT);</span><br><span class="line">        <span class="type">String</span> <span class="variable">date</span> <span class="operator">=</span> cmd.getOptionProperties(DATE_OPT).getProperty(<span class="string">&quot;date&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;type is:&quot;</span> + type + <span class="string">&quot;,date is:&quot;</span> + date);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><h3 id="help打印"><a href="#help打印" class="headerlink" title="help打印"></a>help打印</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104150.png" alt="image-20240508104143210" style="zoom:50%;" />
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104227.png" alt="image-20240508104227024" style="zoom: 50%;" />
+
+<h3 id="参数获取"><a href="#参数获取" class="headerlink" title="参数获取"></a>参数获取</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104412.png" alt="image-20240508104412222" style="zoom:50%;" />
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104446.png" alt="image-20240508104446254" style="zoom:50%;" />
+
+<p>官网使用例子：<a href="https://commons.apache.org/proper/commons-cli/usage.html">https://commons.apache.org/proper/commons-cli/usage.html</a></p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>CommandLine</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Centos7 Nat模式静态Ip配置</title>
-    <url>/2020/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
+    <url>/2020/Linux/Centos7%20Nat%E6%A8%A1%E5%BC%8F%E9%9D%99%E6%80%81Ip%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>虚拟机软件：VMware16</p>
 <h3 id="一：修改虚拟网络编辑器"><a href="#一：修改虚拟网络编辑器" class="headerlink" title="一：修改虚拟网络编辑器"></a>一：修改虚拟网络编辑器</h3><p>1.进入虚拟网络编辑器，设置Vmnet8子网IP网段</p>
 <img src="https://fastly.jsdelivr.net/gh/ccssbxf/img/blog/20220414201315.png" style="width: 60%;" />
@@ -51,25 +75,8 @@
       </tags>
   </entry>
   <entry>
-    <title>Shell脚本配置集群免密登录</title>
-    <url>/2022/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
-    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
-<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
-
-<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
-<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>免密登录</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Idea常用插件</title>
-    <url>/2021/Idea%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</url>
+    <url>/2021/Java/Idea%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</url>
     <content><![CDATA[<p>idea版本2021.1，有的插件在不同的idea版本下可能没有</p>
 <h4 id="Alibaba-Java-Code-Guidelines"><a href="#Alibaba-Java-Code-Guidelines" class="headerlink" title="Alibaba Java Code Guidelines"></a>Alibaba Java Code Guidelines</h4><p>阿里巴巴代码规范检测。不符合代码规范的地方会有波浪线，鼠标移上去就会有相应的提示，有些问题甚至可以快速修复。</p>
 <h4 id="Auto-filling-Java-call-arguments"><a href="#Auto-filling-Java-call-arguments" class="headerlink" title="Auto filling Java call arguments"></a>Auto filling Java call arguments</h4><p>调用一个函数，使用 Alt+Enter 组合键，调出 “Auto fill call parameters” 自动使用该函数定义的参数名填充。</p>
@@ -165,8 +172,45 @@
       </tags>
   </entry>
   <entry>
+    <title>class文件打成jar包</title>
+    <url>/2023/Java/class%E6%96%87%E4%BB%B6%E6%89%93%E6%88%90jar%E5%8C%85/</url>
+    <content><![CDATA[<p>由于有时候的特殊需要，要将几个class文件单独打成jar包</p>
+<p>1.按class文件的package建好相应的目录，比如原有class是</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package com.zhouhj.tools.phoenix.udf;</span><br></pre></td></tr></table></figure>
+
+<p>则创建从com开始到udf结束的目录</p>
+<p>2.将class文件放到对应目录下</p>
+<p>3.在com目录同级别的目录执行以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jar -cvf phoenix-udf.jar com/</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>打包</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Shell脚本配置集群免密登录</title>
+    <url>/2022/Linux/Shell%E8%84%9A%E6%9C%AC%E9%85%8D%E7%BD%AE%E9%9B%86%E7%BE%A4%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95/</url>
+    <content><![CDATA[<p>使用时需要修改nodes和passwd</p>
+<p>在集群的任意一台主机上，使用需要配置免密登录的用户执行该脚本，即可实现集群内所有主机之间的免密登录</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">安装expect,用于自动交互任务</span></span><br><span class="line">sudo yum install -y expect</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">要设置免密登录的节点，第一台一定要为本机</span></span><br><span class="line">nodes=(hadoop101 hadoop102 hadoop103)</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">登录密码，所有节点一致</span></span><br><span class="line">passwd=123456</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---本机免密登录其他节点---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">在所有节点生成秘钥</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果(<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">create_key() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh $USER@$node ssh-keygen -t rsa -P &#x27;&#x27; -f $HOME/.ssh/id_rsa;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    create_key $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_create_key</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将本机公钥复制到所有节点</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果（<span class="built_in">yes</span>/no)?则自动选择<span class="built_in">yes</span>继续下一步，有的版本是(<span class="built_in">yes</span>/no/[fingerprint])?</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">如果password:则自动将passwd写在后面继续下一步</span></span><br><span class="line">copy_id() &#123;</span><br><span class="line">  expect -c &quot;set timeout -1;</span><br><span class="line">        spawn ssh-copy-id $USER@$node;</span><br><span class="line">        expect &#123;</span><br><span class="line">                *(yes/no* &#123;send -- yes\r;exp_continue;&#125;</span><br><span class="line">                *password:* &#123;send -- $passwd\r;exp_continue;&#125;</span><br><span class="line">                eof\t&#123;exit 0&#125;</span><br><span class="line">        &#125;&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id() &#123;</span><br><span class="line">  for node in $&#123;nodes[*]&#125;; do</span><br><span class="line">    copy_id $node $passwd</span><br><span class="line">  done</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ssh_copy_id</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">---所有节点相互免密登录---</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将其他节点公钥追加到本机</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  ssh $USER@$node cat $HOME/.ssh/id_rsa.pub &gt;&gt;$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含所有节点公钥的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/authorized_keys $USER@$node:$HOME/.ssh/authorized_keys</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">将包含有所有节点连接信息的文件复制到其他节点</span></span><br><span class="line">for node in $&#123;nodes[*]:1&#125;; do</span><br><span class="line">  scp $HOME/.ssh/known_hosts $USER@$node:$HOME/.ssh/known_hosts</span><br><span class="line">done</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">end</span></span><br></pre></td></tr></table></figure>
+
+<p>注：配置免密登录的用户需要拥有sudo权限，用来安装expect。或者使用root用户安装expect后，注释掉第4行，再执行脚本。</p>
+<p>参考：<a href="https://blog.csdn.net/ynzzxc/article/details/119999682">https://blog.csdn.net/ynzzxc/article/details/119999682</a></p>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>免密登录</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>SSH免密登录配置</title>
-    <url>/2021/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
+    <url>/2021/Linux/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>1.在每台主机上执行以下命令生成公私钥（一路回车即可）</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
 
@@ -188,8 +232,52 @@
       </tags>
   </entry>
   <entry>
+    <title>Hadoop DataNode节点下线速度优化</title>
+    <url>/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%20DataNode%E8%8A%82%E7%82%B9%E4%B8%8B%E7%BA%BF%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/</url>
+    <content><![CDATA[<h2 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h2><p> 一般来说 NameNode检测 DataNode是否掉线的值是 10*3s（DataNode心跳时间，参数是：dfs.heartbeat.interval）+2*5min（namenode 检测时间，参数是：dfs.namenode.heartbeat.recheck-interval）&#x3D;10 分 30s，将该值定义为timeout</p>
+<p>当节点下线时间超过timeout的值后，会发生副本迁移。</p>
+<p>副本迁移速度主要由以下三个参数控制：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dfs.namenode.replication.work.multiplier.per.iteration</span><br><span class="line">这个参数决定了当 NN 与 DN 进行心跳（3s）发送任务列表时，告诉每个 DN 可以进行复制的 block 数量。比如集群有 5 个节点，这个值设置为 5，那么一次心跳 NameNode 可以发送 DataNode 复制的数据块数量是 5*5=25 块。默认值为2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dfs.namenode.replication.max-streams</span><br><span class="line">这个参数含义是控制 DataNode 节点进行数据复制的最大线程数， block 的复制优先级分成 5 种。这个参数控制不包含最高优先级的块复制。即除最高优先级的复制流限制。默认值为2</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dfs.namenode.replication.max-streams-hard-limit</span><br><span class="line">这个参数含义是控制 DataNode 所有优先级块复制的流个数，包含最高优先级；一般上面和上面两个参数互相的配合使用。默认值为4</span><br></pre></td></tr></table></figure>
+
+<h2 id="副本迁移时间计算"><a href="#副本迁移时间计算" class="headerlink" title="副本迁移时间计算"></a>副本迁移时间计算</h2><p>计算公式：待复制 block 总数 &#x2F;(存活的DataNode个数 *dfs.namenode.replication.work.multiplier.per.iteration )* 心跳时间(dfs.heartbeat.interval)</p>
+<p>比如待复制的block总数10000000，存活DataNode个数为60，dfs.namenode.replication.work.multiplier.per.iteration为10，心跳时间为3s，则 time&#x3D;10000000&#x2F;(60*10)*3&#x3D;50000s≈13.88小时</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一个参数控制 DataNode接受任务的频率，后面两个参数进一步限制 DataNode 一次完成的最大并行线程网络传输量。具体上面参数的值设定的多少，取决于集群的规模和集群的配置，不能同一而论。一般来说从入口控制比较简单容易些。比如规模 5 台集群，dfs.namenode.replication.work.multiplier.per.iteration&#x3D;10，5 台 DataNode，那么集群一次心跳分发 50 个 block 的量，假如集群文件存储全部打散在 5 台节点，每个节点同时复制 10 个 block（实际会因为副本搁置策略，机架感知等并不会所有的节点都参与数据复制）, 每个 block 大小 128Mb, 则每个节点的网络负载是 128*10&#x2F;3s&#x3D;546Mb&#x2F;s，那这时候你就要看下结合实际会不会有带宽瓶颈，这么大的网络 IO 会不会影响正常任务的计算，如果有的话，这个值就要调小点。</p>
+<p>参考：<a href="https://blog.csdn.net/qq_35995514/article/details/128487543">https://blog.csdn.net/qq_35995514/article/details/128487543</a></p>
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>Hadoop</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hadoop HA集群两个NameNode都是standby状态</title>
+    <url>/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%20HA%E9%9B%86%E7%BE%A4%E4%B8%A4%E4%B8%AANameNode%E9%83%BD%E6%98%AFstandby%E7%8A%B6%E6%80%81/</url>
+    <content><![CDATA[<p>1.查看zkfc进程是否正常</p>
+<p>HadoopNameNode的主备选举由zkfc进程进行，如果zkfc进程挂了，则会导致两个NameNode都是standby的状态</p>
+<p>启动zkfc进程</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs --daemon start zkfc</span><br></pre></td></tr></table></figure>
+
+<p>2.重新初始化zk里Hadoop的数据</p>
+<p>在想成为active的那台namenode节点执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">初始化zk数据</span><br><span class="line">hdfs zkfc -formatZK</span><br><span class="line"></span><br><span class="line">重启hdfs集群</span><br><span class="line">stop-dfs.sh</span><br><span class="line">start-dfs.sh</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>Hadoop</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HBase在线动态新增节点、删除节点</title>
-    <url>/2022/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/</url>
+    <url>/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/</url>
     <content><![CDATA[<h2 id="一：新增节点"><a href="#一：新增节点" class="headerlink" title="一：新增节点"></a>一：新增节点</h2><p>注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下</p>
 <p>1.拷贝集群原有节点的HBase包到新节点相同路径下</p>
 <p>2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上</p>
@@ -222,7 +310,7 @@
   </entry>
   <entry>
     <title>Hadoop在线动态新增节点、删除节点</title>
-    <url>/2022/Hadoop%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/</url>
+    <url>/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/</url>
     <content><![CDATA[<h2 id="一：新增节点"><a href="#一：新增节点" class="headerlink" title="一：新增节点"></a>一：新增节点</h2><p>1.按原有数据节点配置一台新的数据节点（包括最初搭建集群的系统参数修改、时钟同步等操作）</p>
 <p>2.配置节点主机映射，比如新增hadoop104节点，则在原有节点的&#x2F;etc&#x2F;hosts文件里添加映射信息，并将该文件分发到新节点</p>
 <p>3.将新节点与集群内原有节点做免密登录</p>
@@ -279,90 +367,8 @@
       </tags>
   </entry>
   <entry>
-    <title>Hadoop HA集群两个NameNode都是standby状态</title>
-    <url>/2022/Hadoop%20HA%E9%9B%86%E7%BE%A4%E4%B8%A4%E4%B8%AANameNode%E9%83%BD%E6%98%AFstandby%E7%8A%B6%E6%80%81/</url>
-    <content><![CDATA[<p>1.查看zkfc进程是否正常</p>
-<p>HadoopNameNode的主备选举由zkfc进程进行，如果zkfc进程挂了，则会导致两个NameNode都是standby的状态</p>
-<p>启动zkfc进程</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs --daemon start zkfc</span><br></pre></td></tr></table></figure>
-
-<p>2.重新初始化zk里Hadoop的数据</p>
-<p>在想成为active的那台namenode节点执行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">初始化zk数据</span><br><span class="line">hdfs zkfc -formatZK</span><br><span class="line"></span><br><span class="line">重启hdfs集群</span><br><span class="line">stop-dfs.sh</span><br><span class="line">start-dfs.sh</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Hadoop</category>
-      </categories>
-      <tags>
-        <tag>Hadoop</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>class文件打成jar包</title>
-    <url>/2023/class%E6%96%87%E4%BB%B6%E6%89%93%E6%88%90jar%E5%8C%85/</url>
-    <content><![CDATA[<p>由于有时候的特殊需要，要将几个class文件单独打成jar包</p>
-<p>1.按class文件的package建好相应的目录，比如原有class是</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">package com.zhouhj.tools.phoenix.udf;</span><br></pre></td></tr></table></figure>
-
-<p>则创建从com开始到udf结束的目录</p>
-<p>2.将class文件放到对应目录下</p>
-<p>3.在com目录同级别的目录执行以下命令</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">jar -cvf phoenix-udf.jar com/</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>打包</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Phoenix自定义函数UDF</title>
-    <url>/2023/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/</url>
-    <content><![CDATA[<h2 id="以自定义函数生成rowkey前缀为例"><a href="#以自定义函数生成rowkey前缀为例" class="headerlink" title="以自定义函数生成rowkey前缀为例"></a>以自定义函数生成rowkey前缀为例</h2><h3 id="一：依赖"><a href="#一：依赖" class="headerlink" title="一：依赖"></a>一：依赖</h3><p>要自定义phoenix函数，必须有以下依赖</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.phoenix<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>phoenix-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--对应的phoenix的版本号--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="二：代码"><a href="#二：代码" class="headerlink" title="二：代码"></a>二：代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zhouhj.tools.phoenix.udf;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.expression.Expression;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.expression.function.ScalarFunction;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.parse.FunctionParseNode;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.tuple.Tuple;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.types.PDataType;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.types.PVarchar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.security.MessageDigest;</span><br><span class="line"><span class="keyword">import</span> java.security.NoSuchAlgorithmException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="meta">@FunctionParseNode</span>.BuiltInFunction(</span><br><span class="line">        name = <span class="string">&quot;rk&quot;</span>,</span><br><span class="line">        args = &#123;<span class="meta">@FunctionParseNode</span>.Argument(</span><br><span class="line">                allowedTypes = &#123;PVarchar.class&#125;</span><br><span class="line">        )&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RowKeyFunction</span> <span class="keyword">extends</span> <span class="title class_">ScalarFunction</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">NAME</span> <span class="operator">=</span> <span class="string">&quot;rk&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RowKeyFunction</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RowKeyFunction</span><span class="params">(List&lt;Expression&gt; children)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(children);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> NAME;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">evaluate</span><span class="params">(Tuple tuple, ImmutableBytesWritable ptr)</span> &#123;</span><br><span class="line">        <span class="type">Expression</span> <span class="variable">idExp</span> <span class="operator">=</span> <span class="built_in">this</span>.getIdExpression();</span><br><span class="line">        <span class="keyword">if</span> (!idExp.evaluate(tuple, ptr)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">userId</span> <span class="operator">=</span> (String) PVarchar.INSTANCE.toObject(ptr, idExp.getSortOrder());</span><br><span class="line">            <span class="type">String</span> <span class="variable">rowKey</span> <span class="operator">=</span> <span class="built_in">this</span>.getRowKey(userId, <span class="string">&quot;%&quot;</span>);</span><br><span class="line">            ptr.set(PVarchar.INSTANCE.toBytes(rowKey));</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> PDataType <span class="title function_">getDataType</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> PVarchar.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Expression <span class="title function_">getIdExpression</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.children.get(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">getRowKey</span><span class="params">(String userId, String def)</span> &#123;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="comment">//此处省略业务</span></span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="三：打包"><a href="#三：打包" class="headerlink" title="三：打包"></a>三：打包</h3><p>1.将自定义函数打成jar包</p>
-<p>2.将自定义函数里用到的第三方的lib包也要拿出来（除HBase、Hadoop、Phoenix相关包以外）。比如额外引入了hutool且自定义函数里使用了的话，就需要hutool的lib包</p>
-<h3 id="四：部署"><a href="#四：部署" class="headerlink" title="四：部署"></a>四：部署</h3><h4 id="1-配置修改"><a href="#1-配置修改" class="headerlink" title="1.配置修改"></a>1.配置修改</h4><p>修改hbase-site.xml</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- phoenix支持自定义函数 -- &gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;phoenix.functions.allowUserDefinedFunctions&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 自定义函数，存储jar的hdfs目录 -- &gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;hbase.dynamic.jars.dir&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;填写准备放自定义jar的地方，除了这个路径，jar放在其他路径哪怕指定了都没用。默认值是$&#123;hbase.rootdir&#125;/lib&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-包部署"><a href="#2-包部署" class="headerlink" title="2.包部署"></a>2.包部署</h4><p>将自定义的jar包和所依赖的jar包，放到hbase.dynamic.jars.dir配置的路径下</p>
-<h4 id="3-函数注册"><a href="#3-函数注册" class="headerlink" title="3.函数注册"></a>3.函数注册</h4><p>进入phoenix客户端</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">注册永久函数</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span> <span class="keyword">using</span> jar <span class="string">&#x27;hdfs://mycluster/hbase/lib/PhoenixUDF.jar&#x27;</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span> <span class="keyword">using</span> jar <span class="string">&#x27;/hbase/lib/PhoenixUDF.jar&#x27;</span>;</span><br><span class="line"></span><br><span class="line">如果目录下没有其他包里的类会冲突的话，可以不需要指定jar</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span>;</span><br><span class="line"></span><br><span class="line">注册临时函数</span><br><span class="line"><span class="keyword">CREATE</span> TEMPORARY <span class="keyword">FUNCTION</span> ...</span><br><span class="line"></span><br><span class="line">如果注册路径错了，需要删除函数，使用以下语句</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> IF <span class="keyword">EXISTS</span> rk;</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
-<p>1.如果使用jdbc连接，需要指定phoenix.functions.allowUserDefinedFunctions的值，例如：</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">props</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">props.setProperty(<span class="string">&quot;phoenix.functions.allowUserDefinedFunctions&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line"><span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:phoenix:localhost&quot;</span>, props);</span><br></pre></td></tr></table></figure>
-
-<p>2.如果是在程序中，如java、jdbc等使用到该函数，程序运行时，会将该jar复制到本地的hbase.local.dir路径下，默认是</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;hbase.local.dir&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;$&#123;hbase.tmp.dir&#125;/local/&lt;/value&gt;</span><br><span class="line">  &lt;description&gt;Directory on the local filesystem to be used</span><br><span class="line">    as a local storage.&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
-
-<p>详见官网</p>
-<p><a href="https://phoenix.apache.org/udf.html">https://phoenix.apache.org/udf.html</a></p>
-<h4 id="4-使用函数"><a href="#4-使用函数" class="headerlink" title="4.使用函数"></a>4.使用函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0: jdbc:phoenix:&gt; select rk(&#x27;abc&#x27;) as id;</span><br><span class="line">+---------+</span><br><span class="line">|   ID    |</span><br><span class="line">+---------+</span><br><span class="line">| 0593abc% |</span><br><span class="line">+---------+</span><br><span class="line">1 row selected (0.007 seconds)</span><br><span class="line">也可传入字段例如</span><br><span class="line">select * from xxx where id like rk(user_no);</span><br></pre></td></tr></table></figure>
-
-<h4 id="5-补充说明"><a href="#5-补充说明" class="headerlink" title="5.补充说明"></a>5.补充说明</h4><p>1.自定义jar包只能放在hbase-site.xml里配置的hbase.dynamic.jars.dir路径下，放其他路径哪怕注册函数时使用using jar的语法指定了路径也不行</p>
-<p>2.注册函数后，第一次使用自定义函数时，phoenix客户端会将hbase.dynamic.jars.dir路径下的所有jar包，下载到本地的hbase.local.dir路径作为本地缓存。后续如果Phoenix客户端重启，如果本地这个jar包存在的话，会从本地加载这个类到内存。所以，如果自定义函数有修改需要换包的话，这个路径下的包记得删除让他重新从hdfs上拉取。</p>
-<p>3.查看有哪些自定义函数<br>select * from SYSTEM.”FUNCTION”;</p>
-<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240428143156.png" alt="image-20240428143007559"></p>
-]]></content>
-      <categories>
-        <category>Phoenix</category>
-      </categories>
-      <tags>
-        <tag>Hadoop</tag>
-        <tag>Phoenix</tag>
-        <tag>UDF</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hive自定义函数UDF、UDAF、UDTF</title>
-    <url>/2024/Hive%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF%E3%80%81UDAF%E3%80%81UDTF/</url>
+    <url>/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hive%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF%E3%80%81UDAF%E3%80%81UDTF/</url>
     <content><![CDATA[<h2 id="自定义函数的种类"><a href="#自定义函数的种类" class="headerlink" title="自定义函数的种类"></a>自定义函数的种类</h2><p>UDF：一进一出，一对一的关系数据，例如substring、replace等</p>
 <p>UDAF：多进一出，多对一的关系数据，例如sum、avg等</p>
 <p>UDTF：一进多处，一对多的关系数据，例如collect_set、collect_list等</p>
@@ -468,51 +474,45 @@
       </tags>
   </entry>
   <entry>
-    <title>CommandLine 解析命令行参数</title>
-    <url>/2024/CommandLine%20%E8%A7%A3%E6%9E%90%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/</url>
-    <content><![CDATA[<h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-cli<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-cli<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+    <title>Phoenix自定义函数UDF</title>
+    <url>/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/</url>
+    <content><![CDATA[<h2 id="以自定义函数生成rowkey前缀为例"><a href="#以自定义函数生成rowkey前缀为例" class="headerlink" title="以自定义函数生成rowkey前缀为例"></a>以自定义函数生成rowkey前缀为例</h2><h3 id="一：依赖"><a href="#一：依赖" class="headerlink" title="一：依赖"></a>一：依赖</h3><p>要自定义phoenix函数，必须有以下依赖</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.phoenix<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>phoenix-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--对应的phoenix的版本号--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.1<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.cli.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ZhouHJ</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2024/4/29 16:23</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CommandLineDemo</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">HELP_OPT</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Option</span>(<span class="string">&quot;h&quot;</span>, <span class="string">&quot;help&quot;</span>, <span class="literal">false</span>, <span class="string">&quot;使用信息&quot;</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">TYPE_OPT</span> <span class="operator">=</span> Option.builder(<span class="string">&quot;t&quot;</span>)</span><br><span class="line">            .longOpt(<span class="string">&quot;type&quot;</span>)</span><br><span class="line">            <span class="comment">//.required()</span></span><br><span class="line">            .hasArg()</span><br><span class="line">            .desc(<span class="string">&quot;指定业务类型&quot;</span>)</span><br><span class="line">            .build();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">DATE_OPT</span> <span class="operator">=</span> Option.builder(<span class="string">&quot;D&quot;</span>)</span><br><span class="line">            .argName(<span class="string">&quot;property=value&quot;</span>)</span><br><span class="line">            .hasArgs()</span><br><span class="line">            .valueSeparator(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">            .desc(<span class="string">&quot;指定日期&quot;</span>).build();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Options <span class="title function_">getOptions</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Options</span> <span class="variable">options</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Options</span>();</span><br><span class="line">        options.addOption(TYPE_OPT);</span><br><span class="line">        options.addOption(HELP_OPT);</span><br><span class="line">        options.addOption(DATE_OPT);</span><br><span class="line">        <span class="keyword">return</span> options;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printUsage</span><span class="params">(Options options)</span> &#123;</span><br><span class="line">        <span class="type">HelpFormatter</span> <span class="variable">helper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HelpFormatter</span>();</span><br><span class="line">        helper.printHelp(<span class="string">&quot;demo&quot;</span>, options);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ParseException &#123;</span><br><span class="line">        <span class="type">CommandLine</span> <span class="variable">cmd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultParser</span>().parse(getOptions(), args);</span><br><span class="line">        <span class="keyword">if</span> (cmd.hasOption(HELP_OPT)) &#123;</span><br><span class="line">            printUsage(getOptions());</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">type</span> <span class="operator">=</span> cmd.getOptionValue(TYPE_OPT);</span><br><span class="line">        <span class="type">String</span> <span class="variable">date</span> <span class="operator">=</span> cmd.getOptionProperties(DATE_OPT).getProperty(<span class="string">&quot;date&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;type is:&quot;</span> + type + <span class="string">&quot;,date is:&quot;</span> + date);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="二：代码"><a href="#二：代码" class="headerlink" title="二：代码"></a>二：代码</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zhouhj.tools.phoenix.udf;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.hbase.io.ImmutableBytesWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.expression.Expression;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.expression.function.ScalarFunction;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.parse.FunctionParseNode;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.tuple.Tuple;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.types.PDataType;</span><br><span class="line"><span class="keyword">import</span> org.apache.phoenix.schema.types.PVarchar;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.security.MessageDigest;</span><br><span class="line"><span class="keyword">import</span> java.security.NoSuchAlgorithmException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="meta">@FunctionParseNode</span>.BuiltInFunction(</span><br><span class="line">        name = <span class="string">&quot;rk&quot;</span>,</span><br><span class="line">        args = &#123;<span class="meta">@FunctionParseNode</span>.Argument(</span><br><span class="line">                allowedTypes = &#123;PVarchar.class&#125;</span><br><span class="line">        )&#125;</span><br><span class="line">)</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RowKeyFunction</span> <span class="keyword">extends</span> <span class="title class_">ScalarFunction</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">NAME</span> <span class="operator">=</span> <span class="string">&quot;rk&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RowKeyFunction</span><span class="params">()</span> &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RowKeyFunction</span><span class="params">(List&lt;Expression&gt; children)</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>(children);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getName</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> NAME;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">evaluate</span><span class="params">(Tuple tuple, ImmutableBytesWritable ptr)</span> &#123;</span><br><span class="line">        <span class="type">Expression</span> <span class="variable">idExp</span> <span class="operator">=</span> <span class="built_in">this</span>.getIdExpression();</span><br><span class="line">        <span class="keyword">if</span> (!idExp.evaluate(tuple, ptr)) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="type">String</span> <span class="variable">userId</span> <span class="operator">=</span> (String) PVarchar.INSTANCE.toObject(ptr, idExp.getSortOrder());</span><br><span class="line">            <span class="type">String</span> <span class="variable">rowKey</span> <span class="operator">=</span> <span class="built_in">this</span>.getRowKey(userId, <span class="string">&quot;%&quot;</span>);</span><br><span class="line">            ptr.set(PVarchar.INSTANCE.toBytes(rowKey));</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> PDataType <span class="title function_">getDataType</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> PVarchar.INSTANCE;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Expression <span class="title function_">getIdExpression</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.children.get(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String <span class="title function_">getRowKey</span><span class="params">(String userId, String def)</span> &#123;</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        <span class="comment">//此处省略业务</span></span><br><span class="line">        <span class="keyword">return</span> sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><h3 id="help打印"><a href="#help打印" class="headerlink" title="help打印"></a>help打印</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104150.png" alt="image-20240508104143210" style="zoom:50%;" />
+<h3 id="三：打包"><a href="#三：打包" class="headerlink" title="三：打包"></a>三：打包</h3><p>1.将自定义函数打成jar包</p>
+<p>2.将自定义函数里用到的第三方的lib包也要拿出来（除HBase、Hadoop、Phoenix相关包以外）。比如额外引入了hutool且自定义函数里使用了的话，就需要hutool的lib包</p>
+<h3 id="四：部署"><a href="#四：部署" class="headerlink" title="四：部署"></a>四：部署</h3><h4 id="1-配置修改"><a href="#1-配置修改" class="headerlink" title="1.配置修改"></a>1.配置修改</h4><p>修改hbase-site.xml</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;!-- phoenix支持自定义函数 -- &gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;phoenix.functions.allowUserDefinedFunctions&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;true&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br><span class="line"></span><br><span class="line">&lt;!-- 自定义函数，存储jar的hdfs目录 -- &gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;hbase.dynamic.jars.dir&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;填写准备放自定义jar的地方，除了这个路径，jar放在其他路径哪怕指定了都没用。默认值是$&#123;hbase.rootdir&#125;/lib&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 
-<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104227.png" alt="image-20240508104227024" style="zoom: 50%;" />
+<h4 id="2-包部署"><a href="#2-包部署" class="headerlink" title="2.包部署"></a>2.包部署</h4><p>将自定义的jar包和所依赖的jar包，放到hbase.dynamic.jars.dir配置的路径下</p>
+<h4 id="3-函数注册"><a href="#3-函数注册" class="headerlink" title="3.函数注册"></a>3.函数注册</h4><p>进入phoenix客户端</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">注册永久函数</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span> <span class="keyword">using</span> jar <span class="string">&#x27;hdfs://mycluster/hbase/lib/PhoenixUDF.jar&#x27;</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span> <span class="keyword">using</span> jar <span class="string">&#x27;/hbase/lib/PhoenixUDF.jar&#x27;</span>;</span><br><span class="line"></span><br><span class="line">如果目录下没有其他包里的类会冲突的话，可以不需要指定jar</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">FUNCTION</span> rk(<span class="type">varchar</span>) <span class="keyword">returns</span> <span class="type">varchar</span> <span class="keyword">as</span> <span class="string">&#x27;com.zhouhj.tools.phoenix.udf.RowKeyFunction&#x27;</span>;</span><br><span class="line"></span><br><span class="line">注册临时函数</span><br><span class="line"><span class="keyword">CREATE</span> TEMPORARY <span class="keyword">FUNCTION</span> ...</span><br><span class="line"></span><br><span class="line">如果注册路径错了，需要删除函数，使用以下语句</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">FUNCTION</span> IF <span class="keyword">EXISTS</span> rk;</span><br></pre></td></tr></table></figure>
 
-<h3 id="参数获取"><a href="#参数获取" class="headerlink" title="参数获取"></a>参数获取</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104412.png" alt="image-20240508104412222" style="zoom:50%;" />
+<p>注意：</p>
+<p>1.如果使用jdbc连接，需要指定phoenix.functions.allowUserDefinedFunctions的值，例如：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Properties</span> <span class="variable">props</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Properties</span>();</span><br><span class="line">props.setProperty(<span class="string">&quot;phoenix.functions.allowUserDefinedFunctions&quot;</span>, <span class="string">&quot;true&quot;</span>);</span><br><span class="line"><span class="type">Connection</span> <span class="variable">conn</span> <span class="operator">=</span> DriverManager.getConnection(<span class="string">&quot;jdbc:phoenix:localhost&quot;</span>, props);</span><br></pre></td></tr></table></figure>
 
-<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104446.png" alt="image-20240508104446254" style="zoom:50%;" />
+<p>2.如果是在程序中，如java、jdbc等使用到该函数，程序运行时，会将该jar复制到本地的hbase.local.dir路径下，默认是</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">  &lt;name&gt;hbase.local.dir&lt;/name&gt;</span><br><span class="line">  &lt;value&gt;$&#123;hbase.tmp.dir&#125;/local/&lt;/value&gt;</span><br><span class="line">  &lt;description&gt;Directory on the local filesystem to be used</span><br><span class="line">    as a local storage.&lt;/description&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 
-<p>官网使用例子：<a href="https://commons.apache.org/proper/commons-cli/usage.html">https://commons.apache.org/proper/commons-cli/usage.html</a></p>
+<p>详见官网</p>
+<p><a href="https://phoenix.apache.org/udf.html">https://phoenix.apache.org/udf.html</a></p>
+<h4 id="4-使用函数"><a href="#4-使用函数" class="headerlink" title="4.使用函数"></a>4.使用函数</h4><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">0: jdbc:phoenix:&gt; select rk(&#x27;abc&#x27;) as id;</span><br><span class="line">+---------+</span><br><span class="line">|   ID    |</span><br><span class="line">+---------+</span><br><span class="line">| 0593abc% |</span><br><span class="line">+---------+</span><br><span class="line">1 row selected (0.007 seconds)</span><br><span class="line">也可传入字段例如</span><br><span class="line">select * from xxx where id like rk(user_no);</span><br></pre></td></tr></table></figure>
+
+<h4 id="5-补充说明"><a href="#5-补充说明" class="headerlink" title="5.补充说明"></a>5.补充说明</h4><p>1.自定义jar包只能放在hbase-site.xml里配置的hbase.dynamic.jars.dir路径下，放其他路径哪怕注册函数时使用using jar的语法指定了路径也不行</p>
+<p>2.注册函数后，第一次使用自定义函数时，phoenix客户端会将hbase.dynamic.jars.dir路径下的所有jar包，下载到本地的hbase.local.dir路径作为本地缓存。后续如果Phoenix客户端重启，如果本地这个jar包存在的话，会从本地加载这个类到内存。所以，如果自定义函数有修改需要换包的话，这个路径下的包记得删除让他重新从hdfs上拉取。</p>
+<p>3.查看有哪些自定义函数<br>select * from SYSTEM.”FUNCTION”;</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240428143156.png" alt="image-20240428143007559"></p>
 ]]></content>
       <categories>
-        <category>Java</category>
-      </categories>
-      <tags>
-        <tag>CommandLine</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hadoop DataNode节点下线速度优化</title>
-    <url>/2023/Hadoop%20DataNode%E8%8A%82%E7%82%B9%E4%B8%8B%E7%BA%BF%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/</url>
-    <content><![CDATA[<h2 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h2><p> 一般来说 NameNode检测 DataNode是否掉线的值是 10*3s（DataNode心跳时间，参数是：dfs.heartbeat.interval）+2*5min（namenode 检测时间，参数是：dfs.namenode.heartbeat.recheck-interval）&#x3D;10 分 30s，将该值定义为timeout</p>
-<p>当节点下线时间超过timeout的值后，会发生副本迁移。</p>
-<p>副本迁移速度主要由以下三个参数控制：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dfs.namenode.replication.work.multiplier.per.iteration</span><br><span class="line">这个参数决定了当 NN 与 DN 进行心跳（3s）发送任务列表时，告诉每个 DN 可以进行复制的 block 数量。比如集群有 5 个节点，这个值设置为 5，那么一次心跳 NameNode 可以发送 DataNode 复制的数据块数量是 5*5=25 块。默认值为2</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dfs.namenode.replication.max-streams</span><br><span class="line">这个参数含义是控制 DataNode 节点进行数据复制的最大线程数， block 的复制优先级分成 5 种。这个参数控制不包含最高优先级的块复制。即除最高优先级的复制流限制。默认值为2</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">dfs.namenode.replication.max-streams-hard-limit</span><br><span class="line">这个参数含义是控制 DataNode 所有优先级块复制的流个数，包含最高优先级；一般上面和上面两个参数互相的配合使用。默认值为4</span><br></pre></td></tr></table></figure>
-
-<h2 id="副本迁移时间计算"><a href="#副本迁移时间计算" class="headerlink" title="副本迁移时间计算"></a>副本迁移时间计算</h2><p>计算公式：待复制 block 总数 &#x2F;(存活的DataNode个数 *dfs.namenode.replication.work.multiplier.per.iteration )* 心跳时间(dfs.heartbeat.interval)</p>
-<p>比如待复制的block总数10000000，存活DataNode个数为60，dfs.namenode.replication.work.multiplier.per.iteration为10，心跳时间为3s，则 time&#x3D;10000000&#x2F;(60*10)*3&#x3D;50000s≈13.88小时</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一个参数控制 DataNode接受任务的频率，后面两个参数进一步限制 DataNode 一次完成的最大并行线程网络传输量。具体上面参数的值设定的多少，取决于集群的规模和集群的配置，不能同一而论。一般来说从入口控制比较简单容易些。比如规模 5 台集群，dfs.namenode.replication.work.multiplier.per.iteration&#x3D;10，5 台 DataNode，那么集群一次心跳分发 50 个 block 的量，假如集群文件存储全部打散在 5 台节点，每个节点同时复制 10 个 block（实际会因为副本搁置策略，机架感知等并不会所有的节点都参与数据复制）, 每个 block 大小 128Mb, 则每个节点的网络负载是 128*10&#x2F;3s&#x3D;546Mb&#x2F;s，那这时候你就要看下结合实际会不会有带宽瓶颈，这么大的网络 IO 会不会影响正常任务的计算，如果有的话，这个值就要调小点。</p>
-<p>参考：<a href="https://blog.csdn.net/qq_35995514/article/details/128487543">https://blog.csdn.net/qq_35995514/article/details/128487543</a></p>
-]]></content>
-      <categories>
-        <category>Hadoop</category>
+        <category>Phoenix</category>
       </categories>
       <tags>
         <tag>Hadoop</tag>
+        <tag>Phoenix</tag>
+        <tag>UDF</tag>
       </tags>
   </entry>
 </search>

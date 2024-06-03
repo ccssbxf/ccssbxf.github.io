@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hadoop," />
+  <meta name="keywords" content="打包," />
 
 
 
@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="参数介绍 一般来说 NameNode检测 DataNode是否掉线的值是 10*3s（DataNode心跳时间，参数是：dfs.heartbeat.interval）+2*5min（namenode 检测时间，参数是：dfs.namenode.heartbeat.recheck-interval）&#x3D;10 分 30s，将该值定义为timeout 当节点下线时间超过timeout的值后，会发">
+<meta name="description" content="由于有时候的特殊需要，要将几个class文件单独打成jar包 1.按class文件的package建好相应的目录，比如原有class是 1package com.zhouhj.tools.phoenix.udf;  则创建从com开始到udf结束的目录 2.将class文件放到对应目录下 3.在com目录同级别的目录执行以下命令 1jar -cvf phoenix-udf.jar com&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hadoop DataNode节点下线速度优化">
-<meta property="og:url" content="https://wwsbd.gitee.io/2023/Hadoop%20DataNode%E8%8A%82%E7%82%B9%E4%B8%8B%E7%BA%BF%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/index.html">
+<meta property="og:title" content="class文件打成jar包">
+<meta property="og:url" content="https://wwsbd.gitee.io/2023/Java/class%E6%96%87%E4%BB%B6%E6%89%93%E6%88%90jar%E5%8C%85/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="参数介绍 一般来说 NameNode检测 DataNode是否掉线的值是 10*3s（DataNode心跳时间，参数是：dfs.heartbeat.interval）+2*5min（namenode 检测时间，参数是：dfs.namenode.heartbeat.recheck-interval）&#x3D;10 分 30s，将该值定义为timeout 当节点下线时间超过timeout的值后，会发">
+<meta property="og:description" content="由于有时候的特殊需要，要将几个class文件单独打成jar包 1.按class文件的package建好相应的目录，比如原有class是 1package com.zhouhj.tools.phoenix.udf;  则创建从com开始到udf结束的目录 2.将class文件放到对应目录下 3.在com目录同级别的目录执行以下命令 1jar -cvf phoenix-udf.jar com&#x2F;">
 <meta property="og:locale">
-<meta property="article:published_time" content="2023-06-03T03:03:39.000Z">
-<meta property="article:modified_time" content="2024-06-03T03:03:50.971Z">
+<meta property="article:published_time" content="2023-02-14T06:36:38.000Z">
+<meta property="article:modified_time" content="2024-04-25T12:27:59.900Z">
 <meta property="article:author" content="ZhouHJ">
-<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="打包">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://wwsbd.gitee.io/2023/Hadoop DataNode节点下线速度优化/"/>
+  <link rel="canonical" href="https://wwsbd.gitee.io/2023/Java/class文件打成jar包/"/>
 
 
 
 <meta name="baidu-site-verification" content="code-rwSzNFPlRv" />
 
-  <title>Hadoop DataNode节点下线速度优化 | 万万使不得</title>
+  <title>class文件打成jar包 | 万万使不得</title>
   
 
 
@@ -297,7 +297,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2023/Hadoop%20DataNode%E8%8A%82%E7%82%B9%E4%B8%8B%E7%BA%BF%E9%80%9F%E5%BA%A6%E4%BC%98%E5%8C%96/">
+    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2023/Java/class%E6%96%87%E4%BB%B6%E6%89%93%E6%88%90jar%E5%8C%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -314,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Hadoop DataNode节点下线速度优化</h1>
+          <h1 class="post-title" itemprop="name headline">class文件打成jar包</h1>
         
 
         <div class="post-meta">
@@ -326,8 +326,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-06-03T11:03:39+08:00">
-                2023-06-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-02-14T14:36:38+08:00">
+                2023-02-14
               </time>
             
 
@@ -349,8 +349,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Hadoop/" itemprop="url" rel="index">
-                    <span itemprop="name">Hadoop</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -386,19 +386,15 @@
       
 
       
-        <h2 id="参数介绍"><a href="#参数介绍" class="headerlink" title="参数介绍"></a>参数介绍</h2><p> 一般来说 NameNode检测 DataNode是否掉线的值是 10*3s（DataNode心跳时间，参数是：dfs.heartbeat.interval）+2*5min（namenode 检测时间，参数是：dfs.namenode.heartbeat.recheck-interval）&#x3D;10 分 30s，将该值定义为timeout</p>
-<p>当节点下线时间超过timeout的值后，会发生副本迁移。</p>
-<p>副本迁移速度主要由以下三个参数控制：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dfs.namenode.replication.work.multiplier.per.iteration</span><br><span class="line">这个参数决定了当 NN 与 DN 进行心跳（3s）发送任务列表时，告诉每个 DN 可以进行复制的 block 数量。比如集群有 5 个节点，这个值设置为 5，那么一次心跳 NameNode 可以发送 DataNode 复制的数据块数量是 5*5=25 块。默认值为2</span><br></pre></td></tr></table></figure>
+        <p>由于有时候的特殊需要，要将几个class文件单独打成jar包</p>
+<p>1.按class文件的package建好相应的目录，比如原有class是</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">package com.zhouhj.tools.phoenix.udf;</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dfs.namenode.replication.max-streams</span><br><span class="line">这个参数含义是控制 DataNode 节点进行数据复制的最大线程数， block 的复制优先级分成 5 种。这个参数控制不包含最高优先级的块复制。即除最高优先级的复制流限制。默认值为2</span><br></pre></td></tr></table></figure>
+<p>则创建从com开始到udf结束的目录</p>
+<p>2.将class文件放到对应目录下</p>
+<p>3.在com目录同级别的目录执行以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jar -cvf phoenix-udf.jar com/</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dfs.namenode.replication.max-streams-hard-limit</span><br><span class="line">这个参数含义是控制 DataNode 所有优先级块复制的流个数，包含最高优先级；一般上面和上面两个参数互相的配合使用。默认值为4</span><br></pre></td></tr></table></figure>
-
-<h2 id="副本迁移时间计算"><a href="#副本迁移时间计算" class="headerlink" title="副本迁移时间计算"></a>副本迁移时间计算</h2><p>计算公式：待复制 block 总数 &#x2F;(存活的DataNode个数 *dfs.namenode.replication.work.multiplier.per.iteration )* 心跳时间(dfs.heartbeat.interval)</p>
-<p>比如待复制的block总数10000000，存活DataNode个数为60，dfs.namenode.replication.work.multiplier.per.iteration为10，心跳时间为3s，则 time&#x3D;10000000&#x2F;(60*10)*3&#x3D;50000s≈13.88小时</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一个参数控制 DataNode接受任务的频率，后面两个参数进一步限制 DataNode 一次完成的最大并行线程网络传输量。具体上面参数的值设定的多少，取决于集群的规模和集群的配置，不能同一而论。一般来说从入口控制比较简单容易些。比如规模 5 台集群，dfs.namenode.replication.work.multiplier.per.iteration&#x3D;10，5 台 DataNode，那么集群一次心跳分发 50 个 block 的量，假如集群文件存储全部打散在 5 台节点，每个节点同时复制 10 个 block（实际会因为副本搁置策略，机架感知等并不会所有的节点都参与数据复制）, 每个 block 大小 128Mb, 则每个节点的网络负载是 128*10&#x2F;3s&#x3D;546Mb&#x2F;s，那这时候你就要看下结合实际会不会有带宽瓶颈，这么大的网络 IO 会不会影响正常任务的计算，如果有的话，这个值就要调小点。</p>
-<p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35995514/article/details/128487543">https://blog.csdn.net/qq_35995514/article/details/128487543</a></p>
 
       
     </div>
@@ -416,7 +412,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Hadoop/" rel="tag"># Hadoop</a>
+            <a href="/tags/%E6%89%93%E5%8C%85/" rel="tag"># 打包</a>
           
         </div>
       
@@ -429,8 +425,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2023/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/" rel="next" title="Phoenix自定义函数UDF">
-                <i class="fa fa-chevron-left"></i> Phoenix自定义函数UDF
+              <a href="/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%20HA%E9%9B%86%E7%BE%A4%E4%B8%A4%E4%B8%AANameNode%E9%83%BD%E6%98%AFstandby%E7%8A%B6%E6%80%81/" rel="next" title="Hadoop HA集群两个NameNode都是standby状态">
+                <i class="fa fa-chevron-left"></i> Hadoop HA集群两个NameNode都是standby状态
               </a>
             
           </div>
@@ -439,8 +435,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2024/Hive%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF%E3%80%81UDAF%E3%80%81UDTF/" rel="prev" title="Hive自定义函数UDF、UDAF、UDTF">
-                Hive自定义函数UDF、UDAF、UDTF <i class="fa fa-chevron-right"></i>
+              <a href="/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Phoenix%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF/" rel="prev" title="Phoenix自定义函数UDF">
+                Phoenix自定义函数UDF <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -496,17 +492,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -566,22 +553,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">参数介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AF%E6%9C%AC%E8%BF%81%E7%A7%BB%E6%97%B6%E9%97%B4%E8%AE%A1%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">副本迁移时间计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       

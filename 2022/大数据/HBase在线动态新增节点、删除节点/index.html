@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="CommandLine," />
+  <meta name="keywords" content="HBase," />
 
 
 
@@ -79,23 +79,18 @@
 
 
 
-<meta name="description" content="引入依赖12345&lt;dependency&gt;    &lt;groupId&gt;commons-cli&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;commons-cli&lt;&#x2F;artifactId&gt;    &lt;version&gt;1.7.0&lt;&#x2F;version&gt;&lt;&#x2F;dependency&gt;  代码示例1234567891">
+<meta name="description" content="一：新增节点注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下 1.拷贝集群原有节点的HBase包到新节点相同路径下 2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上 3.在新节点启动HBase 1hbase-d">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CommandLine 解析命令行参数">
-<meta property="og:url" content="https://wwsbd.gitee.io/2024/CommandLine%20%E8%A7%A3%E6%9E%90%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/index.html">
+<meta property="og:title" content="HBase在线动态新增节点、删除节点">
+<meta property="og:url" content="https://wwsbd.gitee.io/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="引入依赖12345&lt;dependency&gt;    &lt;groupId&gt;commons-cli&lt;&#x2F;groupId&gt;    &lt;artifactId&gt;commons-cli&lt;&#x2F;artifactId&gt;    &lt;version&gt;1.7.0&lt;&#x2F;version&gt;&lt;&#x2F;dependency&gt;  代码示例1234567891">
+<meta property="og:description" content="一：新增节点注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下 1.拷贝集群原有节点的HBase包到新节点相同路径下 2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上 3.在新节点启动HBase 1hbase-d">
 <meta property="og:locale">
-<meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104150.png">
-<meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104227.png">
-<meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104412.png">
-<meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104446.png">
-<meta property="article:published_time" content="2024-05-08T02:45:41.000Z">
-<meta property="article:modified_time" content="2024-05-08T02:46:29.722Z">
+<meta property="article:published_time" content="2022-07-21T14:30:56.000Z">
+<meta property="article:modified_time" content="2024-04-25T03:28:16.108Z">
 <meta property="article:author" content="ZhouHJ">
-<meta property="article:tag" content="CommandLine">
+<meta property="article:tag" content="HBase">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104150.png">
 
 
 
@@ -125,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="https://wwsbd.gitee.io/2024/CommandLine 解析命令行参数/"/>
+  <link rel="canonical" href="https://wwsbd.gitee.io/2022/大数据/HBase在线动态新增节点、删除节点/"/>
 
 
 
 <meta name="baidu-site-verification" content="code-rwSzNFPlRv" />
 
-  <title>CommandLine 解析命令行参数 | 万万使不得</title>
+  <title>HBase在线动态新增节点、删除节点 | 万万使不得</title>
   
 
 
@@ -302,7 +297,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2024/CommandLine%20%E8%A7%A3%E6%9E%90%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -319,7 +314,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">CommandLine 解析命令行参数</h1>
+          <h1 class="post-title" itemprop="name headline">HBase在线动态新增节点、删除节点</h1>
         
 
         <div class="post-meta">
@@ -331,8 +326,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-05-08T10:45:41+08:00">
-                2024-05-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-21T22:30:56+08:00">
+                2022-07-21
               </time>
             
 
@@ -354,8 +349,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
+                  <a href="/categories/Hadoop/" itemprop="url" rel="index">
+                    <span itemprop="name">Hadoop</span>
                   </a>
                 </span>
 
@@ -391,19 +386,28 @@
       
 
       
-        <h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>commons-cli<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-cli<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.7.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+        <h2 id="一：新增节点"><a href="#一：新增节点" class="headerlink" title="一：新增节点"></a>一：新增节点</h2><p>注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下</p>
+<p>1.拷贝集群原有节点的HBase包到新节点相同路径下</p>
+<p>2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上</p>
+<p>3.在新节点启动HBase</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase-daemon.sh start regionserver</span><br></pre></td></tr></table></figure>
 
-<h2 id="代码示例"><a href="#代码示例" class="headerlink" title="代码示例"></a>代码示例</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.cli.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span> ZhouHJ</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span> 2024/4/29 16:23</span></span><br><span class="line"><span class="comment"> **/</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">CommandLineDemo</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">HELP_OPT</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Option</span>(<span class="string">&quot;h&quot;</span>, <span class="string">&quot;help&quot;</span>, <span class="literal">false</span>, <span class="string">&quot;使用信息&quot;</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">TYPE_OPT</span> <span class="operator">=</span> Option.builder(<span class="string">&quot;t&quot;</span>)</span><br><span class="line">            .longOpt(<span class="string">&quot;type&quot;</span>)</span><br><span class="line">            <span class="comment">//.required()</span></span><br><span class="line">            .hasArg()</span><br><span class="line">            .desc(<span class="string">&quot;指定业务类型&quot;</span>)</span><br><span class="line">            .build();</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Option</span> <span class="variable">DATE_OPT</span> <span class="operator">=</span> Option.builder(<span class="string">&quot;D&quot;</span>)</span><br><span class="line">            .argName(<span class="string">&quot;property=value&quot;</span>)</span><br><span class="line">            .hasArgs()</span><br><span class="line">            .valueSeparator(<span class="string">&#x27;=&#x27;</span>)</span><br><span class="line">            .desc(<span class="string">&quot;指定日期&quot;</span>).build();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> Options <span class="title function_">getOptions</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Options</span> <span class="variable">options</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Options</span>();</span><br><span class="line">        options.addOption(TYPE_OPT);</span><br><span class="line">        options.addOption(HELP_OPT);</span><br><span class="line">        options.addOption(DATE_OPT);</span><br><span class="line">        <span class="keyword">return</span> options;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">printUsage</span><span class="params">(Options options)</span> &#123;</span><br><span class="line">        <span class="type">HelpFormatter</span> <span class="variable">helper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HelpFormatter</span>();</span><br><span class="line">        helper.printHelp(<span class="string">&quot;demo&quot;</span>, options);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> ParseException &#123;</span><br><span class="line">        <span class="type">CommandLine</span> <span class="variable">cmd</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DefaultParser</span>().parse(getOptions(), args);</span><br><span class="line">        <span class="keyword">if</span> (cmd.hasOption(HELP_OPT)) &#123;</span><br><span class="line">            printUsage(getOptions());</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">String</span> <span class="variable">type</span> <span class="operator">=</span> cmd.getOptionValue(TYPE_OPT);</span><br><span class="line">        <span class="type">String</span> <span class="variable">date</span> <span class="operator">=</span> cmd.getOptionProperties(DATE_OPT).getProperty(<span class="string">&quot;date&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;type is:&quot;</span> + type + <span class="string">&quot;,date is:&quot;</span> + date);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>4.查看HBase集群状态</p>
+<p>进入hbase shell，执行status查看状态，可以看到新节点已加入集群</p>
+<p>5.数据平衡</p>
+<p>hbase shell里执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br><span class="line">（下面这个是手动触发避免业务高峰期执行）</span><br><span class="line">balancer</span><br></pre></td></tr></table></figure>
 
-<h2 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h2><h3 id="help打印"><a href="#help打印" class="headerlink" title="help打印"></a>help打印</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104150.png" alt="image-20240508104143210" style="zoom:50%;" />
+<p>等命令执行完成，新加入的节点上已经有region，可以通过HBase管理页面看到</p>
+<h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>1.在要下线的节点（比如我这里下线hadoop104），在hadoop104执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graceful_stop.sh hadoop104</span><br></pre></td></tr></table></figure>
 
-<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104227.png" alt="image-20240508104227024" style="zoom: 50%;" />
+<p>该命令会自动关闭 Load Balancer（banlance_switch），然后转移该 regionserver 维护的 region 到其他节点，将该节点关闭。除此之外，你还可以查看 remove 的过程，已经 assigned 了多少个 Region，还剩多少个 Region，每个 Region 的 Assigned 耗时，最终完成之后需要手动打开 load balancer [hbase shell 执行banlance_switch true]</p>
+<p>2.删除&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件里的相应节点</p>
+<p>3.启用负载平衡器</p>
+<p>hbase shell里执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br></pre></td></tr></table></figure>
 
-<h3 id="参数获取"><a href="#参数获取" class="headerlink" title="参数获取"></a>参数获取</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104412.png" alt="image-20240508104412222" style="zoom:50%;" />
-
-<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240508104446.png" alt="image-20240508104446254" style="zoom:50%;" />
-
-<p>官网使用例子：<a target="_blank" rel="noopener" href="https://commons.apache.org/proper/commons-cli/usage.html">https://commons.apache.org/proper/commons-cli/usage.html</a></p>
 
       
     </div>
@@ -421,7 +425,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/CommandLine/" rel="tag"># CommandLine</a>
+            <a href="/tags/HBase/" rel="tag"># HBase</a>
           
         </div>
       
@@ -434,8 +438,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2024/Hive%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0UDF%E3%80%81UDAF%E3%80%81UDTF/" rel="next" title="Hive自定义函数UDF、UDAF、UDTF">
-                <i class="fa fa-chevron-left"></i> Hive自定义函数UDF、UDAF、UDTF
+              <a href="/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/" rel="next" title="Hadoop在线动态新增节点、删除节点">
+                <i class="fa fa-chevron-left"></i> Hadoop在线动态新增节点、删除节点
               </a>
             
           </div>
@@ -443,6 +447,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%20HA%E9%9B%86%E7%BE%A4%E4%B8%A4%E4%B8%AANameNode%E9%83%BD%E6%98%AFstandby%E7%8A%B6%E6%80%81/" rel="prev" title="Hadoop HA集群两个NameNode都是standby状态">
+                Hadoop HA集群两个NameNode都是standby状态 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -577,7 +585,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%95%E5%85%A5%E4%BE%9D%E8%B5%96"><span class="nav-number">1.</span> <span class="nav-text">引入依赖</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.</span> <span class="nav-text">代码示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">使用示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#help%E6%89%93%E5%8D%B0"><span class="nav-number">3.1.</span> <span class="nav-text">help打印</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96"><span class="nav-number">3.2.</span> <span class="nav-text">参数获取</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">一：新增节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">二：删除节点</span></a></li></ol></div>
             
 
           </div>

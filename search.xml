@@ -2308,7 +2308,7 @@
     <title>HBase常用命令</title>
     <url>/2022/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h5 id="表记录条数"><a href="#表记录条数" class="headerlink" title="表记录条数"></a>表记录条数</h5><p>count “usertable”, INTERVAL &#x3D;&gt; 100000</p>
-<h5 id="scan-查询"><a href="#scan-查询" class="headerlink" title="scan 查询"></a>scan 查询</h5><h6 id="根据rowkey范围扫描"><a href="#根据rowkey范围扫描" class="headerlink" title="根据rowkey范围扫描"></a>根据rowkey范围扫描</h6><p>scan ‘tablename’,{STARTROW &#x3D;&gt; ‘71615201690357’,STOPROW&#x3D;&gt;’71615201690357g’}</p>
+<h5 id="scan-查询"><a href="#scan-查询" class="headerlink" title="scan 查询"></a>scan 查询</h5><h6 id="根据rowkey范围扫描"><a href="#根据rowkey范围扫描" class="headerlink" title="根据rowkey范围扫描"></a>根据rowkey范围扫描</h6><p>scan ‘tablename’,{STARTROW &#x3D;&gt; ‘1001’,STOPROW&#x3D;&gt;’2001’}</p>
 <h6 id="限制条数"><a href="#限制条数" class="headerlink" title="限制条数"></a>限制条数</h6><p>scan ‘test’,{LIMIT &#x3D;&gt; 1}</p>
 <h6 id="查某个字段"><a href="#查某个字段" class="headerlink" title="查某个字段"></a>查某个字段</h6><p>scan ‘test’,{COLUMNS &#x3D;&gt; ‘cf:a’,LIMIT &#x3D;&gt; 2}</p>
 <h6 id="从指定行开始取几条"><a href="#从指定行开始取几条" class="headerlink" title="从指定行开始取几条"></a>从指定行开始取几条</h6><p>scan ‘test’,{STARTROW &#x3D;&gt; ‘1001’,LIMIT&#x3D;&gt;5}</p>

@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="表记录条数count “usertable”, INTERVAL &#x3D;&gt; 100000 scan 查询根据rowkey范围扫描scan ‘tablename’,{STARTROW &#x3D;&gt; ‘71615201690357’,STOPROW&#x3D;&gt;’71615201690357g’} 限制条数scan ‘test’,{LIMIT &#x3D;&gt; 1} 查某">
+<meta name="description" content="表记录条数count “usertable”, INTERVAL &#x3D;&gt; 100000 scan 查询根据rowkey范围扫描scan ‘tablename’,{STARTROW &#x3D;&gt; ‘1001’,STOPROW&#x3D;&gt;’2001’} 限制条数scan ‘test’,{LIMIT &#x3D;&gt; 1} 查某个字段scan ‘test’,{COLUM">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HBase常用命令">
 <meta property="og:url" content="https://wwsbd.gitee.io/2022/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Hbase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="表记录条数count “usertable”, INTERVAL &#x3D;&gt; 100000 scan 查询根据rowkey范围扫描scan ‘tablename’,{STARTROW &#x3D;&gt; ‘71615201690357’,STOPROW&#x3D;&gt;’71615201690357g’} 限制条数scan ‘test’,{LIMIT &#x3D;&gt; 1} 查某">
+<meta property="og:description" content="表记录条数count “usertable”, INTERVAL &#x3D;&gt; 100000 scan 查询根据rowkey范围扫描scan ‘tablename’,{STARTROW &#x3D;&gt; ‘1001’,STOPROW&#x3D;&gt;’2001’} 限制条数scan ‘test’,{LIMIT &#x3D;&gt; 1} 查某个字段scan ‘test’,{COLUM">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-10-17T07:17:36.000Z">
-<meta property="article:modified_time" content="2024-06-04T12:58:59.095Z">
+<meta property="article:modified_time" content="2024-06-04T13:01:43.442Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="HBase">
 <meta property="article:tag" content="常用命令">
@@ -388,7 +388,7 @@
 
       
         <h5 id="表记录条数"><a href="#表记录条数" class="headerlink" title="表记录条数"></a>表记录条数</h5><p>count “usertable”, INTERVAL &#x3D;&gt; 100000</p>
-<h5 id="scan-查询"><a href="#scan-查询" class="headerlink" title="scan 查询"></a>scan 查询</h5><h6 id="根据rowkey范围扫描"><a href="#根据rowkey范围扫描" class="headerlink" title="根据rowkey范围扫描"></a>根据rowkey范围扫描</h6><p>scan ‘tablename’,{STARTROW &#x3D;&gt; ‘71615201690357’,STOPROW&#x3D;&gt;’71615201690357g’}</p>
+<h5 id="scan-查询"><a href="#scan-查询" class="headerlink" title="scan 查询"></a>scan 查询</h5><h6 id="根据rowkey范围扫描"><a href="#根据rowkey范围扫描" class="headerlink" title="根据rowkey范围扫描"></a>根据rowkey范围扫描</h6><p>scan ‘tablename’,{STARTROW &#x3D;&gt; ‘1001’,STOPROW&#x3D;&gt;’2001’}</p>
 <h6 id="限制条数"><a href="#限制条数" class="headerlink" title="限制条数"></a>限制条数</h6><p>scan ‘test’,{LIMIT &#x3D;&gt; 1}</p>
 <h6 id="查某个字段"><a href="#查某个字段" class="headerlink" title="查某个字段"></a>查某个字段</h6><p>scan ‘test’,{COLUMNS &#x3D;&gt; ‘cf:a’,LIMIT &#x3D;&gt; 2}</p>
 <h6 id="从指定行开始取几条"><a href="#从指定行开始取几条" class="headerlink" title="从指定行开始取几条"></a>从指定行开始取几条</h6><p>scan ‘test’,{STARTROW &#x3D;&gt; ‘1001’,LIMIT&#x3D;&gt;5}</p>

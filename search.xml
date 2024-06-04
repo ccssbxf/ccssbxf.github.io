@@ -2347,6 +2347,12 @@
 <p>delete ‘test’, ‘row1’,’cf:a’</p>
 <h5 id="清空表"><a href="#清空表" class="headerlink" title="清空表"></a>清空表</h5><p>truncate ‘tablename’</p>
 <p>先disable，然后再truncate</p>
+<h5 id="HMaster单机启停"><a href="#HMaster单机启停" class="headerlink" title="HMaster单机启停"></a>HMaster单机启停</h5><p> hbase-daemon.sh start master<br> hbase-daemon.sh stop master</p>
+<p>切记 daemon后没有S，daemons是集群启停</p>
+<h5 id="HRegionServer单机启停"><a href="#HRegionServer单机启停" class="headerlink" title="HRegionServer单机启停"></a>HRegionServer单机启停</h5><p>hbase-daemon.sh start regionserver<br>hbase-daemon.sh stop  regionserver </p>
+<h5 id="region-均衡balancer"><a href="#region-均衡balancer" class="headerlink" title="region 均衡balancer"></a>region 均衡balancer</h5><p>$ hbase shell<br>  hbase(main):001:0&gt;  balance_switch true<br>  hbase(main):002:0&gt; balancer </p>
+<h5 id="HBase表合并"><a href="#HBase表合并" class="headerlink" title="HBase表合并"></a>HBase表合并</h5><p>$ hbase shell</p>
+<p>hbase(main):004:0&gt; major_compact “tablename”</p>
 ]]></content>
       <categories>
         <category>HBase</category>

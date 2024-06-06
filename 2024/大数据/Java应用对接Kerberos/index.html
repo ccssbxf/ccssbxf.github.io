@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="1.首先需要在KDC服务器上建立用户以及生成对应的keytab文件 比如用户：&amp;#122;&amp;#x68;&amp;#x6f;&amp;#117;&amp;#104;&amp;#x6a;&amp;#x2d;&amp;#x6d;&amp;#x79;&amp;#99;&amp;#x6c;&amp;#117;&amp;#115;&amp;#116;&amp;#x65;&amp;#114;&amp;#64;&amp;#x48;&amp;#x41;&amp;#x44;&amp;#79;&amp;#x4f;&amp;#80;&amp;#x2e;&amp;#x43;&amp;#79;&amp;#77; keyt">
+<meta name="description" content="1.首先需要在KDC服务器上建立用户以及生成对应的keytab文件 比如用户：&amp;#122;&amp;#x68;&amp;#111;&amp;#117;&amp;#104;&amp;#x6a;&amp;#x2d;&amp;#109;&amp;#x79;&amp;#99;&amp;#108;&amp;#x75;&amp;#x73;&amp;#116;&amp;#101;&amp;#x72;&amp;#x40;&amp;#72;&amp;#65;&amp;#x44;&amp;#x4f;&amp;#79;&amp;#80;&amp;#46;&amp;#x43;&amp;#x4f;&amp;#77; keyta">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java应用对接Kerberos">
 <meta property="og:url" content="https://wwsbd.gitee.io/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Java%E5%BA%94%E7%94%A8%E5%AF%B9%E6%8E%A5Kerberos/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="1.首先需要在KDC服务器上建立用户以及生成对应的keytab文件 比如用户：&amp;#122;&amp;#x68;&amp;#x6f;&amp;#117;&amp;#104;&amp;#x6a;&amp;#x2d;&amp;#x6d;&amp;#x79;&amp;#99;&amp;#x6c;&amp;#117;&amp;#115;&amp;#116;&amp;#x65;&amp;#114;&amp;#64;&amp;#x48;&amp;#x41;&amp;#x44;&amp;#79;&amp;#x4f;&amp;#80;&amp;#x2e;&amp;#x43;&amp;#79;&amp;#77; keyt">
+<meta property="og:description" content="1.首先需要在KDC服务器上建立用户以及生成对应的keytab文件 比如用户：&amp;#122;&amp;#x68;&amp;#111;&amp;#117;&amp;#104;&amp;#x6a;&amp;#x2d;&amp;#109;&amp;#x79;&amp;#99;&amp;#108;&amp;#x75;&amp;#x73;&amp;#116;&amp;#101;&amp;#x72;&amp;#x40;&amp;#72;&amp;#65;&amp;#x44;&amp;#x4f;&amp;#79;&amp;#80;&amp;#46;&amp;#x43;&amp;#x4f;&amp;#77; keyta">
 <meta property="og:locale">
+<meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240606205146.png">
 <meta property="article:published_time" content="2024-04-06T02:46:50.000Z">
-<meta property="article:modified_time" content="2024-06-06T03:58:28.961Z">
+<meta property="article:modified_time" content="2024-06-06T12:52:02.239Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="Kerberos">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240606205146.png">
 
 
 
@@ -387,7 +389,7 @@
 
       
         <p>1.首先需要在KDC服务器上建立用户以及生成对应的keytab文件</p>
-<p>比如用户：<a href="mailto:&#122;&#x68;&#x6f;&#117;&#104;&#x6a;&#x2d;&#x6d;&#x79;&#99;&#x6c;&#117;&#115;&#116;&#x65;&#114;&#64;&#x48;&#x41;&#x44;&#79;&#x4f;&#80;&#x2e;&#x43;&#79;&#77;">&#122;&#x68;&#x6f;&#117;&#104;&#x6a;&#x2d;&#x6d;&#x79;&#99;&#x6c;&#117;&#115;&#116;&#x65;&#114;&#64;&#x48;&#x41;&#x44;&#79;&#x4f;&#80;&#x2e;&#x43;&#79;&#77;</a></p>
+<p>比如用户：<a href="mailto:&#122;&#x68;&#111;&#117;&#104;&#x6a;&#x2d;&#109;&#x79;&#99;&#108;&#x75;&#x73;&#116;&#101;&#x72;&#x40;&#72;&#65;&#x44;&#x4f;&#79;&#80;&#46;&#x43;&#x4f;&#77;">&#122;&#x68;&#111;&#117;&#104;&#x6a;&#x2d;&#109;&#x79;&#99;&#108;&#x75;&#x73;&#116;&#101;&#x72;&#x40;&#72;&#65;&#x44;&#x4f;&#79;&#80;&#46;&#x43;&#x4f;&#77;</a></p>
 <p>keytab文件：smokeuser.headless.keytab</p>
 <p>2.将KDC服务器的krb5.conf文件和smokeuser.headless.keytab文件下载到本地</p>
 <p>3.在配置文件中配置krb5.conf文件和smokeuser.headless.keytab文件所在路径，以及kerberos认证的用户名</p>
@@ -400,7 +402,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 定时更新kerberos认证凭证</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> initialDelay 第一次执行的延迟</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> delay 后续每次执行的间隔</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> timeUnit 时间单位</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">startCheckKeytabTgtAndReloginJob</span><span class="params">(<span class="type">int</span> initialDelay, <span class="type">int</span> delay, TimeUnit timeUnit)</span> &#123;</span><br><span class="line">    <span class="type">ScheduledExecutorService</span> <span class="variable">scheduleExec</span> <span class="operator">=</span> Executors.newScheduledThreadPool(<span class="number">1</span>);</span><br><span class="line">    <span class="comment">//循环 达到距离到期时间一定范围就会更新凭证</span></span><br><span class="line">    scheduleExec.scheduleWithFixedDelay(() -&gt; &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">UserGroupInformation</span> <span class="variable">loginUser</span> <span class="operator">=</span> UserGroupInformation.getLoginUser();</span><br><span class="line">            <span class="type">Method</span> <span class="variable">getTgtMethod</span> <span class="operator">=</span> loginUser.getClass().getDeclaredMethod(<span class="string">&quot;getTGT&quot;</span>);</span><br><span class="line">            getTgtMethod.setAccessible(<span class="literal">true</span>);</span><br><span class="line">            log.info(<span class="string">&quot;tgt before relogin,endTime:&quot;</span> + ((KerberosTicket) getTgtMethod.invoke(loginUser)).getEndTime());</span><br><span class="line">            UserGroupInformation.getLoginUser().checkTGTAndReloginFromKeytab();</span><br><span class="line">            log.info(<span class="string">&quot;tgt after relogin,endTime:&quot;</span> + ((KerberosTicket) getTgtMethod.invoke(loginUser)).getEndTime());</span><br><span class="line">            log.info(<span class="string">&quot;Check Kerberos Tgt And Relogin From Keytab Finish.&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">&quot;Check Kerberos Tgt And Relogin From Keytab Error&quot;</span>, e);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;, initialDelay, delay, timeUnit);</span><br><span class="line">    log.info(<span class="string">&quot;Start Check Keytab TGT And Relogin Job Success.&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>当前时间距离上一次认证时间，超过过期时长（krb5.conf里的ticket_lifetime）80%的时候，会进行续期</p>
-
+<p>注：Java代码进行KDC认证时，默认使用udp协议，如果和KDC服务器的端口tcp通，udp不通的话，需要禁用udp使其使用tcp。在下载下来的krb5.conf里的[libdefaults]下加配置项udp_preference_limit &#x3D; 1</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240606205146.png" alt="image-20240606205139589" style="zoom:50%;" />
       
     </div>
     

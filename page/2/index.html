@@ -1606,10 +1606,7 @@ HadoopNameNode的主备选举由zkfc进程进行，如果zkfc进程挂了，则�
 1ssh-keygen -t rsa
 
 2.发送公钥到集群所有主机（包括本机）
-1ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称
-
-3.当ssh端口非22端口时
-需要将步骤2中的端口22更改
+123ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称简略写法，默认22端口和相同用户名ssh-copy-id 
           ...
           <!--noindex-->
           <div class="post-button text-center">

@@ -79,15 +79,15 @@
 
 
 
-<meta name="description" content="1.在每台主机上执行以下命令生成公私钥（一路回车即可） 1ssh-keygen -t rsa  2.发送公钥到集群所有主机（包括本机） 1ssh-copy-id -p 22 -i ~&#x2F;.ssh&#x2F;id_rsa.pub 用户名@ip或主机名称  3.当ssh端口非22端口时 需要将步骤2中的端口22更改为目标端口，并且需要执行以下命令 1echo &quot;Port 目标端口&quot; &gt;&amp;">
+<meta name="description" content="1.在每台主机上执行以下命令生成公私钥（一路回车即可） 1ssh-keygen -t rsa  2.发送公钥到集群所有主机（包括本机） 123ssh-copy-id -p 22 -i ~&#x2F;.ssh&#x2F;id_rsa.pub 用户名@ip或主机名称简略写法，默认22端口和相同用户名ssh-copy-id ip或主机名  执行完之后，公钥将会被复制到对端主机的~&#x2F;.ssh&#x2F;author">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SSH免密登录配置">
 <meta property="og:url" content="https://wwsbd.gitee.io/2021/Linux/linux%E5%85%8D%E5%AF%86%E7%99%BB%E5%BD%95%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="1.在每台主机上执行以下命令生成公私钥（一路回车即可） 1ssh-keygen -t rsa  2.发送公钥到集群所有主机（包括本机） 1ssh-copy-id -p 22 -i ~&#x2F;.ssh&#x2F;id_rsa.pub 用户名@ip或主机名称  3.当ssh端口非22端口时 需要将步骤2中的端口22更改为目标端口，并且需要执行以下命令 1echo &quot;Port 目标端口&quot; &gt;&amp;">
+<meta property="og:description" content="1.在每台主机上执行以下命令生成公私钥（一路回车即可） 1ssh-keygen -t rsa  2.发送公钥到集群所有主机（包括本机） 123ssh-copy-id -p 22 -i ~&#x2F;.ssh&#x2F;id_rsa.pub 用户名@ip或主机名称简略写法，默认22端口和相同用户名ssh-copy-id ip或主机名  执行完之后，公钥将会被复制到对端主机的~&#x2F;.ssh&#x2F;author">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-10-02T01:23:50.000Z">
-<meta property="article:modified_time" content="2024-06-04T12:50:31.111Z">
+<meta property="article:modified_time" content="2024-06-06T12:25:03.832Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="免密登录">
 <meta property="article:tag" content="Linux">
@@ -391,8 +391,9 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
 
 <p>2.发送公钥到集群所有主机（包括本机）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id -p 22 -i ~/.ssh/id_rsa.pub 用户名@ip或主机名称</span><br><span class="line">简略写法，默认22端口和相同用户名</span><br><span class="line">ssh-copy-id ip或主机名</span><br></pre></td></tr></table></figure>
 
+<p>执行完之后，公钥将会被复制到对端主机的~&#x2F;.ssh&#x2F;authorized_keys文件中</p>
 <p>3.当ssh端口非22端口时</p>
 <p>需要将步骤2中的端口22更改为目标端口，并且需要执行以下命令</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;Port 目标端口&quot; &gt;&gt;  ~/.ssh/config</span><br></pre></td></tr></table></figure>

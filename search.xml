@@ -2399,8 +2399,9 @@
   <entry>
     <title>KDC常用命令</title>
     <url>/2024/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/KDC%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="非kadmin模式"><a href="#非kadmin模式" class="headerlink" title="非kadmin模式"></a>非kadmin模式</h2><h5 id="进入kadmin"><a href="#进入kadmin" class="headerlink" title="进入kadmin"></a>进入kadmin</h5><h6 id="kdc服务端如果有sudo权限或者root用户"><a href="#kdc服务端如果有sudo权限或者root用户" class="headerlink" title="kdc服务端如果有sudo权限或者root用户"></a>kdc服务端如果有sudo权限或者root用户</h6><p>kadmin.local</p>
-<h6 id="kdc客户端"><a href="#kdc客户端" class="headerlink" title="kdc客户端"></a>kdc客户端</h6><p>kadmin -p admin&#x2F;<a href="mailto:&#x61;&#100;&#109;&#105;&#x6e;&#x40;&#72;&#65;&#68;&#x4f;&#79;&#80;&#46;&#x43;&#x4f;&#x4d;">&#x61;&#100;&#109;&#105;&#x6e;&#x40;&#72;&#65;&#68;&#x4f;&#79;&#80;&#46;&#x43;&#x4f;&#x4d;</a></p>
+    <content><![CDATA[<h3 id="非kadmin模式"><a href="#非kadmin模式" class="headerlink" title="非kadmin模式"></a>非kadmin模式</h3><p>进入kadmin</p>
+<h6 id="kdc服务端如果有sudo权限或者root用户"><a href="#kdc服务端如果有sudo权限或者root用户" class="headerlink" title="kdc服务端如果有sudo权限或者root用户"></a>kdc服务端如果有sudo权限或者root用户</h6><p>kadmin.local</p>
+<h6 id="kdc客户端"><a href="#kdc客户端" class="headerlink" title="kdc客户端"></a>kdc客户端</h6><p>kadmin -p admin&#x2F;<a href="mailto:&#x61;&#100;&#109;&#105;&#110;&#64;&#72;&#65;&#68;&#x4f;&#x4f;&#x50;&#x2e;&#67;&#79;&#77;">&#x61;&#100;&#109;&#105;&#110;&#64;&#72;&#65;&#68;&#x4f;&#x4f;&#x50;&#x2e;&#67;&#79;&#77;</a></p>
 <h5 id="查看当前登录用户信息"><a href="#查看当前登录用户信息" class="headerlink" title="查看当前登录用户信息"></a>查看当前登录用户信息</h5><p>klist</p>
 <h5 id="非kadmin模式直接执行admin模式命令"><a href="#非kadmin模式直接执行admin模式命令" class="headerlink" title="非kadmin模式直接执行admin模式命令"></a>非kadmin模式直接执行admin模式命令</h5><p>需要在kdc服务端并且有sudo权限或者root用户</p>
 <p>kadmin.local -q “命令”，比如kadmin.local -q “listprincs”</p>
@@ -2414,7 +2415,7 @@
 <h5 id="启动-x2F-停止-kadmin-服务"><a href="#启动-x2F-停止-kadmin-服务" class="headerlink" title="启动 &#x2F;停止 kadmin 服务"></a>启动 &#x2F;停止 kadmin 服务</h5><p>systemctl start&#x2F;stop&#x2F;status kadmin</p>
 <p>systemctl enable kadmin</p>
 <h5 id="修改当前登录用户密码"><a href="#修改当前登录用户密码" class="headerlink" title="修改当前登录用户密码"></a>修改当前登录用户密码</h5><p>kpasswd</p>
-<h2 id="admin模式"><a href="#admin模式" class="headerlink" title="admin模式"></a>admin模式</h2><h5 id="查看所有用户"><a href="#查看所有用户" class="headerlink" title="查看所有用户"></a>查看所有用户</h5><p>listprincs</p>
+<h3 id="admin模式"><a href="#admin模式" class="headerlink" title="admin模式"></a>admin模式</h3><h5 id="查看所有用户"><a href="#查看所有用户" class="headerlink" title="查看所有用户"></a>查看所有用户</h5><p>listprincs</p>
 <h5 id="创建用户user1并输入密码"><a href="#创建用户user1并输入密码" class="headerlink" title="创建用户user1并输入密码"></a>创建用户user1并输入密码</h5><p>addprinc user1</p>
 <h5 id="创建用户user1随机密码"><a href="#创建用户user1随机密码" class="headerlink" title="创建用户user1随机密码"></a>创建用户user1随机密码</h5><p>addprinc -randkey user1</p>
 <h5 id="修改指定用户的密码"><a href="#修改指定用户的密码" class="headerlink" title="修改指定用户的密码"></a>修改指定用户的密码</h5><h6 id="指定密码"><a href="#指定密码" class="headerlink" title="指定密码"></a>指定密码</h6><p>cpw -pw 新密码 user1</p>

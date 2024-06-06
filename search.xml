@@ -2324,29 +2324,70 @@
   <entry>
     <title>Hive常用命令</title>
     <url>/2022/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Hive%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h5 id="强制删除数据库，包括里面的表"><a href="#强制删除数据库，包括里面的表" class="headerlink" title="强制删除数据库，包括里面的表"></a>强制删除数据库，包括里面的表</h5><p>drop database database_name  cascade;  </p>
-<h5 id="清空表数据"><a href="#清空表数据" class="headerlink" title="清空表数据"></a>清空表数据</h5><p>truncate table 表名；</p>
-<h5 id="beeline连接"><a href="#beeline连接" class="headerlink" title="beeline连接"></a>beeline连接</h5><p>beeline</p>
-<p>!connect jdbc:hive2:&#x2F;&#x2F;hadoop102:10000</p>
-<h5 id="关闭输出压缩"><a href="#关闭输出压缩" class="headerlink" title="关闭输出压缩"></a>关闭输出压缩</h5><p>set mapreduce.output.fileoutputformat.compress&#x3D;false;</p>
-<p>set hive.exec.compress.output&#x3D;false;</p>
-<h5 id="添加jar"><a href="#添加jar" class="headerlink" title="添加jar"></a>添加jar</h5><p>add jar hdfs:&#x2F;&#x2F;bcdp&#x2F;hive_udf&#x2F;ST4-4.0.4.jar;</p>
-<h5 id="删除jar"><a href="#删除jar" class="headerlink" title="删除jar"></a>删除jar</h5><p>delete jar hdfs:&#x2F;&#x2F;bcdp&#x2F;hive_udf&#x2F;ST4-4.0.4.jar;</p>
-<h5 id="导出数据成文件"><a href="#导出数据成文件" class="headerlink" title="导出数据成文件"></a>导出数据成文件</h5><p>insert overwrite [local] directory ‘~&#x2F;zhouhj&#x2F;export&#x2F;‘ ROW FORMAT DELIMITED FIELDS TERMINATED BY ‘,’ select * from test limit 10;</p>
-<h5 id="查看执行计划"><a href="#查看执行计划" class="headerlink" title="查看执行计划"></a>查看执行计划</h5><p>explain select * from course;</p>
-<h5 id="查看详细执行计划"><a href="#查看详细执行计划" class="headerlink" title="查看详细执行计划"></a>查看详细执行计划</h5><p>explain extended select * from course;</p>
+    <content><![CDATA[<h5 id="强制删除数据库，包括里面的表"><a href="#强制删除数据库，包括里面的表" class="headerlink" title="强制删除数据库，包括里面的表"></a>强制删除数据库，包括里面的表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">drop</span> database database_name  cascade;  </span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="清空表数据"><a href="#清空表数据" class="headerlink" title="清空表数据"></a>清空表数据</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">truncate</span> <span class="keyword">table</span> 表名；</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="beeline连接"><a href="#beeline连接" class="headerlink" title="beeline连接"></a>beeline连接</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">beeline</span><br><span class="line"></span><br><span class="line">!connect jdbc:hive2://hadoop102:10000</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="关闭输出压缩"><a href="#关闭输出压缩" class="headerlink" title="关闭输出压缩"></a>关闭输出压缩</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">set</span> mapreduce.output.fileoutputformat.compress<span class="operator">=</span><span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">set</span> hive.exec.compress.output<span class="operator">=</span><span class="literal">false</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="添加jar"><a href="#添加jar" class="headerlink" title="添加jar"></a>添加jar</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add</span> jar hdfs:<span class="operator">/</span><span class="operator">/</span>bcdp<span class="operator">/</span>hive_udf<span class="operator">/</span>ST4<span class="number">-4.0</span><span class="number">.4</span>.jar;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="删除jar"><a href="#删除jar" class="headerlink" title="删除jar"></a>删除jar</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span> jar hdfs:<span class="operator">/</span><span class="operator">/</span>bcdp<span class="operator">/</span>hive_udf<span class="operator">/</span>ST4<span class="number">-4.0</span><span class="number">.4</span>.jar;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="导出数据成文件"><a href="#导出数据成文件" class="headerlink" title="导出数据成文件"></a>导出数据成文件</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">insert</span> overwrite [<span class="keyword">local</span>] directory <span class="string">&#x27;~/zhouhj/export/&#x27;</span> <span class="type">ROW</span> FORMAT DELIMITED FIELDS TERMINATED <span class="keyword">BY</span> <span class="string">&#x27;,&#x27;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> test limit <span class="number">10</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="查看执行计划"><a href="#查看执行计划" class="headerlink" title="查看执行计划"></a>查看执行计划</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">explain <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> course;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="查看详细执行计划"><a href="#查看详细执行计划" class="headerlink" title="查看详细执行计划"></a>查看详细执行计划</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">explain extended <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> course;</span><br></pre></td></tr></table></figure>
+
+
+
 <h5 id="hive进程jvm参数修改"><a href="#hive进程jvm参数修改" class="headerlink" title="hive进程jvm参数修改"></a>hive进程jvm参数修改</h5><p>hive-env.sh</p>
 <p>export HIVE_METASTORE_HADOOP_OPTS&#x3D;”-Xmx16g”<br>export HADOOP_CLIENT_OPTS&#x3D;”-Xmx16g”<br>export HIVE_SERVER2_HADOOP_OPTS&#x3D;”-Xmx16g”</p>
 <p>或者</p>
 <p>hadoop-env.sh</p>
 <p>export HADOOP_CLIENT_OPTS&#x3D;”xxxx”</p>
 <p>该属性优先级低于hive-env.sh</p>
-<h5 id="count-DISTINCT-优化"><a href="#count-DISTINCT-优化" class="headerlink" title="count(DISTINCT )优化"></a>count(DISTINCT )优化</h5><p>SELECT day,<br>COUNT(DISTINCT id) AS uv<br>FROM users;</p>
-<p>可以转换成：</p>
-<p>SELECT day,<br>COUNT(id) AS uv<br>FROM (SELECT day,id FROM users GROUP BY day,id) a;</p>
-<p>– 优化前<br>Select a,sum(b),count(distinct c),count(distinct d) from test group by a<br>– 优化后的语句<br>Select a ,sum(b),count（c）,count(d) from (<br>                Select a,b,null c,null d from test<br>                Union all<br>                Select a,0 b,c,null d from test group by a,c<br>                Union all<br>                Select a,0,null c,d from test group by a,d<br>)</p>
-<h5 id="关闭压缩并导出"><a href="#关闭压缩并导出" class="headerlink" title="关闭压缩并导出"></a>关闭压缩并导出</h5><p>hive -e “set mapreduce.output.fileoutputformat.compress&#x3D;false;set hive.exec.compress.output&#x3D;false;insert overwrite local directory ‘&#x2F;home&#x2F;zhouhj&#x2F;test&#x2F;‘ ROW FORMAT DELIMITED FIELDS TERMINATED BY ‘;’ select * from test;”;</p>
-<h5 id="建文本表"><a href="#建文本表" class="headerlink" title="建文本表"></a>建文本表</h5><p>CREATE TABLE TEST_CREATE (<br>  ID string,<br>NAME string,<br>AGE string<br>)<br>ROW FORMAT DELIMITED<br>FIELDS TERMINATED BY ‘,’ STORED AS TEXTFILE; </p>
+<h5 id="count-DISTINCT-优化"><a href="#count-DISTINCT-优化" class="headerlink" title="count(DISTINCT )优化"></a>count(DISTINCT )优化</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">day</span>,</span><br><span class="line"><span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> id) <span class="keyword">AS</span> uv</span><br><span class="line"><span class="keyword">FROM</span> users;</span><br><span class="line"></span><br><span class="line">可以转换成：</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">day</span>,</span><br><span class="line"><span class="built_in">COUNT</span>(id) <span class="keyword">AS</span> uv</span><br><span class="line"><span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">day</span>,id <span class="keyword">FROM</span> users <span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="keyword">day</span>,id) a;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>– 优化前</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Select</span> a,<span class="built_in">sum</span>(b),<span class="built_in">count</span>(<span class="keyword">distinct</span> c),<span class="built_in">count</span>(<span class="keyword">distinct</span> d) <span class="keyword">from</span> test <span class="keyword">group</span> <span class="keyword">by</span> a</span><br></pre></td></tr></table></figure>
+
+<p>– 优化后的语句</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">Select</span> a ,<span class="built_in">sum</span>(b),count（c）,<span class="built_in">count</span>(d) <span class="keyword">from</span> (</span><br><span class="line">				<span class="keyword">Select</span> a,b,<span class="keyword">null</span> c,<span class="keyword">null</span> d <span class="keyword">from</span> test</span><br><span class="line">				<span class="keyword">Union</span> <span class="keyword">all</span></span><br><span class="line">				<span class="keyword">Select</span> a,<span class="number">0</span> b,c,<span class="keyword">null</span> d <span class="keyword">from</span> test <span class="keyword">group</span> <span class="keyword">by</span> a,c</span><br><span class="line">				<span class="keyword">Union</span> <span class="keyword">all</span></span><br><span class="line">				<span class="keyword">Select</span> a,<span class="number">0</span>,<span class="keyword">null</span> c,d <span class="keyword">from</span> test <span class="keyword">group</span> <span class="keyword">by</span> a,d</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="关闭压缩并导出"><a href="#关闭压缩并导出" class="headerlink" title="关闭压缩并导出"></a>关闭压缩并导出</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">hive <span class="operator">-</span>e &quot;set mapreduce.output.fileoutputformat.compress=false;set hive.exec.compress.output=false;insert overwrite local directory &#x27;/home/zhouhj/test/&#x27; ROW FORMAT DELIMITED FIELDS TERMINATED BY &#x27;;&#x27; select * from test;&quot;;</span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="建文本表"><a href="#建文本表" class="headerlink" title="建文本表"></a>建文本表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEST_CREATE (</span><br><span class="line">  ID string,</span><br><span class="line">NAME string,</span><br><span class="line">AGE string</span><br><span class="line">)</span><br><span class="line"><span class="type">ROW</span> FORMAT DELIMITED</span><br><span class="line">FIELDS TERMINATED <span class="keyword">BY</span> <span class="string">&#x27;,&#x27;</span> STORED <span class="keyword">AS</span> TEXTFILE; </span><br></pre></td></tr></table></figure>
+
+
+
+<h5 id="分组排序取topn（可用于唯一键去重）"><a href="#分组排序取topn（可用于唯一键去重）" class="headerlink" title="分组排序取topn（可用于唯一键去重）"></a>分组排序取topn（可用于唯一键去重）</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> a, b, c, e</span><br><span class="line"><span class="keyword">from</span> (<span class="keyword">select</span> a, b, c,e, <span class="built_in">row_number</span>() <span class="keyword">over</span> ( <span class="keyword">partition</span> <span class="keyword">by</span> a,b,c <span class="keyword">order</span> <span class="keyword">by</span> d <span class="keyword">desc</span> ) num</span><br><span class="line">      <span class="keyword">from</span> test) rs</span><br><span class="line"><span class="keyword">where</span> rs.num <span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Hive</category>

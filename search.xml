@@ -2696,7 +2696,9 @@
 <h5 id="统计hfile数量"><a href="#统计hfile数量" class="headerlink" title="统计hfile数量"></a>统计hfile数量</h5><h6 id="统计一张表有多少个hfile"><a href="#统计一张表有多少个hfile" class="headerlink" title="统计一张表有多少个hfile"></a>统计一张表有多少个hfile</h6><p>hadoop fs -ls  &#x2F;hbase&#x2F;data&#x2F;default&#x2F;tablename&#x2F;*&#x2F;F&#x2F;* | wc -l &amp;&amp; date +”%Y-%m-%d %H:%M:%S”</p>
 <h6 id="按region统计hfile"><a href="#按region统计hfile" class="headerlink" title="按region统计hfile"></a>按region统计hfile</h6><p>hadoop fs -du -h &#x2F;apps&#x2F;hbase&#x2F;data&#x2F;data&#x2F;default&#x2F;tablename&#x2F;*&#x2F;F&#x2F;* |awk -F ‘&#x2F;‘ ‘{print $8}’|sort|uniq -c|awk ‘{print $1}’|sort|uniq -c</p>
 <h5 id="节点退役"><a href="#节点退役" class="headerlink" title="节点退役"></a>节点退役</h5><p>graceful_stop.sh node1</p>
-<h5 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h5><p>hbase shell里执行status</p>
+<h5 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h5><p>hbase shell里执行</p>
+<p>status</p>
+<p>status ‘detailed’</p>
 <h5 id="创建命名空间"><a href="#创建命名空间" class="headerlink" title="创建命名空间"></a>创建命名空间</h5><p>create_namespace ‘UD’</p>
 <h5 id="查看有哪些命名空间"><a href="#查看有哪些命名空间" class="headerlink" title="查看有哪些命名空间"></a>查看有哪些命名空间</h5><p>list_namespace</p>
 <h5 id="删除命名空间"><a href="#删除命名空间" class="headerlink" title="删除命名空间"></a>删除命名空间</h5><p>命名空间必须为空才能被删除</p>
@@ -2718,11 +2720,11 @@
 <p>drop ‘table_name’</p>
 <h5 id="根据rowkey获取数据"><a href="#根据rowkey获取数据" class="headerlink" title="根据rowkey获取数据"></a>根据rowkey获取数据</h5><p>get ‘table_name’, ‘row_key’</p>
 <p>get ‘table_name’, ‘row_key’,’列族:列名’</p>
-<h5 id="根据rowkey删除数据"><a href="#根据rowkey删除数据" class="headerlink" title="根据rowkey删除数据"></a>根据rowkey删除数据</h5><p>delete ‘table_name’, ‘row_key’, ‘column_family:column’</p>
 <h5 id="表是否存在"><a href="#表是否存在" class="headerlink" title="表是否存在"></a>表是否存在</h5><p>exists ‘tablename’</p>
 <h5 id="删除数据"><a href="#删除数据" class="headerlink" title="删除数据"></a>删除数据</h5><p>删除某个rowkey的所有数据</p>
 <p>deleteall ‘tablename’,’rowkey’</p>
 <p>删除某 rowkey 的某一列数据</p>
+<p>delete ‘table_name’, ‘row_key’, ‘column_family:column’</p>
 <p>delete ‘test’, ‘row1’,’cf:a’</p>
 <h5 id="清空表"><a href="#清空表" class="headerlink" title="清空表"></a>清空表</h5><p>truncate ‘tablename’</p>
 <p>先disable，然后再truncate</p>
@@ -2734,6 +2736,8 @@
 <p>hbase(main):004:0&gt; major_compact “tablename”</p>
 <h5 id="查看建表语句"><a href="#查看建表语句" class="headerlink" title="查看建表语句"></a>查看建表语句</h5><p>describe “table_name”</p>
 <h5 id="查看有哪些线程（比如compact线程）"><a href="#查看有哪些线程（比如compact线程）" class="headerlink" title="查看有哪些线程（比如compact线程）"></a>查看有哪些线程（比如compact线程）</h5><p>processlist</p>
+<h5 id="查看版本"><a href="#查看版本" class="headerlink" title="查看版本"></a>查看版本</h5><p>version</p>
+<h5 id="查看Procedure-和-Locks-的列表"><a href="#查看Procedure-和-Locks-的列表" class="headerlink" title="查看Procedure 和 Locks 的列表"></a>查看Procedure 和 Locks 的列表</h5><p>list_procedures</p>
 ]]></content>
       <categories>
         <category>HBase</category>
@@ -2980,6 +2984,50 @@
       <tags>
         <tag>Yarn</tag>
         <tag>调度器</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>HBCK2常用命令</title>
+    <url>/2023/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/HBCK2%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h5 id="修复region存在但meta表region信息缺失"><a href="#修复region存在但meta表region信息缺失" class="headerlink" title="修复region存在但meta表region信息缺失"></a>修复region存在但meta表region信息缺失</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar addFsRegionsMissingInMeta namespace|tablename</p>
+<p>该命令会扫描hdfs中Region目录的region_info的信息并根据该信息进行region重建，最后在运行该命令输出的assign命令进行重新分配，如果使用的hbase版本小于2.3.0，则在执行assign之前需要滚动重启HMaster进程</p>
+<h5 id="修复region不存在但meta表里还有region信息"><a href="#修复region不存在但meta表里还有region信息" class="headerlink" title="修复region不存在但meta表里还有region信息"></a>修复region不存在但meta表里还有region信息</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar extraRegionsInMeta –fix</p>
+<p>在决定是否传入 –fix 参数时，应当检查多余的 Region 是否存在 region overlap(region重叠), 若存在，可以传入 –fix 以删除 meta 表多余的 Region 信息，若不存在，应当调用 assigns 命令，创建一个新的 Region 目录写入 HDFS。</p>
+<h5 id="对-hbase-meta-中的错误或不一致状态-重叠或空洞-进行服务端修复"><a href="#对-hbase-meta-中的错误或不一致状态-重叠或空洞-进行服务端修复" class="headerlink" title="对 hbase:meta 中的错误或不一致状态(重叠或空洞)进行服务端修复"></a>对 hbase:meta 中的错误或不一致状态(重叠或空洞)进行服务端修复</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar fixMeta</p>
+<p>在 hbase 2.2.1&#x2F;2.1.6 或更新版本中可用</p>
+<h5 id="报告hbase-meta表空洞（hdfs上存在region，hbase-meta表不存在记录）"><a href="#报告hbase-meta表空洞（hdfs上存在region，hbase-meta表不存在记录）" class="headerlink" title="报告hbase:meta表空洞（hdfs上存在region，hbase:meta表不存在记录）"></a>报告hbase:meta表空洞（hdfs上存在region，hbase:meta表不存在记录）</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar reportMissingRegionsInMeta namespace|tablename</p>
+<p>执行该命令仅报告有哪些空洞，修复使用addFsRegionsMissingInMeta </p>
+<h5 id="手动释放Procedures-amp-Locks"><a href="#手动释放Procedures-amp-Locks" class="headerlink" title="手动释放Procedures&amp;Locks"></a>手动释放Procedures&amp;Locks</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar bypass -or PID</p>
+<p>PID在hbase管理页面Procedures&amp;Locks获取</p>
+<p>该命令会使处于RIT状态的Region停留在中间状态，需要人工干预后执行后续修复过程。</p>
+<h5 id="分配region到regionserver上"><a href="#分配region到regionserver上" class="headerlink" title="分配region到regionserver上"></a>分配region到regionserver上</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar  assigns -o regionname…</p>
+<p>可选参数-o：这里的override跟bypass的override不同，因为assign本身就会创建一个新的procedure, 所以肯定是不涉及到拿IdLock的，但是这里涉及到资源锁的问题。因为之前卡住的资源锁即使在bypass后也不会释放(用于fence, 防止更多未知的错误操作)，所以需要加一个-o去手动释放这个资源锁。</p>
+<p>返回值是创建的pid则为成功，-1则为失败。</p>
+<h5 id="手动解除region分配"><a href="#手动解除region分配" class="headerlink" title="手动解除region分配"></a>手动解除region分配</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar unassigns -o regionname…</p>
+<p>返回值是创建的pid则为成功，-1则为失败。</p>
+<h5 id="手动修改region状态"><a href="#手动修改region状态" class="headerlink" title="手动修改region状态"></a>手动修改region状态</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar setRegionState regionname stateenum</p>
+<p>hbase2.3.0之前，修改了该状态只是修改了meta表里的，并不会重新加载到HMaster中，需要滚动重启HMaster</p>
+<p>手动设置region 的状态，可选的状态有OFFLINE, OPENING, OPEN, CLOSING, CLOSED, SPLITTING, SPLIT, FAILED_OPEN, FAILED_CLOSE, MERGING, MERGED, SPLITTING_NEW, MERGING_NEW, ABNORMALLY_CLOSED，返回0表示成功，1表示失败。hbase：meta表中可能的表状态和表示形式：ENABLED(\ x08 \ x00)，DISABLED(\ x08 \ x01)，DISABLING(\ x08 \ x02)，ENABLING(\ x08 \ x03)。</p>
+<p>使用这个命令前，一定要确认这个region 不在assign 和unassign procedures 中，你可以在hbase shell 中使用命令 list_procedures 进行查看这个region 的状态</p>
+<h5 id="RegionServer宕机，但ServerCrashProcedure没有执行成功"><a href="#RegionServer宕机，但ServerCrashProcedure没有执行成功" class="headerlink" title="RegionServer宕机，但ServerCrashProcedure没有执行成功"></a>RegionServer宕机，但ServerCrashProcedure没有执行成功</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar scheduleRecoveries <regionserverName></p>
+<p>该命令的意义是完成RegionServer宕机后的处理工作，包含WAL切分，RegionServer上的Region分配与挂载等操作，而不是让已经宕机的RegionServer复原。</p>
+<h5 id="HBase表复制已经取消，但对应复制队列未彻底清除"><a href="#HBase表复制已经取消，但对应复制队列未彻底清除" class="headerlink" title="HBase表复制已经取消，但对应复制队列未彻底清除"></a>HBase表复制已经取消，但对应复制队列未彻底清除</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar replication [-f] <tablename></p>
+<p>检查表复制队列中应清除但未清除的存储信息，若传入-f会删除这些信息并删除meta表中的ReplicationBarrier</p>
+<h5 id="手动修改table状态"><a href="#手动修改table状态" class="headerlink" title="手动修改table状态"></a>手动修改table状态</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar setTableState <tablename> <state></p>
+<p>修改hbase:meta表中表示数据表状态的table:state数据列的值并更新Master中缓存的数据表状态。可选的table状态有ENABLED, DISABLED, DISABLING, ENABLING，在table的状态和所有的region状态不一致时可以用这个命令进行修复，使用之前建议使用：desc ‘tablename’ 查看一下当前表的状态。</p>
+<h5 id="HBase数据表的-tableinfo文件缺失"><a href="#HBase数据表的-tableinfo文件缺失" class="headerlink" title="HBase数据表的.tableinfo文件缺失"></a>HBase数据表的.tableinfo文件缺失</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar generateMissingTableDescriptorFile <tablename></p>
+<p>执行命令后先检查TableDescriptor是否缓存在hmaster中，如果是，则直接通过缓存生成，如果不在，则通过表名、列族（表目录确定）、默认配置和列族描述符。</p>
+<p>当数据表对应文件目录缺失或.tableinfo存在时，该命令不会生效</p>
+<h5 id="HBase出现Hfile文件损坏、错误的引用文件、错误的HFile-Link或需要进行完整性检查（比如出现overlap、Orphansi或Hole"><a href="#HBase出现Hfile文件损坏、错误的引用文件、错误的HFile-Link或需要进行完整性检查（比如出现overlap、Orphansi或Hole" class="headerlink" title="HBase出现Hfile文件损坏、错误的引用文件、错误的HFile Link或需要进行完整性检查（比如出现overlap、Orphansi或Hole)"></a>HBase出现Hfile文件损坏、错误的引用文件、错误的HFile Link或需要进行完整性检查（比如出现overlap、Orphansi或Hole)</h5><p>hbase hbck -j hbase-hbck2-1.1.0.jar filesystem [–fix] [<tablename>]</p>
+<p>执行完命令后会调用fsck进行文件修复。生产环境中，有的时候会出现hfile 损坏，hfile引用损坏，hbase.version 丢失或者links 损坏等，这个时候可以使用–fix 进行修复。不加表名的话，默认修复所有表。</p>
+<h5 id=""><a href="#" class="headerlink" title=""></a></h5>]]></content>
+      <categories>
+        <category>HBase</category>
+      </categories>
+      <tags>
+        <tag>HBase</tag>
+        <tag>常用命令</tag>
+        <tag>HBCK</tag>
       </tags>
   </entry>
 </search>

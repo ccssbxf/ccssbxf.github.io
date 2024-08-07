@@ -2260,7 +2260,8 @@
 <h5 id="查看空间"><a href="#查看空间" class="headerlink" title="查看空间"></a>查看空间</h5><p>hdfs dfsadmin -report</p>
 <h5 id="查看hbase表文件碎片数"><a href="#查看hbase表文件碎片数" class="headerlink" title="查看hbase表文件碎片数"></a>查看hbase表文件碎片数</h5><p>hadoop fs -du -h &#x2F;tablepath&#x2F;*&#x2F;F&#x2F;* | awk -F ‘&#x2F;‘ ‘{print $6}’ | uniq -c | sort -r -n -k1 | head</p>
 <h5 id="yarn-application-查看任务-列出所有-Application"><a href="#yarn-application-查看任务-列出所有-Application" class="headerlink" title="yarn application 查看任务,列出所有 Application"></a>yarn application 查看任务,列出所有 Application</h5><p>yarn application -list</p>
-<h5 id="yarn-application-根据状态过滤"><a href="#yarn-application-根据状态过滤" class="headerlink" title="yarn application 根据状态过滤"></a>yarn application 根据状态过滤</h5><p>yarn application -list -appStates  ALL所有状态：ALL、NEW、NEW_SAVING、SUBMITTED、ACCEPTED、RUNNING、FINISHED、FAILED、KILLED）</p>
+<h5 id="yarn-application-根据状态过滤"><a href="#yarn-application-根据状态过滤" class="headerlink" title="yarn application 根据状态过滤"></a>yarn application 根据状态过滤</h5><p>yarn application -list -appStates  ALL</p>
+<p>所有状态：ALL、NEW、NEW_SAVING、SUBMITTED、ACCEPTED、RUNNING、FINISHED、FAILED、KILLED）</p>
 <h5 id="kill-yarn任务"><a href="#kill-yarn任务" class="headerlink" title="kill yarn任务"></a>kill yarn任务</h5><p> yarn application -kill application_1698222012539_0002</p>
 <h5 id="清空回收站"><a href="#清空回收站" class="headerlink" title="清空回收站"></a>清空回收站</h5><p>hdfs dfs -expunge</p>
 <h5 id="主备切换命令"><a href="#主备切换命令" class="headerlink" title="主备切换命令"></a>主备切换命令</h5><p>hdfs haadmin -failover <active-namenode> <standby-namenode></p>
@@ -2297,6 +2298,10 @@
 <p>1）如果不 balance，那么 cluster 会把新的数据都存放在新的 node 上，这样会降低 mapred 的工作效率<br>2）设置平衡阈值，默认是 10%，值越低各节点越平衡，但消耗时间也更长<br>3）设置 balance 的带宽，默认只有 1M&#x2F;s</p>
 <h5 id="备namenode同步主namenode操作"><a href="#备namenode同步主namenode操作" class="headerlink" title="备namenode同步主namenode操作"></a>备namenode同步主namenode操作</h5><p>hdfs namenode -bootstrapStandby</p>
 <h5 id="修改运行中的yarn任务的优先级"><a href="#修改运行中的yarn任务的优先级" class="headerlink" title="修改运行中的yarn任务的优先级"></a>修改运行中的yarn任务的优先级</h5><p>yarn application -appID -updatePriority &lt;优先级&gt;</p>
+<h5 id="动态刷新hdfs配置（有的参数估计不行，要验证）"><a href="#动态刷新hdfs配置（有的参数估计不行，要验证）" class="headerlink" title="动态刷新hdfs配置（有的参数估计不行，要验证）"></a>动态刷新hdfs配置（有的参数估计不行，要验证）</h5><p>hdfs dfsadmin -refreshSuperUserGroupsConfiguration</p>
+<h5 id="动态刷新yarn配置（有的参数估计不行，要验证）"><a href="#动态刷新yarn配置（有的参数估计不行，要验证）" class="headerlink" title="动态刷新yarn配置（有的参数估计不行，要验证）"></a>动态刷新yarn配置（有的参数估计不行，要验证）</h5><p>yarn rmadmin -refreshSuperUserGroupsConfiguration</p>
+<h5 id="查看hadoop参数"><a href="#查看hadoop参数" class="headerlink" title="查看hadoop参数"></a>查看hadoop参数</h5><p>hdfs getconf -confKey dfs.replication</p>
+<h5 id="查看yarn参数"><a href="#查看yarn参数" class="headerlink" title="查看yarn参数"></a>查看yarn参数</h5><p>yarn getconf -confKey yarn.nodemanager.resource.memory-mb</p>
 ]]></content>
       <categories>
         <category>Hadoop</category>
@@ -2390,6 +2395,13 @@
 
 <h5 id="分组排序取topn（可用于唯一键去重）"><a href="#分组排序取topn（可用于唯一键去重）" class="headerlink" title="分组排序取topn（可用于唯一键去重）"></a>分组排序取topn（可用于唯一键去重）</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> a, b, c, e</span><br><span class="line"><span class="keyword">from</span> (<span class="keyword">select</span> a, b, c,e, <span class="built_in">row_number</span>() <span class="keyword">over</span> ( <span class="keyword">partition</span> <span class="keyword">by</span> a,b,c <span class="keyword">order</span> <span class="keyword">by</span> d <span class="keyword">desc</span> ) num</span><br><span class="line">      <span class="keyword">from</span> test) rs</span><br><span class="line"><span class="keyword">where</span> rs.num <span class="operator">=</span> <span class="number">1</span>;</span><br></pre></td></tr></table></figure>
 
+<h5 id="hive字段注释表注释中文乱码"><a href="#hive字段注释表注释中文乱码" class="headerlink" title="hive字段注释表注释中文乱码"></a>hive字段注释表注释中文乱码</h5><p>alter table hive.COLUMNS_V2 modify column comment varchar(256) character set utf8mb4;</p>
+<p>alter table hive.TABLE_PARAMS modify column param_value mediumtext character set utf8mb4;</p>
+<p>注：已存在的仍然不会正常显示</p>
+<p>修改hive-site.xml中的javax.jdo.option.ConnectionURL，加上</p>
+<p>&amp;amp;useUnicode&#x3D;true&amp;amp;characterEncoding&#x3D;UTF-8</p>
+<h5 id="解析JSON结构文件"><a href="#解析JSON结构文件" class="headerlink" title="解析JSON结构文件"></a>解析JSON结构文件</h5><p>建表的时候  ROW FORMAT SERDE ‘org.apache.hadoop.hive.serde2.JsonSerDe’</p>
+<h5 id="将查询结果作为一张新的表"><a href="#将查询结果作为一张新的表" class="headerlink" title="将查询结果作为一张新的表"></a>将查询结果作为一张新的表</h5><p>create table tablename as select * from … where …</p>
 ]]></content>
       <categories>
         <category>Hive</category>
@@ -2402,34 +2414,86 @@
   <entry>
     <title>Jvm常用命令</title>
     <url>/2023/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Jvm%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h5 id="查看gc情况"><a href="#查看gc情况" class="headerlink" title="查看gc情况"></a>查看gc情况</h5><p>jstat [option] LVMID [interval] [count]</p>
-<p>其中LVMID是进程id，interval是打印间隔时间（毫秒），count是打印次数（默认一直打印）</p>
+    <content><![CDATA[<h5 id="查看gc情况"><a href="#查看gc情况" class="headerlink" title="查看gc情况"></a>查看gc情况</h5><p>jstat -<option> [-t] [-h<lines>] <vmid> [<interval> [<count>]]</p>
+<p>其中vmid是进程id，interval是打印间隔时间（毫秒），count是打印次数（默认一直打印），-t是打印jvm运行时间，-h是每隔多少行打印表头</p>
 <p>option参数解释：</p>
-<p>-gc 垃圾回收堆的行为统计</p>
-<p>-gccapacity 各个垃圾回收代容量(young,old,perm)和他们相应的空间统计</p>
-<p>-gcutil 垃圾回收统计概述</p>
-<p>-gcnew 新生代行为统计</p>
-<p>-gcold 年老代和永生代行为统计</p>
+<ul>
+<li>-gc：显示与GC相关的堆信息。包括Eden区、两个Survivor区、老年代、永久代等的容量、已用空间、GC时间合计等信息。</li>
+<li>-gccapacity：显示内容与-gc基本相同，但输出主要关注Java堆各个区域使用到的最大、最小空间。</li>
+<li>-gcutil：显示内容与-gc基本相同，但输出主要关注已使用空间占总空间的百分比。</li>
+<li>-gccause：与-gcutil功能一样，但是会额外输出导致最后一次或当前正在发生的GC产生的原因。</li>
+<li>-gcnew：显示新生代GC状况</li>
+<li>-gcnewcapacity：显示内容与-gcnew基本相同，输出主要关注使用到的最大、最小空间</li>
+<li>-geold：显示老年代GC状况</li>
+<li>-gcoldcapacity：显示内容与-gcold基本相同，输出主要关注使用到的最大、最小空间</li>
+<li>-gcpermcapacity:显示永久代使用到的最大、最小空间。</li>
+<li>-gcmetacapacity:显示元空间使用到的最大、最小空间</li>
+<li>-class：显示ClassLoader的相关信息：类的装载、卸载数量、总空间、类装载所消耗的时间等</li>
+<li>-compiler：显示JIT编译器编译过的方法、耗时等信息</li>
+<li>-printcompilation：输出已经被JIT编译的方法</li>
+</ul>
 <p>比如：jstat -gcutil pid 1000 1000</p>
-<h5 id="查看内存使用情况"><a href="#查看内存使用情况" class="headerlink" title="查看内存使用情况"></a>查看内存使用情况</h5><p>jmap -heap pid</p>
-<p>jmap -dump:format&#x3D;b,file&#x3D;&lt;文件名&gt; &lt;进程ID&gt;</p>
-<p>jamp在jdk9就被取消（改为jhsdb，像以下方法使用）</p>
+<h5 id="查看内存使用情况"><a href="#查看内存使用情况" class="headerlink" title="查看内存使用情况"></a>查看内存使用情况</h5><ul>
+<li>jmap [option] <pid></li>
+<li>jmap [option] &lt;executable <core></li>
+<li>jmap [option] [server_id@]<remote server IP or hostname></li>
+</ul>
+<p>option参数解释：</p>
+<ul>
+<li>-dump:生成dump文件</li>
+<li>-finalizerinfo:显示在F-1ueue中等待Finalizer线程执行finalize方法的对象</li>
+<li>-heap:输出整个堆空间的详细信息，包括GC的使用，堆配置信息，以及内存的使用信息等</li>
+<li>-histo:输出堆空间中对象的统计信息，包括类、实例数量和合计容量</li>
+<li>-permstat:以ClassLoader为统计口径输出永久代的内存状态信息</li>
+<li>-F:当虚拟机进程堆-dump选项没有任何响应时，强制执行生成dump文件</li>
+</ul>
+<p>jmap -heap pid:查看当前内存各区域大小</p>
+<p>jmap -dump:live,format&#x3D;b,file&#x3D;&lt;文件名&gt; &lt;进程ID&gt;:将当前存活的对象dump到文件，会触发full gc</p>
+<p>jmap -histo:live <pid>:打印每个class的实例数目，内存占用，类全名信息。live子参数加上后，只统计活的对象数量，此时会触发Full GC</p>
+<p>jcmd 51716 GC.heap_info</p>
+<p>jmap在jdk9就被取消（改为jhsdb，像以下方法使用）</p>
 <p>jhsdb jmap  –heap –pid  37340</p>
 <p>jhsdb jmap  –pid  37288</p>
 <p>jhsdb jmap  –histo –pid  37340</p>
 <p>jhsdb jmap  –binaryheap –pid  37340</p>
-<h5 id="堆栈信息（jvm线程快照）"><a href="#堆栈信息（jvm线程快照）" class="headerlink" title="堆栈信息（jvm线程快照）"></a>堆栈信息（jvm线程快照）</h5><p>jstack [-l] pid</p>
+<h5 id="堆栈信息（jvm堆栈信息-线程快照）"><a href="#堆栈信息（jvm堆栈信息-线程快照）" class="headerlink" title="堆栈信息（jvm堆栈信息 线程快照）"></a>堆栈信息（jvm堆栈信息 线程快照）</h5><p>jstack [option] pid</p>
 <p>option参数解释：</p>
-<p>-F 当使用jstack pid无响应时，强制输出线程堆栈。</p>
-<p>-m 同时输出java和本地堆栈(混合模式)</p>
-<p>-l 额外显示锁信息</p>
+<ul>
+<li><p>-F 当使用jstack pid无响应时，强制输出线程堆栈。</p>
+</li>
+<li><p>-m 同时输出java和本地堆栈(混合模式)</p>
+</li>
+<li><p>-l 除了堆栈外，额外显示锁信息</p>
+</li>
+</ul>
 <p>比如：jstack -l pid</p>
-<h5 id="查看jvm参数"><a href="#查看jvm参数" class="headerlink" title="查看jvm参数"></a>查看jvm参数</h5><p>jinfo pid</p>
-<p>jinfo -flags pid</p>
+<p>在thread dump中，要留意下面几种状态 </p>
+<ul>
+<li>死锁，Deadlock（重点关注） </li>
+<li>等待资源，Waiting on condition（重点关注） </li>
+<li>等待获取监视器，Waiting on monitor entry（重点关注） </li>
+<li>阻塞，Blocked（重点关注） </li>
+<li>执行中，Runnable</li>
+<li>暂停，Suspended</li>
+<li>对象等待中，Object.wait() 或 TIMED_WAITING</li>
+<li>停止，Parked</li>
+</ul>
+<h5 id="查看、修改jvm参数"><a href="#查看、修改jvm参数" class="headerlink" title="查看、修改jvm参数"></a>查看、修改jvm参数</h5><p>jinfo  [ options ] pid</p>
+<p>option参数解释：</p>
+<ul>
+<li>no option:输出全部的参数和系统属性</li>
+<li>-flag name:输出对应名称的参数</li>
+<li>-flag [+-]name:开启或关闭对应名称的参数，只有被标记为manageable的参数才可以被动态修改</li>
+<li>-flag name&#x3D;value:设定对应名称的参数</li>
+<li>-flags:输出全部的参数</li>
+<li>-sysprops:输出系统属性，可以查看由System.getProperties()取得的参数</li>
+</ul>
+<p>java -XX:+PrintCommandLineFlags:查看那些已经被用户或者VM设置过的详细的XX参数的名称和值</p>
+<p>java -XX:+PrintFlagsInitial:查看所有VM参数启动的初始值</p>
+<p>java -XX:+PrintFlagsFinal:查看所有VM参数的最终值</p>
 <h5 id="输出jar包路径，类全名"><a href="#输出jar包路径，类全名" class="headerlink" title="输出jar包路径，类全名"></a>输出jar包路径，类全名</h5><p>jps -l</p>
 <h5 id="输出main参数"><a href="#输出main参数" class="headerlink" title="输出main参数"></a>输出main参数</h5><p>jps -m</p>
 <h5 id="输出相关进程启动参数"><a href="#输出相关进程启动参数" class="headerlink" title="输出相关进程启动参数"></a>输出相关进程启动参数</h5><p>jps -v</p>
-<h5 id="查看内存使用情况-1"><a href="#查看内存使用情况-1" class="headerlink" title="查看内存使用情况"></a>查看内存使用情况</h5><p>jcmd 51716 GC.heap_info</p>
 ]]></content>
       <categories>
         <category>JVM</category>
@@ -2480,7 +2544,12 @@
     <url>/2021/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Linux%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h5 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h5><p>useradd  zhouhj</p>
 <h5 id="免交互给用户设置密码"><a href="#免交互给用户设置密码" class="headerlink" title="免交互给用户设置密码"></a>免交互给用户设置密码</h5><p>echo 123456|passwd –stdin zhouhj &#x2F;&#x2F;将zhouhj用户密码设置为123456</p>
+<h5 id="查看密码有效期"><a href="#查看密码有效期" class="headerlink" title="查看密码有效期"></a>查看密码有效期</h5><p>chage -l username</p>
+<h5 id="修改密码有效期为永久"><a href="#修改密码有效期为永久" class="headerlink" title="修改密码有效期为永久"></a>修改密码有效期为永久</h5><p>chage -M 99999 username</p>
 <h5 id="将zhouhj用户添加到hadoop组"><a href="#将zhouhj用户添加到hadoop组" class="headerlink" title="将zhouhj用户添加到hadoop组"></a>将zhouhj用户添加到hadoop组</h5><p>usermod -a -G hadoop zhouhj</p>
+<h5 id="查看用户属于哪个组"><a href="#查看用户属于哪个组" class="headerlink" title="查看用户属于哪个组"></a>查看用户属于哪个组</h5><p>groups zhouhj</p>
+<h5 id="查看系统有哪些用户"><a href="#查看系统有哪些用户" class="headerlink" title="查看系统有哪些用户"></a>查看系统有哪些用户</h5><p>cat &#x2F;etc&#x2F;passwd</p>
+<h5 id="查看用户信息"><a href="#查看用户信息" class="headerlink" title="查看用户信息"></a>查看用户信息</h5><p>id zhouhj</p>
 <h5 id="删除空文件"><a href="#删除空文件" class="headerlink" title="删除空文件"></a>删除空文件</h5><p>find . -type f -empty -delete</p>
 <h5 id="合并一个目录下的所有文件"><a href="#合并一个目录下的所有文件" class="headerlink" title="合并一个目录下的所有文件"></a>合并一个目录下的所有文件</h5><p>find . ! -name merged_file.txt |xargs -t -i cat {}&gt;&gt; merged_file.txt</p>
 <h5 id="查看网络端口使用情况"><a href="#查看网络端口使用情况" class="headerlink" title="查看网络端口使用情况"></a>查看网络端口使用情况</h5><p>netstat -tunlp</p>
@@ -2539,6 +2608,10 @@
 <p>不需要重启主机，退出当前窗口，重新登录即可</p>
 <h5 id="切换用户执行命令"><a href="#切换用户执行命令" class="headerlink" title="切换用户执行命令"></a>切换用户执行命令</h5><p>sudo su zhouhj -l -c ‘hdfs dfsadmin -safemode enter’</p>
 <h5 id="shell编码转换"><a href="#shell编码转换" class="headerlink" title="shell编码转换"></a>shell编码转换</h5><p>dos2unix your_script_or_file</p>
+<h5 id="查看主机字符集"><a href="#查看主机字符集" class="headerlink" title="查看主机字符集"></a>查看主机字符集</h5><p>locale</p>
+<h5 id="vim里查看隐藏字符"><a href="#vim里查看隐藏字符" class="headerlink" title="vim里查看隐藏字符"></a>vim里查看隐藏字符</h5><h6 id="显示"><a href="#显示" class="headerlink" title="显示"></a>显示</h6><p>:set list</p>
+<h6 id="隐藏"><a href="#隐藏" class="headerlink" title="隐藏"></a>隐藏</h6><p>:set nolist</p>
+<h5 id="vim里忽略大小写查找"><a href="#vim里忽略大小写查找" class="headerlink" title="vim里忽略大小写查找"></a>vim里忽略大小写查找</h5><p>?error\c</p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -2707,7 +2780,7 @@
 <p>list_namespace_tables  ‘ns1’</p>
 <p>查看所有表</p>
 <p>list</p>
-<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="string">&#x27;UD:TEST_CREATE&#x27;</span>,&#123;NAME <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;F&#x27;</span>, VERSIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>,BLOOMFILTER <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;ROW&#x27;</span>,TTL <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FOREVER&#x27;</span>, BLOCKSIZE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;65536&#x27;</span>, DATA_BLOCK_ENCODING <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FAST_DIFF&#x27;</span>, IN_MEMORY <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;false&#x27;</span>,BLOCKCACHE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;true&#x27;</span>, COMPRESSION <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,METADATA <span class="operator">=</span><span class="operator">&gt;</span> &#123;<span class="string">&#x27;COMPRESSION_COMPACT&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,<span class="string">&#x27;IN_MEMORY_COMPACTION&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;BASIC&#x27;</span>&#125;&#125;, &#123;NUMREGIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">10</span>, SPLITALGO <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;HexStringSplit&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;column_family&#x27;</span></span><br></pre></td></tr></table></figure>
+<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="string">&#x27;SYSTEM.CATALOG&#x27;</span>,&#123;NAME <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;F&#x27;</span>, VERSIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>,BLOOMFILTER <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;ROW&#x27;</span>,TTL <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FOREVER&#x27;</span>, BLOCKSIZE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;65536&#x27;</span>, DATA_BLOCK_ENCODING <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FAST_DIFF&#x27;</span>, IN_MEMORY <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;false&#x27;</span>,BLOCKCACHE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;true&#x27;</span>, COMPRESSION <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,METADATA <span class="operator">=</span><span class="operator">&gt;</span> &#123;<span class="string">&#x27;COMPRESSION_COMPACT&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,<span class="string">&#x27;IN_MEMORY_COMPACTION&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;BASIC&#x27;</span>&#125;&#125;, &#123;NUMREGIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>, SPLITALGO <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;HexStringSplit&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;column_family&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">put <span class="string">&#x27;UD:TEST_CREATE&#x27;</span>, <span class="string">&#x27;row1&#x27;</span>, <span class="string">&#x27;F:NAME&#x27;</span>, <span class="string">&#x27;zs&#x27;</span></span><br></pre></td></tr></table></figure>
 
@@ -3028,6 +3101,23 @@
         <tag>HBase</tag>
         <tag>常用命令</tag>
         <tag>HBCK</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>GenericObjectPool池化技术</title>
+    <url>/2024/Java/GenericObjectPool%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF/</url>
+    <content><![CDATA[<h2 id="引入依赖"><a href="#引入依赖" class="headerlink" title="引入依赖"></a>引入依赖</h2><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-pool2<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.12.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建工厂类"><a href="#创建工厂类" class="headerlink" title="创建工厂类"></a>创建工厂类</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">FileSystemFactory</span> <span class="keyword">extends</span> <span class="title class_">BasePooledObjectFactory</span>&lt;FileSystem&gt; &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> FileSystem <span class="title function_">create</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> FileSystem.get(<span class="keyword">new</span> <span class="title class_">Configuration</span>());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> PooledObject&lt;FileSystem&gt; <span class="title function_">wrap</span><span class="params">(FileSystem fileSystem)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">DefaultPooledObject</span>&lt;&gt;(fileSystem);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">destroyObject</span><span class="params">(PooledObject&lt;FileSystem&gt; p)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">FileSystem</span> <span class="variable">object</span> <span class="operator">=</span> p.getObject();</span><br><span class="line">        object.close();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建GenericObjectPool"><a href="#创建GenericObjectPool" class="headerlink" title="创建GenericObjectPool"></a>创建GenericObjectPool</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">GenericObjectPoolConfig&lt;FileSystem&gt; genericObjectPoolConfig = <span class="keyword">new</span> <span class="title class_">GenericObjectPoolConfig</span>&lt;&gt;();</span><br><span class="line">genericObjectPoolConfig.setMaxTotal(<span class="number">20</span>);</span><br><span class="line">genericObjectPoolConfig.setMinIdle(<span class="number">10</span>);</span><br><span class="line">genericObjectPoolConfig.setTestOnBorrow(<span class="literal">false</span>);</span><br><span class="line">genericObjectPoolConfig.setTestOnReturn(<span class="literal">true</span>);</span><br><span class="line">genericObjectPoolConfig.setTestWhileIdle(<span class="literal">true</span>);</span><br><span class="line"></span><br><span class="line"><span class="type">FileSystemFactory</span> <span class="variable">fileSystemFactory</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileSystemFactory</span>();</span><br><span class="line">GenericObjectPool&lt;FileSystem&gt; fileSystemPool=<span class="keyword">new</span> <span class="title class_">GenericObjectPool</span>&lt;&gt;(fileSystemFactory);</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用GenericObjectPool"><a href="#使用GenericObjectPool" class="headerlink" title="使用GenericObjectPool"></a>使用GenericObjectPool</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">FileSystem</span> <span class="variable">fileSystem</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    fileSystem = fileSystemPool.borrowObject();</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    log.error(<span class="string">&quot;borrow fileSystem from fileSystemPool error&quot;</span>, e);</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (fileSystem != <span class="literal">null</span>) &#123;</span><br><span class="line">        fileSystemPool.returnObject(fileSystem);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>池化</tag>
       </tags>
   </entry>
 </search>

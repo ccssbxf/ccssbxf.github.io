@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="HBase," />
+  <meta name="keywords" content="HBase,Hive," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="一：新增节点注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下 1.拷贝集群原有节点的HBase包到新节点相同路径下 2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上 3.在新节点启动HBase 1hbase-d">
+<meta name="description" content="Hive与HBase关联表有两种形式，一种是内部表，一种是外部表。 一：内部表（不推荐）当HBase表不存在时，使用建Hive内部表的形式创建表，会自动在HBase里创建出表。 12345CREATE TABLE TEST.GGSUM (key string, tg string, fg string)STORED BY &amp;#x27;org.apache.hadoop.hive.hbase.HBa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="HBase在线动态新增节点、删除节点">
-<meta property="og:url" content="https://wwsbd.gitee.io/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/index.html">
+<meta property="og:title" content="Hive与HBase关联表">
+<meta property="og:url" content="https://wwsbd.gitee.io/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hive%E4%B8%8EHBase%E5%85%B3%E8%81%94%E8%A1%A8/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="一：新增节点注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下 1.拷贝集群原有节点的HBase包到新节点相同路径下 2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上 3.在新节点启动HBase 1hbase-d">
+<meta property="og:description" content="Hive与HBase关联表有两种形式，一种是内部表，一种是外部表。 一：内部表（不推荐）当HBase表不存在时，使用建Hive内部表的形式创建表，会自动在HBase里创建出表。 12345CREATE TABLE TEST.GGSUM (key string, tg string, fg string)STORED BY &amp;#x27;org.apache.hadoop.hive.hbase.HBa">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-07-21T14:30:56.000Z">
-<meta property="article:modified_time" content="2024-04-25T03:28:16.108Z">
+<meta property="article:published_time" content="2024-08-26T07:16:48.000Z">
+<meta property="article:modified_time" content="2024-08-26T07:57:48.824Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="HBase">
+<meta property="article:tag" content="Hive">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="https://wwsbd.gitee.io/2022/大数据/HBase在线动态新增节点、删除节点/"/>
+  <link rel="canonical" href="https://wwsbd.gitee.io/2024/大数据/Hive与HBase关联表/"/>
 
 
 
 <meta name="baidu-site-verification" content="code-rwSzNFPlRv" />
 
-  <title>HBase在线动态新增节点、删除节点 | 万万使不得</title>
+  <title>Hive与HBase关联表 | 万万使不得</title>
   
 
 
@@ -297,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/HBase%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/">
+    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hive%E4%B8%8EHBase%E5%85%B3%E8%81%94%E8%A1%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="">
@@ -314,7 +315,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">HBase在线动态新增节点、删除节点</h1>
+          <h1 class="post-title" itemprop="name headline">Hive与HBase关联表</h1>
         
 
         <div class="post-meta">
@@ -326,8 +327,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-07-21T22:30:56+08:00">
-                2022-07-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-08-26T15:16:48+08:00">
+                2024-08-26
               </time>
             
 
@@ -386,28 +387,46 @@
       
 
       
-        <h2 id="一：新增节点"><a href="#一：新增节点" class="headerlink" title="一：新增节点"></a>一：新增节点</h2><p>注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下</p>
-<p>1.拷贝集群原有节点的HBase包到新节点相同路径下</p>
-<p>2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上</p>
-<p>3.在新节点启动HBase</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hbase-daemon.sh start regionserver</span><br></pre></td></tr></table></figure>
+        <p>Hive与HBase关联表有两种形式，一种是内部表，一种是外部表。</p>
+<h2 id="一：内部表（不推荐）"><a href="#一：内部表（不推荐）" class="headerlink" title="一：内部表（不推荐）"></a>一：内部表（不推荐）</h2><p>当HBase表不存在时，使用建Hive内部表的形式创建表，会自动在HBase里创建出表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEST.GGSUM (key string, tg string, fg string)</span><br><span class="line">STORED <span class="keyword">BY</span> <span class="string">&#x27;org.apache.hadoop.hive.hbase.HBaseStorageHandler&#x27;</span> </span><br><span class="line"><span class="keyword">WITH</span> SERDEPROPERTIES </span><br><span class="line">(&quot;hbase.columns.mapping&quot; <span class="operator">=</span> &quot;:key,info:23g,info:4g&quot;)</span><br><span class="line">TBLPROPERTIES(&quot;hbase.table.name&quot; <span class="operator">=</span> &quot;TEST:GGSUM&quot;)</span><br></pre></td></tr></table></figure>
 
-<p>4.查看HBase集群状态</p>
-<p>进入hbase shell，执行status查看状态，可以看到新节点已加入集群</p>
-<p>5.数据平衡</p>
-<p>hbase shell里执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br><span class="line">（下面这个是手动触发避免业务高峰期执行）</span><br><span class="line">balancer</span><br></pre></td></tr></table></figure>
+<p>内部表有个弊端，当删除Hive表时，HBase里的表会同时被删除。</p>
+<h2 id="二：外部表"><a href="#二：外部表" class="headerlink" title="二：外部表"></a>二：外部表</h2><p>当HBase表已存在，使用建Hive外部表的形式创建表，只会映射出HBase表与Hive表的关联关系。此时删除Hive表，HBase表不受影响。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> TEST.GGSUM_NEW (key string, tg string, fg string)</span><br><span class="line">STORED <span class="keyword">BY</span> <span class="string">&#x27;org.apache.hadoop.hive.hbase.HBaseStorageHandler&#x27;</span> </span><br><span class="line"><span class="keyword">WITH</span> SERDEPROPERTIES </span><br><span class="line">(&quot;hbase.columns.mapping&quot; <span class="operator">=</span> &quot;:key,info:23g,info:4g&quot;)</span><br><span class="line">TBLPROPERTIES(&quot;hbase.table.name&quot; <span class="operator">=</span> &quot;TEST:GGSUM&quot;)</span><br></pre></td></tr></table></figure>
 
-<p>等命令执行完成，新加入的节点上已经有region，可以通过HBase管理页面看到</p>
-<h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>1.在要下线的节点（比如我这里下线hadoop104），在hadoop104执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graceful_stop.sh hadoop104</span><br></pre></td></tr></table></figure>
+<p>建内部表、外部表语法上的差别就是CREATE后面是否加了EXTERNAL。</p>
+<h2 id="三：内部表外部表转换"><a href="#三：内部表外部表转换" class="headerlink" title="三：内部表外部表转换"></a>三：内部表外部表转换</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">内转外</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> TABLENAME <span class="keyword">set</span> TBLPROPERTIES (<span class="string">&#x27;EXTERNAL&#x27;</span><span class="operator">=</span><span class="string">&#x27;TRUE&#x27;</span>);</span><br><span class="line"></span><br><span class="line">外转内</span><br><span class="line"><span class="keyword">alter</span> <span class="keyword">table</span> TABLENAME <span class="keyword">set</span> TBLPROPERTIES (<span class="string">&#x27;EXTERNAL&#x27;</span><span class="operator">=</span><span class="string">&#x27;FALSE&#x27;</span>);</span><br></pre></td></tr></table></figure>
 
-<p>该命令会自动关闭 Load Balancer（banlance_switch），然后转移该 regionserver 维护的 region 到其他节点，将该节点关闭。除此之外，你还可以查看 remove 的过程，已经 assigned 了多少个 Region，还剩多少个 Region，每个 Region 的 Assigned 耗时，最终完成之后需要手动打开 load balancer [hbase shell 执行banlance_switch true]</p>
-<p>2.删除&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件里的相应节点</p>
-<p>3.启用负载平衡器</p>
-<p>hbase shell里执行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br></pre></td></tr></table></figure>
+<p>当内外部表转换之后，会拥有另一方的特性。</p>
+<p>比如当内部表转换为外部表后，此时再去删除这张表的话，HBase里的表不会被删除。</p>
+<h2 id="四：字段管理"><a href="#四：字段管理" class="headerlink" title="四：字段管理"></a>四：字段管理</h2><p>使用基本添加字段的语法添加字段时，会报错</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">hive (test)&gt; alter table ggsum add columns (vg string);</span><br><span class="line">22612321 [d691741c-dd84-456a-ac11-039d0f64679b main] ERROR hive.ql.exec.DDLTask  - Failed</span><br><span class="line">java.lang.IllegalArgumentException: Error: type expected at the position 0 of &#x27;&lt;derived from deserializer&gt;:&lt;derived from deserializer&gt;:&lt;derived from deserializer&gt;:string&#x27; but &#x27;&lt;&#x27; is found.</span><br><span class="line">        at org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils$TypeInfoParser.expect(TypeInfoUtils.java:401)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils$TypeInfoParser.expect(TypeInfoUtils.java:384)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils$TypeInfoParser.parseType(TypeInfoUtils.java:445)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils$TypeInfoParser.parseTypeInfos(TypeInfoUtils.java:358)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils.getTypeInfosFromTypeString(TypeInfoUtils.java:848)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.lazy.LazySerDeParameters.extractColumnInfo(LazySerDeParameters.java:163)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.lazy.LazySerDeParameters.&lt;init&gt;(LazySerDeParameters.java:92)</span><br><span class="line">        at org.apache.hadoop.hive.hbase.HBaseSerDeParameters.&lt;init&gt;(HBaseSerDeParameters.java:97)</span><br><span class="line">        at org.apache.hadoop.hive.hbase.HBaseSerDe.initialize(HBaseSerDe.java:125)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.AbstractSerDe.initialize(AbstractSerDe.java:54)</span><br><span class="line">        at org.apache.hadoop.hive.serde2.SerDeUtils.initializeSerDe(SerDeUtils.java:540)</span><br><span class="line">        at org.apache.hadoop.hive.metastore.HiveMetaStoreUtils.getDeserializer(HiveMetaStoreUtils.java:90)</span><br><span class="line">        at org.apache.hadoop.hive.metastore.HiveMetaStoreUtils.getDeserializer(HiveMetaStoreUtils.java:77)</span><br><span class="line">        at org.apache.hadoop.hive.ql.metadata.Table.getDeserializerFromMetaStore(Table.java:289)</span><br><span class="line">        at org.apache.hadoop.hive.ql.metadata.Table.checkValidity(Table.java:210)</span><br><span class="line">        at org.apache.hadoop.hive.ql.exec.DDLTask.alterTable(DDLTask.java:3955)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
+<p>查阅网上资料，没找到Hive与HBase关联表添加字段的语法（可能是我找的不充分，如果有知道的，可不可以告诉我一下，十分感谢）。</p>
+<p>另辟蹊径：</p>
+<p>方法一：删表重建</p>
+<p>由于删除外部表不影响HBase表，因此可以将Hive外部表删除，再创建包含新字段的表。如果是内部表，需要先转换为外部表。</p>
+<p>方法二：使用新表名</p>
+<p>本来想把原来的表改名，再重新建表。但是由于是Hive与HBase的关联表，不允许修改表名。因此只能直接新建表，使用新表名。比如使用ggsum_new的表，新增vg字段。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">EXTERNAL</span> <span class="keyword">TABLE</span> TEST.GGSUM_NEW (key string, tg string, fg string,vg string)</span><br><span class="line">STORED <span class="keyword">BY</span> <span class="string">&#x27;org.apache.hadoop.hive.hbase.HBaseStorageHandler&#x27;</span> </span><br><span class="line"><span class="keyword">WITH</span> SERDEPROPERTIES </span><br><span class="line">(&quot;hbase.columns.mapping&quot; <span class="operator">=</span> &quot;:key,info:23g,info:4g,info:5g&quot;)</span><br><span class="line">TBLPROPERTIES(&quot;hbase.table.name&quot; <span class="operator">=</span> &quot;TEST:GGSUM&quot;)</span><br></pre></td></tr></table></figure>
+
+<p>要注意这里映射的还是HBase里的GGSUM表，只是Hive里的表名变了。</p>
+<p>方法三：修改Hive元数据</p>
+<p>我这里Hive元数据在MySQL里存着。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> use hive;</span><br><span class="line">Reading <span class="keyword">table</span> information <span class="keyword">for</span> completion <span class="keyword">of</span> <span class="keyword">table</span> <span class="keyword">and</span> <span class="keyword">column</span> names</span><br><span class="line">You can turn off this feature <span class="keyword">to</span> <span class="keyword">get</span> a quicker startup <span class="keyword">with</span> <span class="operator">-</span>A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">SELECT</span> t.TBL_ID <span class="keyword">FROM</span> DBS d <span class="keyword">left</span> <span class="keyword">join</span> TBLS t <span class="keyword">on</span>  d.DB_ID <span class="operator">=</span>t.DB_ID <span class="keyword">WHERE</span> d.NAME <span class="operator">=</span> <span class="string">&#x27;test&#x27;</span> <span class="keyword">and</span> t.TBL_NAME <span class="operator">=</span><span class="string">&#x27;ggsum&#x27;</span>;</span><br><span class="line"><span class="operator">+</span><span class="comment">--------+</span></span><br><span class="line"><span class="operator">|</span> TBL_ID <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------+</span></span><br><span class="line"><span class="operator">|</span>     <span class="number">22</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">--------+</span></span><br><span class="line"><span class="number">1</span> <span class="type">row</span> <span class="keyword">in</span> <span class="keyword">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到tableid为22，通过tableid再去关联出Hive表的列和HBase的映射列。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> COLUMNS_V2 <span class="keyword">WHERE</span> CD_ID <span class="operator">=</span> <span class="number">22</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> INTEGER_IDX ;</span><br><span class="line"><span class="operator">+</span><span class="comment">-------+---------+-------------+-----------+-------------+</span></span><br><span class="line"><span class="operator">|</span> CD_ID <span class="operator">|</span> comment <span class="operator">|</span> COLUMN_NAME <span class="operator">|</span> TYPE_NAME <span class="operator">|</span> INTEGER_IDX <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------+---------+-------------+-----------+-------------+</span></span><br><span class="line"><span class="operator">|</span>    <span class="number">22</span> <span class="operator">|</span> <span class="keyword">NULL</span>    <span class="operator">|</span> key         <span class="operator">|</span> string    <span class="operator">|</span>           <span class="number">0</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>    <span class="number">22</span> <span class="operator">|</span> <span class="keyword">NULL</span>    <span class="operator">|</span> tg          <span class="operator">|</span> string    <span class="operator">|</span>           <span class="number">1</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>    <span class="number">22</span> <span class="operator">|</span> <span class="keyword">NULL</span>    <span class="operator">|</span> fg          <span class="operator">|</span> string    <span class="operator">|</span>           <span class="number">2</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------+---------+-------------+-----------+-------------+</span></span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> SERDE_PARAMS <span class="keyword">WHERE</span> SERDE_ID <span class="operator">=</span><span class="number">22</span>;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+-----------------------+-----------------------+</span></span><br><span class="line"><span class="operator">|</span> SERDE_ID <span class="operator">|</span> PARAM_KEY             <span class="operator">|</span> PARAM_VALUE           <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+-----------------------+-----------------------+</span></span><br><span class="line"><span class="operator">|</span>       <span class="number">22</span> <span class="operator">|</span> hbase.columns.mapping <span class="operator">|</span> :key,info:<span class="number">23</span>g,info:<span class="number">4</span>g <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       <span class="number">22</span> <span class="operator">|</span> serialization.format  <span class="operator">|</span> <span class="number">1</span>                     <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+-----------------------+-----------------------+</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>从中得到之前建表时指定的Hive列名以及与HBase列名之间的映射关系。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">INSERT</span> <span class="keyword">INTO</span> COLUMNS_V2 <span class="keyword">VALUES</span>(<span class="number">22</span>,<span class="keyword">null</span>,<span class="string">&#x27;vg&#x27;</span>,<span class="string">&#x27;string&#x27;</span>,<span class="number">3</span>);</span><br><span class="line">Query OK, <span class="number">1</span> <span class="type">row</span> affected (<span class="number">0.04</span> sec)</span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> COLUMNS_V2 <span class="keyword">WHERE</span> CD_ID <span class="operator">=</span> <span class="number">22</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> INTEGER_IDX ;</span><br><span class="line"><span class="operator">+</span><span class="comment">-------+---------+-------------+-----------+-------------+</span></span><br><span class="line"><span class="operator">|</span> CD_ID <span class="operator">|</span> comment <span class="operator">|</span> COLUMN_NAME <span class="operator">|</span> TYPE_NAME <span class="operator">|</span> INTEGER_IDX <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------+---------+-------------+-----------+-------------+</span></span><br><span class="line"><span class="operator">|</span>    <span class="number">22</span> <span class="operator">|</span> <span class="keyword">NULL</span>    <span class="operator">|</span> key         <span class="operator">|</span> string    <span class="operator">|</span>           <span class="number">0</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>    <span class="number">22</span> <span class="operator">|</span> <span class="keyword">NULL</span>    <span class="operator">|</span> tg          <span class="operator">|</span> string    <span class="operator">|</span>           <span class="number">1</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>    <span class="number">22</span> <span class="operator">|</span> <span class="keyword">NULL</span>    <span class="operator">|</span> fg          <span class="operator">|</span> string    <span class="operator">|</span>           <span class="number">2</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>    <span class="number">22</span> <span class="operator">|</span> <span class="keyword">NULL</span>    <span class="operator">|</span> vg          <span class="operator">|</span> string    <span class="operator">|</span>           <span class="number">3</span> <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">-------+---------+-------------+-----------+-------------+</span></span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">UPDATE</span> SERDE_PARAMS <span class="keyword">SET</span> PARAM_VALUE<span class="operator">=</span><span class="string">&#x27;:key,info:23g,info:4g,info:5g&#x27;</span> <span class="keyword">WHERE</span> SERDE_ID <span class="operator">=</span><span class="number">22</span> <span class="keyword">and</span> PARAM_KEY <span class="operator">=</span><span class="string">&#x27;hbase.columns.mapping&#x27;</span>;</span><br><span class="line">Query OK, <span class="number">0</span> <span class="keyword">rows</span> affected (<span class="number">0.00</span> sec)</span><br><span class="line"><span class="keyword">Rows</span> matched: <span class="number">1</span>  Changed: <span class="number">0</span>  Warnings: <span class="number">0</span></span><br><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> SERDE_PARAMS <span class="keyword">WHERE</span> SERDE_ID <span class="operator">=</span><span class="number">22</span>;</span><br><span class="line"><span class="operator">+</span><span class="comment">----------+-----------------------+-------------------------------+</span></span><br><span class="line"><span class="operator">|</span> SERDE_ID <span class="operator">|</span> PARAM_KEY             <span class="operator">|</span> PARAM_VALUE                   <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+-----------------------+-------------------------------+</span></span><br><span class="line"><span class="operator">|</span>       <span class="number">22</span> <span class="operator">|</span> hbase.columns.mapping <span class="operator">|</span> :key,info:<span class="number">23</span>g,info:<span class="number">4</span>g,info:<span class="number">5</span>g <span class="operator">|</span></span><br><span class="line"><span class="operator">|</span>       <span class="number">22</span> <span class="operator">|</span> serialization.format  <span class="operator">|</span> <span class="number">1</span>                             <span class="operator">|</span></span><br><span class="line"><span class="operator">+</span><span class="comment">----------+-----------------------+-------------------------------+</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>此时元数据已修改，再去Hive进行查询</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hive (test)<span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> ggsum;</span><br><span class="line">OK</span><br><span class="line">ggsum.key       ggsum.tg        ggsum.fg        ggsum.vg</span><br><span class="line"><span class="number">15257842993</span>     <span class="number">200.0</span>   <span class="number">0.0</span>     <span class="number">200.0</span></span><br><span class="line"><span class="number">15257849521</span>     <span class="number">0.0</span>     <span class="number">100.0</span>   <span class="number">300.0</span></span><br><span class="line"><span class="type">Time</span> taken: <span class="number">0.615</span> seconds, Fetched: <span class="number">2</span> <span class="type">row</span>(s)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>添加列成功</p>
+<p>删除Hive表字段或修改列名等操作同新增列操作。</p>
 
       
     </div>
@@ -427,6 +446,8 @@
           
             <a href="/tags/HBase/" rel="tag"># HBase</a>
           
+            <a href="/tags/Hive/" rel="tag"># Hive</a>
+          
         </div>
       
 
@@ -438,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%E5%9C%A8%E7%BA%BF%E5%8A%A8%E6%80%81%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9%E3%80%81%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9/" rel="next" title="Hadoop在线动态新增节点、删除节点">
-                <i class="fa fa-chevron-left"></i> Hadoop在线动态新增节点、删除节点
+              <a href="/2024/Java/GenericObjectPool%E6%B1%A0%E5%8C%96%E6%8A%80%E6%9C%AF/" rel="next" title="GenericObjectPool池化技术">
+                <i class="fa fa-chevron-left"></i> GenericObjectPool池化技术
               </a>
             
           </div>
@@ -447,10 +468,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2022/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hadoop%20HA%E9%9B%86%E7%BE%A4%E4%B8%A4%E4%B8%AANameNode%E9%83%BD%E6%98%AFstandby%E7%8A%B6%E6%80%81/" rel="prev" title="Hadoop HA集群两个NameNode都是standby状态">
-                Hadoop HA集群两个NameNode都是standby状态 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -585,7 +602,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E6%96%B0%E5%A2%9E%E8%8A%82%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">一：新增节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">二：删除节点</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%EF%BC%9A%E5%86%85%E9%83%A8%E8%A1%A8%EF%BC%88%E4%B8%8D%E6%8E%A8%E8%8D%90%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">一：内部表（不推荐）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%EF%BC%9A%E5%A4%96%E9%83%A8%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">二：外部表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%EF%BC%9A%E5%86%85%E9%83%A8%E8%A1%A8%E5%A4%96%E9%83%A8%E8%A1%A8%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.</span> <span class="nav-text">三：内部表外部表转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%EF%BC%9A%E5%AD%97%E6%AE%B5%E7%AE%A1%E7%90%86"><span class="nav-number">4.</span> <span class="nav-text">四：字段管理</span></a></li></ol></div>
             
 
           </div>

@@ -3600,4 +3600,43 @@
         <tag>Hive</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Windows使用火狐访问开启Kerberos的Hadoop集群页面</title>
+    <url>/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Windows%E4%BD%BF%E7%94%A8%E7%81%AB%E7%8B%90%E8%AE%BF%E9%97%AE%E5%BC%80%E5%90%AFKerberos%E7%9A%84Hadoop%E9%9B%86%E7%BE%A4%E9%A1%B5%E9%9D%A2/</url>
+    <content><![CDATA[<p>目前只有火狐浏览器支持Kerberos。</p>
+<h2 id="安装MIT-Kerberos"><a href="#安装MIT-Kerberos" class="headerlink" title="安装MIT Kerberos"></a>安装MIT Kerberos</h2><p>32位：<a href="http://web.mit.edu/kerberos/dist/kfw/4.1/kfw-4.1-amd64.msi">http://web.mit.edu/kerberos/dist/kfw/4.1/kfw-4.1-amd64.msi</a><br>64位：<a href="http://web.mit.edu/kerberos/dist/kfw/4.1/kfw-4.1-1386.msi">http://web.mit.edu/kerberos/dist/kfw/4.1/kfw-4.1-1386.msi</a>  </p>
+<p>下载安装后配置环境变量，在Path项中添加并前置</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826162044.png" alt="image-20240826162037404" style="zoom:80%;" />
+
+<p>进入MIT安装目录，将krb5.ini文件内容修改为集群的&#x2F;etc&#x2F;krb5.conf文件内容</p>
+<h2 id="修改主机HOSTS"><a href="#修改主机HOSTS" class="headerlink" title="修改主机HOSTS"></a>修改主机HOSTS</h2><p>将集群主机的ip hostname映射配置到Windows本地的C:\Windows\System32\drivers\etc\hosts文件里</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826162655.png" alt="image-20240826162655516" style="zoom:80%;" />
+
+<h2 id="本地Kerberos认证"><a href="#本地Kerberos认证" class="headerlink" title="本地Kerberos认证"></a>本地Kerberos认证</h2><p>拷贝集群的keytab文件，这里使用的是smokeuser.headless.keytab</p>
+<p>查看keytab文件里的用户</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">klist -kt smokeuser.headless.keytab</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826163153.png" alt="image-20240826163136145"></h2><p>登录认证</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kinit -kt smokeuser.headless.keytab zhouhj-mycluster@HADOOP.COM</span><br></pre></td></tr></table></figure>
+
+<p>查看认证结果</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826163500.png" alt="image-20240826163500414"></p>
+<p>此时MIT图标为绿色，也表示认证成功</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826163617.png" alt="image-20240826163617034"></p>
+<h2 id="配置火狐浏览器"><a href="#配置火狐浏览器" class="headerlink" title="配置火狐浏览器"></a>配置火狐浏览器</h2><p>地址栏输入 about:config<br>在搜索栏内输入 network.negotiate-auth.trusted-uris<br>修改 network.negotiate-auth.trusted-uris 的值为主机名，值写法：</p>
+<p>hdp01,hdp02,hdp03 写具体主机名，以逗号分隔<br>.com.cn，. 通配符写法</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826163918.png" alt="image-20240826163918250"></p>
+<p>在搜索栏内输入 network.auth.use-sspi，将值设置为 false</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826163944.png" alt="image-20240826163944038"></p>
+<p>然后就可以正常访问了</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826165522.png" alt="image-20240826165521890"></p>
+<p>注：如果kerberos认证过期需要重新认证</p>
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>Kerberos</tag>
+      </tags>
+  </entry>
 </search>

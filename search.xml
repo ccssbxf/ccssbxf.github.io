@@ -3617,7 +3617,8 @@
 <p>查看keytab文件里的用户</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">klist -kt smokeuser.headless.keytab</span><br></pre></td></tr></table></figure>
 
-<h2 id=""><a href="#" class="headerlink" title=""></a><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826163153.png" alt="image-20240826163136145"></h2><p>登录认证</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240826163153.png" alt="image-20240826163136145"></p>
+<p>登录认证</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">kinit -kt smokeuser.headless.keytab zhouhj-mycluster@HADOOP.COM</span><br></pre></td></tr></table></figure>
 
 <p>查看认证结果</p>

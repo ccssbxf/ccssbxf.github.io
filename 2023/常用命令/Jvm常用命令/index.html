@@ -87,7 +87,7 @@
 <meta property="og:description" content="查看gc情况jstat - [-t] [-h]  [ []] 其中vmid是进程id，interval是打印间隔时间（毫秒），count是打印次数（默认一直打印），-t是打印jvm运行时间，-h是每隔多少行打印表头 option参数解释：  -gc：显示与GC相关的堆信息。包括Eden区、两个Survivor区、老年代、永久代等的容量、已用空间、GC时间合计等信息。 -gccapacity：显示内">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-04-12T09:36:08.000Z">
-<meta property="article:modified_time" content="2024-07-01T08:00:25.324Z">
+<meta property="article:modified_time" content="2024-08-29T07:34:38.819Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="JVM">
 <meta property="article:tag" content="常用命令">
@@ -423,6 +423,7 @@
 <p>jmap -heap pid:查看当前内存各区域大小</p>
 <p>jmap -dump:live,format&#x3D;b,file&#x3D;&lt;文件名&gt; &lt;进程ID&gt;:将当前存活的对象dump到文件，会触发full gc</p>
 <p>jmap -histo:live <pid>:打印每个class的实例数目，内存占用，类全名信息。live子参数加上后，只统计活的对象数量，此时会触发Full GC</p>
+<p>jmap -F -dump:format&#x3D;b,file &#x3D; &lt;文件名&gt; &lt;进程ID&gt;:强制将堆内所有对象dump到文件，会除非full gc（进程接近僵死时使用）</p>
 <p>jcmd 51716 GC.heap_info</p>
 <p>jmap在jdk9就被取消（改为jhsdb，像以下方法使用）</p>
 <p>jhsdb jmap  –heap –pid  37340</p>
@@ -591,7 +592,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">36</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

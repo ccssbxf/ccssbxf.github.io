@@ -2463,6 +2463,7 @@
 <p>jmap -heap pid:查看当前内存各区域大小</p>
 <p>jmap -dump:live,format&#x3D;b,file&#x3D;&lt;文件名&gt; &lt;进程ID&gt;:将当前存活的对象dump到文件，会触发full gc</p>
 <p>jmap -histo:live <pid>:打印每个class的实例数目，内存占用，类全名信息。live子参数加上后，只统计活的对象数量，此时会触发Full GC</p>
+<p>jmap -F -dump:format&#x3D;b,file &#x3D; &lt;文件名&gt; &lt;进程ID&gt;:强制将堆内所有对象dump到文件，会除非full gc（进程接近僵死时使用）</p>
 <p>jcmd 51716 GC.heap_info</p>
 <p>jmap在jdk9就被取消（改为jhsdb，像以下方法使用）</p>
 <p>jhsdb jmap  –heap –pid  37340</p>
@@ -3666,6 +3667,102 @@
       </categories>
       <tags>
         <tag>MAT</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用JVM参数配置</title>
+    <url>/2023/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B8%B8%E7%94%A8JVM%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="内存参数"><a href="#内存参数" class="headerlink" title="内存参数"></a>内存参数</h2><h5 id="Xms"><a href="#Xms" class="headerlink" title="-Xms"></a>-Xms<size></h5><p>初始化堆大小，例如-Xms16G</p>
+<h5 id="Xmx"><a href="#Xmx" class="headerlink" title="-Xmx"></a>-Xmx<size></h5><p>最大堆大小，例如-Xmx16G</p>
+<p>一般初始化堆大小和最大堆大小设为一致，防止GC后需要重新计算分配内存</p>
+<h5 id="Xss"><a href="#Xss" class="headerlink" title="-Xss"></a>-Xss<size></h5><p>设置每个线程的堆栈大小，例如-Xss512k</p>
+<p>默认值：</p>
+<ul>
+<li>Linux&#x2F;ARM (32-bit)：320 KB</li>
+<li>Linux&#x2F;i386 (32-bit)：320 KB</li>
+<li>Linux&#x2F;x64 (64-bit)：1024 KB</li>
+<li>OS X (64-bit)：1024 KB</li>
+<li>Oracle Solaris&#x2F;i386 (32-bit)：320 KB</li>
+<li>Oracle Solaris&#x2F;x64 (64-bit)：1024 KB</li>
+</ul>
+<h5 id="Xmn"><a href="#Xmn" class="headerlink" title="-Xmn"></a>-Xmn<size></h5><p>设置年轻代大小。</p>
+<h5 id="XX-MaxDirectMemorySize-x3D"><a href="#XX-MaxDirectMemorySize-x3D" class="headerlink" title="-XX:MaxDirectMemorySize&#x3D;"></a>-XX:MaxDirectMemorySize&#x3D;<size></h5><p>最大堆外内存大小，默认不限制</p>
+<h5 id="XX-NewRatio-x3D"><a href="#XX-NewRatio-x3D" class="headerlink" title="-XX:NewRatio&#x3D;"></a>-XX:NewRatio&#x3D;<ratio></h5><p>设置年轻代与老年代的大小比例，默认值为2，表示young:old为1比2，如果设为3则是1:3</p>
+<h5 id="XX-SurvivorRatio-x3D"><a href="#XX-SurvivorRatio-x3D" class="headerlink" title="-XX:SurvivorRatio&#x3D;"></a>-XX:SurvivorRatio&#x3D;<ratio></h5><p>设置 Eden 空间大小和 Survivor 空间大小之间的比例，默认值是 -XX:SurvivorRatio&#x3D;8，表示 Eden : from : to &#x3D; 8 : 1 : 1</p>
+<h5 id="XX-MaxMetaspaceSize-x3D"><a href="#XX-MaxMetaspaceSize-x3D" class="headerlink" title="-XX:MaxMetaspaceSize&#x3D;"></a>-XX:MaxMetaspaceSize&#x3D;<size></h5><p>设置元空间最大大小</p>
+<h5 id="XX-MetaspaceSize-x3D"><a href="#XX-MetaspaceSize-x3D" class="headerlink" title="-XX:MetaspaceSize&#x3D;"></a>-XX:MetaspaceSize&#x3D;<size></h5><p>设置元空间初始化大小</p>
+<h5 id="XX-MaxTenuringThreshold-x3D"><a href="#XX-MaxTenuringThreshold-x3D" class="headerlink" title="-XX:MaxTenuringThreshold&#x3D;"></a>-XX:MaxTenuringThreshold&#x3D;<num></h5><p>设置垃圾最大年龄。默认值15</p>
+<h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><h5 id="XX-HeapDumpOnOutOfMemoryError"><a href="#XX-HeapDumpOnOutOfMemoryError" class="headerlink" title="-XX:+HeapDumpOnOutOfMemoryError"></a>-XX:+HeapDumpOnOutOfMemoryError</h5><p>内存溢出时，生成dump文件</p>
+<h5 id="XX-HeapDumpPath-x3D"><a href="#XX-HeapDumpPath-x3D" class="headerlink" title="-XX:HeapDumpPath&#x3D;"></a>-XX:HeapDumpPath&#x3D;<path></h5><p>指定内存溢出时，生成的dump文件的位置，不加该参数时生成到该Java程序的目录</p>
+<p>指定目录：-XX:HeapDumpPath&#x3D;&#x2F;home&#x2F;zhouhj&#x2F;</p>
+<p>指定文件名：-XX:HeapDumpPath&#x3D;&#x2F;home&#x2F;zhouhj&#x2F;dump.hprof</p>
+<h5 id="XX-OnOutOfMemoryError-x3D"><a href="#XX-OnOutOfMemoryError-x3D" class="headerlink" title="-XX:OnOutOfMemoryError&#x3D;"></a>-XX:OnOutOfMemoryError&#x3D;<path></h5><p>可以指定在内存溢出时，调用脚本。比如做重启应用等操作</p>
+<p>-XX:OnOutOfMemoryError&#x3D;&#x2F;home&#x2F;zhouhj&#x2F;xxx.sh</p>
+<h5 id="XX-CrashOnOutOfMemoryError"><a href="#XX-CrashOnOutOfMemoryError" class="headerlink" title="-XX:+CrashOnOutOfMemoryError"></a>-XX:+CrashOnOutOfMemoryError</h5><p>当发生内存溢出的时候，JVM 就会退出，同时，JVM 会产生文本和二进制格式的崩溃日志（不推荐使用）</p>
+<h5 id="XX-ExitOnOutOfMemoryError"><a href="#XX-ExitOnOutOfMemoryError" class="headerlink" title="-XX:+ExitOnOutOfMemoryError"></a>-XX:+ExitOnOutOfMemoryError</h5><p>当发生内存溢出的时候，JVM会立马退出，且不打印日志（不推荐使用）</p>
+<h4 id="常用组合"><a href="#常用组合" class="headerlink" title="常用组合"></a>常用组合</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">-XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/home/zhouhj/</span><br></pre></td></tr></table></figure>
+
+<h2 id="GC日志"><a href="#GC日志" class="headerlink" title="GC日志"></a>GC日志</h2><h5 id="XX-PrintGC"><a href="#XX-PrintGC" class="headerlink" title="-XX:+PrintGC"></a>-XX:+PrintGC</h5><p>打印GC基本信息</p>
+<h5 id="XX-PrintGCDetails"><a href="#XX-PrintGCDetails" class="headerlink" title="-XX:+PrintGCDetails"></a>-XX:+PrintGCDetails</h5><p>打印GC详细信息</p>
+<h5 id="XX-PrintTenuringDistrution"><a href="#XX-PrintTenuringDistrution" class="headerlink" title="-XX:+PrintTenuringDistrution"></a>-XX:+PrintTenuringDistrution</h5><p>打印对象年龄分布情况，每个年龄的对象大小、个数信息</p>
+<h5 id="XX-PrintHeapAtGC"><a href="#XX-PrintHeapAtGC" class="headerlink" title="-XX:+PrintHeapAtGC"></a>-XX:+PrintHeapAtGC</h5><p>查看GC前后的堆、方法区可用容量变化</p>
+<h5 id="XX-PrintGCCause"><a href="#XX-PrintGCCause" class="headerlink" title="-XX:+PrintGCCause"></a>-XX:+PrintGCCause</h5><p>产生GC的原因，默认开启</p>
+<h5 id="XX-PrintGCDateStamps"><a href="#XX-PrintGCDateStamps" class="headerlink" title="-XX:+PrintGCDateStamps"></a>-XX:+PrintGCDateStamps</h5><p>打印GC发生时的时间</p>
+<h5 id="XX-PrintGCTimeStamps"><a href="#XX-PrintGCTimeStamps" class="headerlink" title="-XX:+PrintGCTimeStamps"></a>-XX:+PrintGCTimeStamps</h5><p>打印GC发生时，程序运行了多久</p>
+<h5 id="XX-UseGCLogFileRotation"><a href="#XX-UseGCLogFileRotation" class="headerlink" title="-XX:+UseGCLogFileRotation"></a>-XX:+UseGCLogFileRotation</h5><p>开启GC日志分割</p>
+<h5 id="XX-NumberOfGCLogFiles-x3D"><a href="#XX-NumberOfGCLogFiles-x3D" class="headerlink" title="-XX:NumberOfGCLogFiles&#x3D;"></a>-XX:NumberOfGCLogFiles&#x3D;<num></h5><p>日志文件分割个数</p>
+<h5 id="XX-GCLogFileSize-x3D"><a href="#XX-GCLogFileSize-x3D" class="headerlink" title="-XX:GCLogFileSize&#x3D;"></a>-XX:GCLogFileSize&#x3D;<size></h5><p>单个日志文件大小</p>
+<h5 id="Xloggc"><a href="#Xloggc" class="headerlink" title="-Xloggc:"></a>-Xloggc:<path></h5><p>指定gc日志位置</p>
+<h5 id="XX-PrintGCApplicationStoppedTime"><a href="#XX-PrintGCApplicationStoppedTime" class="headerlink" title="-XX:+PrintGCApplicationStoppedTime"></a>-XX:+PrintGCApplicationStoppedTime</h5><p>查看GC过程中用户线程停顿时间</p>
+<h5 id="XX-PrintReferenceGC"><a href="#XX-PrintReferenceGC" class="headerlink" title="-XX:+PrintReferenceGC"></a>-XX:+PrintReferenceGC</h5><p>打印对象引用信息，强软弱虚</p>
+<h4 id="常用组合-1"><a href="#常用组合-1" class="headerlink" title="常用组合"></a>常用组合</h4><figure class="highlight java"><table><tr><td class="code"><pre><span class="line">-XX:+PrintGC -XX:+PrintGCDetails -XX:+PrintHeapAtGC -XX:+PrintGCCause -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=<span class="number">10</span> -XX:GCLogFileSize=50M -Xloggc:/path/to/gc-%t.log -XX:+PrintGCApplicationStoppedTime</span><br></pre></td></tr></table></figure>
+
+<h2 id="垃圾收集器"><a href="#垃圾收集器" class="headerlink" title="垃圾收集器"></a>垃圾收集器</h2><h3 id="G1"><a href="#G1" class="headerlink" title="G1"></a>G1</h3><h5 id="XX-UseG1GC"><a href="#XX-UseG1GC" class="headerlink" title="-XX:+UseG1GC"></a>-XX:+UseG1GC</h5><p>手动指定使用 G1 垃圾收集器执行内存回收任务（JDK1.8 需要手动指定，JDK1.9 以后默认）</p>
+<h5 id="XX-G1HeapRegionSize-x3D"><a href="#XX-G1HeapRegionSize-x3D" class="headerlink" title="-XX:G1HeapRegionSize&#x3D;"></a>-XX:G1HeapRegionSize&#x3D;<size></h5><p>设置每个 Region 的大小。值是 2 的幂，范围是 1～32MB，默认是堆内存的 1&#x2F;2000。</p>
+<h5 id="XX-MaxGCPauseMillis-x3D"><a href="#XX-MaxGCPauseMillis-x3D" class="headerlink" title="-XX:MaxGCPauseMillis&#x3D;"></a>-XX:MaxGCPauseMillis&#x3D;<time></h5><p>设置期望的每次年轻代垃圾回收最大 GC 停顿时间指标（JVM 会尽力实现，但不保证达到），默认是 200ms。</p>
+<h5 id="XX-ConcGCThreads-x3D"><a href="#XX-ConcGCThreads-x3D" class="headerlink" title="-XX:ConcGCThreads&#x3D;"></a>-XX:ConcGCThreads&#x3D;<num></h5><p>指定并发 GC 线程数，默认是 -XX:ParallelGCThreads&#x2F;4，也就是在非 STW 期间的 GC 工作线程数。推荐ConcGCThreads &#x3D; (3 + ParallelGCThreads) &#x2F; 4</p>
+<h5 id="XX-ParallelGCThread-x3D"><a href="#XX-ParallelGCThread-x3D" class="headerlink" title="-XX:+ParallelGCThread&#x3D;"></a>-XX:+ParallelGCThread&#x3D;<num></h5><p>设置 STW 工作线程数的值。当cpu小于等于8时，默认值为cpu逻辑核数。否则ParallelGCThreads&#x3D; 8 + (N - 8) * 5 &#x2F; 8</p>
+<h5 id="XX-InitiatingHeapOccupancyPercent-x3D"><a href="#XX-InitiatingHeapOccupancyPercent-x3D" class="headerlink" title="-XX:InitiatingHeapOccupancyPercent&#x3D;"></a>-XX:InitiatingHeapOccupancyPercent&#x3D;<ratio></h5><p>设置触发并发 GC 周期的 Java 堆占用率阈值。超过此值，就触发 GC。默认值是 45。高并发应用可以调低了一些，也就是提高了 GC 的频率，但是避免了垃圾对象过多，一次垃圾回收耗时过长的问题</p>
+<h5 id="XX-G1ReservePercent-x3D"><a href="#XX-G1ReservePercent-x3D" class="headerlink" title="-XX:G1ReservePercent&#x3D;"></a>-XX:G1ReservePercent&#x3D;<ratio></h5><p>在 G1 管理的老年代里预留 25% 的空闲内存，保证新生代对象晋升到老年代的时候有足够空间，避免老年代内存都满了，新生代有对象要进入老年代没有充足内存了。默认值是 10%，略微偏少，高并发应用可以调大了一些</p>
+<h5 id="XX-G1OldCSetRegionThresholdPercent-x3D"><a href="#XX-G1OldCSetRegionThresholdPercent-x3D" class="headerlink" title="-XX:G1OldCSetRegionThresholdPercent&#x3D;"></a>-XX:G1OldCSetRegionThresholdPercent&#x3D;<num></h5><p>指定每轮 Mixed GC 回收的 Region 最大比例，默认 10%，也就是每轮 Mixed GC 附加的 Cset 的 Region 不超过全部 Region 的 10%，最多 10%，如果暂停时间短，那么可能会少于 10%。一般这个值不需要额外调整。</p>
+<h5 id="XX-G1MixedGCCountTarget-x3D"><a href="#XX-G1MixedGCCountTarget-x3D" class="headerlink" title="-XX:G1MixedGCCountTarget&#x3D;"></a>-XX:G1MixedGCCountTarget&#x3D;<num></h5><p>指定一个周期内触发 Mixed GC 最大次数，默认值 8。一次全局并发标记后，最多接着 8 次 Mixed GC，把全局并发标记阶段生成的 Cset 里的 Region 拆分为最多 8 部分，然后在每轮 Mixed GC 里收集一部分。这个值要和上一个参数配合使用，8*10%&#x3D;80%，应该来说会大于每次标记阶段的 Cset 集合了。一般此参数也不需额外调整。</p>
+<h5 id="XX-G1HeapWastePercent-x3D"><a href="#XX-G1HeapWastePercent-x3D" class="headerlink" title="-XX:G1HeapWastePercent&#x3D;"></a>-XX:G1HeapWastePercent&#x3D;<ratio></h5><p>指定触发 Mixed GC 的堆垃圾占比，默认值 5%，也就是在全局标记结束后能够统计出所有 Cset 内可被回收的垃圾占整对的比例值，如果超过 5%，那么就会触发之后的多轮 Mixed GC，如果不超过，那么会在之后的某次 Young GC 中重新执行全局并发标记。可以尝试适当的调高此阈值，能够适当的降低 Mixed GC 的频率。</p>
+<h5 id="XX-G1NewSizePercent-x3D"><a href="#XX-G1NewSizePercent-x3D" class="headerlink" title="-XX:G1NewSizePercent&#x3D;"></a>-XX:G1NewSizePercent&#x3D;<ratio></h5><p>G1新生代比例下限，默认值 5%。</p>
+<h5 id="XX-G1MaxNewSizePercent-x3D"><a href="#XX-G1MaxNewSizePercent-x3D" class="headerlink" title="-XX:G1MaxNewSizePercent&#x3D;"></a>-XX:G1MaxNewSizePercent&#x3D;<ratio></h5><p>G1新生代比例上限，默认值 60%。G1 会根据实际的 GC 情况 (主要是暂停时间) 来动态的调整新生代的大小，主要是 Eden Region 的个数</p>
+<h5 id="XX-ParallelRefProcEnabled"><a href="#XX-ParallelRefProcEnabled" class="headerlink" title="-XX:+ParallelRefProcEnabled"></a>-XX:+ParallelRefProcEnabled</h5><p>启用并行引用处理：如果你的应用程序中使用了大量的软引用和弱引用，那么启用并行引用处理能够更好地提高 GC 的效率；</p>
+<h5 id="XX-ResizePLAB"><a href="#XX-ResizePLAB" class="headerlink" title="-XX:-ResizePLAB"></a>-XX:-ResizePLAB</h5><p>停止调整 PLAB 的大小，以避免 GC 线程之间的大量通信成本，以及每次 GC 期间的变化</p>
+<h3 id="CMS"><a href="#CMS" class="headerlink" title="CMS"></a>CMS</h3><h5 id="XX-UseConcMarkSweepGC"><a href="#XX-UseConcMarkSweepGC" class="headerlink" title="-XX:+UseConcMarkSweepGC"></a>-XX:+UseConcMarkSweepGC</h5><p>手动指定老年代使用 CMS 收集器。</p>
+<p>开启该参数后，会自动开启 -xx:+UseParNewGC。即年轻代用 ParNew，老年代用 CMS，老年代兜底用 Serial Old</p>
+<h5 id="XX-ParallelcMSThreads-x3D"><a href="#XX-ParallelcMSThreads-x3D" class="headerlink" title="-XX:ParallelcMSThreads &#x3D;"></a>-XX:ParallelcMSThreads &#x3D;<num></h5><p>设置 CMS 的线程数量。</p>
+<p>默认启动的线程数是（ParallelGCThreads+3）&#x2F;4，ParallelGCThreads 是年轻代并行收集器的线程数。<br>当 CPU 资源比较紧张时，受到 CMS 收集器线程的影响，应用程序的性能在垃圾回收阶段可能会非常糟糕。</p>
+<h5 id="XX-CMSInitiatingOccupanyFraction-x3D"><a href="#XX-CMSInitiatingOccupanyFraction-x3D" class="headerlink" title="-XX:CMSInitiatingOccupanyFraction&#x3D;"></a>-XX:CMSInitiatingOccupanyFraction&#x3D;<ratio></h5><p>设置堆内存使用率的阈值，一旦达到该阈值，便开始进行回收。</p>
+<p>JDK5 及以前，默认值为 68，即当老年代的空间使用率达到 68% 时，会执行一次 CMS 回收；</p>
+<p>JDK6 及之后，默认值为 92，即当老年代的空间使用率达到 92% 时，会执行一次 CMS 回收；</p>
+<p>如果内存增长缓慢，可以设置较大的阀值，降低 CMS 的触发频率，减少老年代回收的次数，改善应用程序性能；</p>
+<p>如果内存增长很快，应该降低这个阈值，避免频繁触发 Serial Old 收集器兜底，降低 Full GC 的执行次数。</p>
+<h5 id="XX-UseCMSCompactAtFullCollection"><a href="#XX-UseCMSCompactAtFullCollection" class="headerlink" title="-XX:+UseCMSCompactAtFullCollection"></a>-XX:+UseCMSCompactAtFullCollection</h5><p>指定在执行完 Full GC 后对内存空间进行压缩整理</p>
+<p>可以一定程度避免内存碎片的产生。</p>
+<p>不过由于内存压缩整理过程无法并发执行，所带来的问题就是停顿时间变得更长了。</p>
+<h5 id="XX-CMSFullGCsBeforeCompaction-x3D"><a href="#XX-CMSFullGCsBeforeCompaction-x3D" class="headerlink" title="-XX:CMSFullGCsBeforeCompaction&#x3D;"></a>-XX:CMSFullGCsBeforeCompaction&#x3D;<num></h5><p>设置在执行多少次 Full GC 后对内存空间进行压缩整理。</p>
+<h3 id="Parallel"><a href="#Parallel" class="headerlink" title="Parallel"></a>Parallel</h3><h5 id="XX-UseParallelGC"><a href="#XX-UseParallelGC" class="headerlink" title="-XX:+UseParallelGC"></a>-XX:+UseParallelGC</h5><p>手动指定年轻代使用Parallel并行收集器执行内存回收任务</p>
+<h5 id="XX-UseParallelOldGC"><a href="#XX-UseParallelOldGC" class="headerlink" title="-XX:+UseParallelOldGC"></a>-XX:+UseParallelOldGC</h5><p>手动指定老年代使用Parallel并行收集器执行内存回收任务</p>
+<p>jdk8默认开启，这个参数和上一个参数默认开启一个，另一个也会被开启</p>
+<h5 id="XX-ParallelGCThreads-x3D"><a href="#XX-ParallelGCThreads-x3D" class="headerlink" title="-XX:ParallelGCThreads&#x3D;"></a>-XX:ParallelGCThreads&#x3D;<num></h5><p>设置年轻代并行收集器的线程数。一般最好与CPU数量相等，以避免过多的线程数影响垃圾收集性能</p>
+<p>在默认情况下，当CPU数量小于8个，ParallelGCThreads的值等于CPU数量，当CPU数量大于8个，ParallelGCThreads的值等于3+[5*CPU_COUNT&#x2F;8]</p>
+<h5 id="XX-MaxGCPauseMillis-x3D-1"><a href="#XX-MaxGCPauseMillis-x3D-1" class="headerlink" title="-XX:MaxGCPauseMillis&#x3D;"></a>-XX:MaxGCPauseMillis&#x3D;<time></h5><p>设置垃圾收集器每次年轻代垃圾回收最大停顿时间，单位毫秒</p>
+<p>为了尽可能的把停顿时间控制在该参数值以内，收集器在工作时会调整Java堆大小或其他一些参数</p>
+<p>对于用户来说，STW的时间越短越好。但是在服务端，注重高并发，整体的吞吐量，所以服务器端适合Parllel</p>
+<h5 id="XX-GCTimeRatio-x3D"><a href="#XX-GCTimeRatio-x3D" class="headerlink" title="-XX:GCTimeRatio&#x3D;"></a>-XX:GCTimeRatio&#x3D;<ratio></h5><p>垃圾收集时间占总时间的比例(&#x3D;1&#x2F;(N+1))。用户衡量吞吐量的大小</p>
+<p>取值范围(0,100)，默认99，即垃圾回收的时间不超过1%</p>
+<p>和前一个参数-XX:MaxGCPauseMillis有一定的矛盾性。暂停时间越长，Radio参数越容易超过设定的比例</p>
+<h5 id="XX-UseAdaptiveSizePolicy"><a href="#XX-UseAdaptiveSizePolicy" class="headerlink" title="-XX:+UseAdaptiveSizePolicy"></a>-XX:+UseAdaptiveSizePolicy</h5><p>设置Parallel收集器具有自适应调节策略，在这种模式下，年轻代的大小、Eden和Survivor的比例、晋升老年代的对象年龄等参数会被自动调整，以达到在堆大小、吞吐量和停顿时间之间的平衡点</p>
+<p>在手动调优比较困难的场合，可以直接使用这种自适应的方式，仅指定虚拟机的最大堆、目标的吞吐量（GCTimeRatio）和停顿时间（MaxGCPauseMills），让虚拟机自己完成调优工作</p>
+]]></content>
+      <categories>
+        <category>Java</category>
+      </categories>
+      <tags>
+        <tag>JVM</tag>
       </tags>
   </entry>
 </search>

@@ -87,7 +87,7 @@
 <meta property="og:description" content="一：新增节点注：HBase新增节点需要建立在这个节点已经有Hadoop的情况下 1.拷贝集群原有节点的HBase包到新节点相同路径下 2.修改&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;hbase-2.3.6&#x2F;conf&#x2F;regionservers配置文件，加入新节点，将该文件分发到所有的HBase节点上 3.在新节点启动HBase 1hbase-d">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-07-21T14:30:56.000Z">
-<meta property="article:modified_time" content="2024-04-25T03:28:16.108Z">
+<meta property="article:modified_time" content="2024-08-30T10:39:26.391Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="HBase">
 <meta name="twitter:card" content="summary">
@@ -399,6 +399,8 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br><span class="line">（下面这个是手动触发避免业务高峰期执行）</span><br><span class="line">balancer</span><br></pre></td></tr></table></figure>
 
 <p>等命令执行完成，新加入的节点上已经有region，可以通过HBase管理页面看到</p>
+<p><strong>需要注意的是这里region平衡之后，由于region转移，hfile的本地化率会降低甚至变成0。需要对集群里的表执行major_compact</strong></p>
+<p><strong>删除节点同理</strong></p>
 <h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>1.在要下线的节点（比如我这里下线hadoop104），在hadoop104执行</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">graceful_stop.sh hadoop104</span><br></pre></td></tr></table></figure>
 

@@ -198,6 +198,8 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">（开启负载均衡器，HBase会选择时机执行平衡数据）</span><br><span class="line">balance_switch true</span><br><span class="line">（下面这个是手动触发避免业务高峰期执行）</span><br><span class="line">balancer</span><br></pre></td></tr></table></figure>
 
 <p>等命令执行完成，新加入的节点上已经有region，可以通过HBase管理页面看到</p>
+<p><strong>需要注意的是这里region平衡之后，由于region转移，hfile的本地化率会降低甚至变成0。需要对集群里的表执行major_compact</strong></p>
+<p><strong>删除节点同理</strong></p>
 <h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>1.在要下线的节点（比如我这里下线hadoop104），在hadoop104执行</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">graceful_stop.sh hadoop104</span><br></pre></td></tr></table></figure>
 
@@ -3672,7 +3674,7 @@
   </entry>
   <entry>
     <title>常用JVM参数配置</title>
-    <url>/2023/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B8%B8%E7%94%A8JVM%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</url>
+    <url>/2024/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/%E5%B8%B8%E7%94%A8JVM%E5%8F%82%E6%95%B0%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<h2 id="内存参数"><a href="#内存参数" class="headerlink" title="内存参数"></a>内存参数</h2><h5 id="Xms"><a href="#Xms" class="headerlink" title="-Xms"></a>-Xms<size></h5><p>初始化堆大小，例如-Xms16G</p>
 <h5 id="Xmx"><a href="#Xmx" class="headerlink" title="-Xmx"></a>-Xmx<size></h5><p>最大堆大小，例如-Xmx16G</p>
 <p>一般初始化堆大小和最大堆大小设为一致，防止GC后需要重新计算分配内存</p>

@@ -87,7 +87,7 @@
 <meta property="og:description" content="参数介绍 一般来说 NameNode检测 DataNode是否掉线的值是 10*3s（DataNode心跳时间，参数是：dfs.heartbeat.interval）+2*5min（namenode 检测时间，参数是：dfs.namenode.heartbeat.recheck-interval）&#x3D;10 分 30s，将该值定义为timeout 当节点下线时间超过timeout的值后，会发">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-06-03T03:03:39.000Z">
-<meta property="article:modified_time" content="2024-06-03T03:03:50.971Z">
+<meta property="article:modified_time" content="2024-09-02T06:56:18.314Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="Hadoop">
 <meta name="twitter:card" content="summary">
@@ -397,6 +397,7 @@
 
 <h2 id="副本迁移时间计算"><a href="#副本迁移时间计算" class="headerlink" title="副本迁移时间计算"></a>副本迁移时间计算</h2><p>计算公式：待复制 block 总数 &#x2F;(存活的DataNode个数 *dfs.namenode.replication.work.multiplier.per.iteration )* 心跳时间(dfs.heartbeat.interval)</p>
 <p>比如待复制的block总数10000000，存活DataNode个数为60，dfs.namenode.replication.work.multiplier.per.iteration为10，心跳时间为3s，则 time&#x3D;10000000&#x2F;(60*10)*3&#x3D;50000s≈13.88小时</p>
+<h2 id="修改步骤"><a href="#修改步骤" class="headerlink" title="修改步骤"></a>修改步骤</h2><p>这些参数修改只涉及namenode的重启，在参数修改完之后<br>(1)先停备用namenode,然后再重启备用namenode服务<br>(2)主备切换:hdfs haadmin -failover nn2 nn1<br>(3)再把原来主的namenode服务停掉，再重启</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>第一个参数控制 DataNode接受任务的频率，后面两个参数进一步限制 DataNode 一次完成的最大并行线程网络传输量。具体上面参数的值设定的多少，取决于集群的规模和集群的配置，不能同一而论。一般来说从入口控制比较简单容易些。比如规模 5 台集群，dfs.namenode.replication.work.multiplier.per.iteration&#x3D;10，5 台 DataNode，那么集群一次心跳分发 50 个 block 的量，假如集群文件存储全部打散在 5 台节点，每个节点同时复制 10 个 block（实际会因为副本搁置策略，机架感知等并不会所有的节点都参与数据复制）, 每个 block 大小 128Mb, 则每个节点的网络负载是 128*10&#x2F;3s&#x3D;546Mb&#x2F;s，那这时候你就要看下结合实际会不会有带宽瓶颈，这么大的网络 IO 会不会影响正常任务的计算，如果有的话，这个值就要调小点。</p>
 <p>参考：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_35995514/article/details/128487543">https://blog.csdn.net/qq_35995514/article/details/128487543</a></p>
 
@@ -576,7 +577,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">参数介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AF%E6%9C%AC%E8%BF%81%E7%A7%BB%E6%97%B6%E9%97%B4%E8%AE%A1%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">副本迁移时间计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">参数介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%AF%E6%9C%AC%E8%BF%81%E7%A7%BB%E6%97%B6%E9%97%B4%E8%AE%A1%E7%AE%97"><span class="nav-number">2.</span> <span class="nav-text">副本迁移时间计算</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E6%AD%A5%E9%AA%A4"><span class="nav-number">3.</span> <span class="nav-text">修改步骤</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>

@@ -236,12 +236,18 @@
 
 <p>9.可以在hadoop管理页面或者使用命令hdfs dfsadmin -report，查看新节点是否加入hdfs集群，使用yarn node -list查看新节点是否加入yarn集群</p>
 <p>10.平衡节点数据</p>
+<p>方式一：执行balancer脚本</p>
 <p>在namenode节点执行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#对hdfs负载设置均衡，因为默认的数据传输带宽比较低，可以设置为64M  </span><br><span class="line">hdfs dfsadmin -setBalancerBandwidth 67108864 </span><br><span class="line"></span><br><span class="line">#默认balancer的threshold为10%，即各个节点与集群总的存储使用率相差不超过10%，我们可将其设置为5%</span><br><span class="line">start-balancer.sh -threshold 5</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#默认balancer的threshold为10%，即各个节点与集群总的存储使用率相差不超过10%，我们可将其设置为5%</span><br><span class="line">start-balancer.sh -threshold 5</span><br></pre></td></tr></table></figure>
 
+<p>该方式会采用集群hdfs-site.xml配置的参数来进程balance，日志在hadoop的log目录下</p>
+<p>方式二：执行balancer程序</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">nohup hdfs balancer -D &quot;dfs.balancer.max-size-to-move=21474836480&quot; -D &quot;dfs.balancer.moverThreads=1000&quot; -D &quot;dfs.datanode.balance.bandwidthPerSec=134217728&quot; -threshold 5  &gt; balancer.log 2&gt;&amp;1  &amp;</span><br></pre></td></tr></table></figure>
+
+<p>该方式可指定balance参数，日志在balancer.log文件中</p>
 <p>注意：</p>
-<p>1）如果不 balance，那么 cluster 会把新的数据都存放在新的 node 上，这样会降低 mapred 的工作效率<br>2）设置平衡阈值，默认是 10%，值越低各节点越平衡，但消耗时间也更长<br>3）设置 balance 的带宽，默认只有 1M&#x2F;s</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.balance.bandwidthPerSec&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;64m&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
+<p>1）如果不 balance，那么 cluster 会把新的数据都存放在新的 node 上，这样会降低 mapred 的工作效率<br>2）设置平衡阈值，默认是 10%，值越低各节点越平衡，但消耗时间也更长<br>3）设置 balance 的带宽默认1m&#x2F;s</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#对hdfs负载设置均衡，因为默认的数据传输带宽比较低，可以设置为128M  </span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.balance.bandwidthPerSec&lt;/name&gt;</span><br><span class="line">    &lt;value&gt;128m&lt;/value&gt;</span><br><span class="line">&lt;/property&gt;</span><br></pre></td></tr></table></figure>
 
 <p>11.通过Hadoop管理页面或者hdfs dfsadmin -report命令，查看数据迁移情况</p>
 <h2 id="二：删除节点"><a href="#二：删除节点" class="headerlink" title="二：删除节点"></a>二：删除节点</h2><p>注：如果节点想要动态正常下线，除非预先在hdfs-site.xml文件配置了dfs.hosts.exclude，以及yarn-site.xml配置了yarn.resourcemanager.nodes.exclude-path 。否则就只能采用直接在要下线的数据节点进行停止进程，让集群认为这台数据节点进程掉了，自动进行副本转移（采用停进程的方式不能一次性下3台及以上，最好一台台操作）。</p>

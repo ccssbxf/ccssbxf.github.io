@@ -2400,6 +2400,10 @@
 
 <h5 id="关闭压缩并导出"><a href="#关闭压缩并导出" class="headerlink" title="关闭压缩并导出"></a>关闭压缩并导出</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">hive <span class="operator">-</span>e &quot;set mapreduce.output.fileoutputformat.compress=false;set hive.exec.compress.output=false;insert overwrite local directory &#x27;/home/zhouhj/test/&#x27; ROW FORMAT DELIMITED FIELDS TERMINATED BY &#x27;;&#x27; select * from test;&quot;;</span><br></pre></td></tr></table></figure>
 
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">beeline <span class="operator">-</span>u jdbc:hive2:<span class="operator">/</span><span class="operator">/</span>server3:<span class="number">20000</span> <span class="operator">-</span>n $&#123;username&#125; <span class="operator">-</span>p $&#123;password&#125; <span class="comment">--showHeader=false --outputformat=csv2 -e &quot;select * from xxxx&quot; &gt;&gt;$&#123;path&#125;/$&#123;filename&#125;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="operator">/</span>usr<span class="operator">/</span>bch<span class="operator">/</span><span class="number">3.3</span><span class="number">.0</span><span class="operator">/</span>hive<span class="operator">/</span>bin<span class="operator">/</span>beeline <span class="operator">-</span>u &quot;jdbc:hive2://hdp01:2181,hdp02:2181,hdp03:2181/test;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2?hive.execution.engine=mr&amp;mapreduce.job.queuename=root.bdoc.iri2&quot; <span class="comment">--showHeader=false --outputformat=csv2 -e &quot;select * from ggsn_msisdn where key like &#x27;13897550374%&#x27;;&quot; &gt;&gt;$&#123;path&#125;/$&#123;filename&#125;</span></span><br></pre></td></tr></table></figure>
+
 
 
 <h5 id="建文本表"><a href="#建文本表" class="headerlink" title="建文本表"></a>建文本表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> TEST_CREATE (</span><br><span class="line">  ID string,</span><br><span class="line">NAME string,</span><br><span class="line">AGE string</span><br><span class="line">)</span><br><span class="line"><span class="type">ROW</span> FORMAT DELIMITED</span><br><span class="line">FIELDS TERMINATED <span class="keyword">BY</span> <span class="string">&#x27;,&#x27;</span> STORED <span class="keyword">AS</span> TEXTFILE; </span><br></pre></td></tr></table></figure>
@@ -2424,6 +2428,8 @@
 <h6 id="外转内"><a href="#外转内" class="headerlink" title="外转内"></a>外转内</h6><p>alter table TABLENAME set TBLPROPERTIES (‘EXTERNAL’&#x3D;’FALSE’);</p>
 <h5 id="查询显示列名"><a href="#查询显示列名" class="headerlink" title="查询显示列名"></a>查询显示列名</h5><p>set hive.cli.print.header &#x3D; true;</p>
 <h5 id="查询显示库名"><a href="#查询显示库名" class="headerlink" title="查询显示库名"></a>查询显示库名</h5><p>set hive.cli.print.current.db &#x3D; true;</p>
+<h5 id="设置执行引擎为MR"><a href="#设置执行引擎为MR" class="headerlink" title="设置执行引擎为MR"></a>设置执行引擎为MR</h5><p>set hive.execution.engine&#x3D;mr;</p>
+<h5 id="设置mr执行队列"><a href="#设置mr执行队列" class="headerlink" title="设置mr执行队列"></a>设置mr执行队列</h5><p>setmapreduce.job.queuename&#x3D;root.zhj;</p>
 ]]></content>
       <categories>
         <category>Hive</category>
@@ -2613,9 +2619,8 @@
 <p>mpstat &gt; $DUMP_DIR&#x2F;mpstat.dump 2&gt;&amp;1vmstat 1 3 &gt; $DUMP_DIR&#x2F;vmstat.dump 2&gt;&amp;1sar -p ALL  &gt; $DUMP_DIR&#x2F;sar-cpu.dump  2&gt;&amp;1uptime &gt; $DUMP_DIR&#x2F;uptime.dump 2&gt;&amp;1</p>
 <p>主要用于输出当前系统的 CPU 和负载，便于事后排查。</p>
 <p><strong>I&#x2F;O 资源</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">iostat -x &gt; $DUMP_DIR/iostat.dump 2&gt;&amp;1</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">##iostat是查看磁盘活动统计情况</span><br><span class="line"></span><br><span class="line">##显示所有设备负载情况 r/s:  每秒完成的读 I/O 设备次数。即 rio/s；w/s:  每秒完成的写 I/O 设备次数。即 wio/s等</span><br><span class="line">iostat </span><br><span class="line"></span><br><span class="line">##每隔2秒刷新磁盘IO信息，并且每次显示3次</span><br><span class="line">iostat 2 3</span><br><span class="line"></span><br><span class="line">#显示某个磁盘的IO信息</span><br><span class="line">iostat -d sda1</span><br><span class="line"></span><br><span class="line">##显示tty和cpu信息</span><br><span class="line">iostat -t</span><br><span class="line"></span><br><span class="line">##以M为单位显示磁盘IO信息</span><br><span class="line">iostat -m</span><br><span class="line"></span><br><span class="line">##查看TPS和吞吐量信息  kB_read/s：每秒从设备（drive expressed）读取的数据量；kB_wrtn/s：每秒向设备（drive expressed）写入的数据量；kB_read：读取的总数据量；kB_wrtn：写入的总数量数据量；</span><br><span class="line">iostat -d -k 1 1</span><br><span class="line"></span><br><span class="line">#查看设备使用率（%util）、响应时间（await）</span><br><span class="line">iostat -d -x -k 1 1</span><br><span class="line"></span><br><span class="line">#查看CPU状态</span><br><span class="line">iostat -c 1 3</span><br></pre></td></tr></table></figure>
 
-<p>一般，以计算为主的服务节点，I&#x2F;O 资源会比较正常，但有时也会发生问题，比如日志输出过多，或者磁盘问题等。此命令可以输出每块磁盘的基本性能信息，用来排查 I&#x2F;O 问题。</p>
 <h5 id="查看进程里的线程信息"><a href="#查看进程里的线程信息" class="headerlink" title="查看进程里的线程信息"></a>查看进程里的线程信息</h5><p>top -Hp $PID -b -n 1 -c</p>
 <p>查看某个进程中使用 CPU 最多的某个线程，记录线程的 ID。</p>
 <p>top -Hp $pid</p>
@@ -2640,6 +2645,9 @@
 <h5 id="把命令的结果作为参数"><a href="#把命令的结果作为参数" class="headerlink" title="把命令的结果作为参数"></a>把命令的结果作为参数</h5><p>例如</p>
 <p>cat toDelete.txt | xargs -I {} hdfs fsck {} -delete</p>
 <h5 id="sed文本替换"><a href="#sed文本替换" class="headerlink" title="sed文本替换"></a>sed文本替换</h5><p>sed -i ‘s&#x2F;旧值&#x2F;新值&#x2F;g’ 文件名</p>
+<h5 id="查看文件打开情况"><a href="#查看文件打开情况" class="headerlink" title="查看文件打开情况"></a>查看文件打开情况</h5><p>lsof &#x2F;tmp</p>
+<p>yum -y install lsof</p>
+<p>ll &#x2F;proc&#x2F;pid&#x2F;fd</p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -3702,6 +3710,7 @@
 <h5 id="XX-MaxMetaspaceSize-x3D"><a href="#XX-MaxMetaspaceSize-x3D" class="headerlink" title="-XX:MaxMetaspaceSize&#x3D;"></a>-XX:MaxMetaspaceSize&#x3D;<size></h5><p>设置元空间最大大小</p>
 <h5 id="XX-MetaspaceSize-x3D"><a href="#XX-MetaspaceSize-x3D" class="headerlink" title="-XX:MetaspaceSize&#x3D;"></a>-XX:MetaspaceSize&#x3D;<size></h5><p>设置元空间初始化大小</p>
 <h5 id="XX-MaxTenuringThreshold-x3D"><a href="#XX-MaxTenuringThreshold-x3D" class="headerlink" title="-XX:MaxTenuringThreshold&#x3D;"></a>-XX:MaxTenuringThreshold&#x3D;<num></h5><p>设置垃圾最大年龄。默认值15</p>
+<h5 id="XX-PretenureSizeThreshold-x3D"><a href="#XX-PretenureSizeThreshold-x3D" class="headerlink" title="-XX:PretenureSizeThreshold&#x3D;"></a>-XX:PretenureSizeThreshold&#x3D;<size></h5><p>直接进入老年代大对象阈值，单位字节。参数只对Serial和ParNew两款收集器有效，Parallel Scavenge收集器不认识这个参数，Parallel Scavenge收集器一般并不需要设置。如果遇到必须使用此参数的场合，可以考虑ParNew加CMS的收集器组合。  </p>
 <h2 id="内存溢出"><a href="#内存溢出" class="headerlink" title="内存溢出"></a>内存溢出</h2><h5 id="XX-HeapDumpOnOutOfMemoryError"><a href="#XX-HeapDumpOnOutOfMemoryError" class="headerlink" title="-XX:+HeapDumpOnOutOfMemoryError"></a>-XX:+HeapDumpOnOutOfMemoryError</h5><p>内存溢出时，生成dump文件</p>
 <h5 id="XX-HeapDumpPath-x3D"><a href="#XX-HeapDumpPath-x3D" class="headerlink" title="-XX:HeapDumpPath&#x3D;"></a>-XX:HeapDumpPath&#x3D;<path></h5><p>指定内存溢出时，生成的dump文件的位置，不加该参数时生成到该Java程序的目录</p>
 <p>指定目录：-XX:HeapDumpPath&#x3D;&#x2F;home&#x2F;zhouhj&#x2F;</p>
@@ -3774,5 +3783,58 @@
       <tags>
         <tag>JVM</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>记一次RegionServer宕机问题排查过程</title>
+    <url>/2025/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E8%AE%B0%E4%B8%80%E6%AC%A1RegionServer%E5%AE%95%E6%9C%BA%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<h2 id="故障分析"><a href="#故障分析" class="headerlink" title="故障分析"></a>故障分析</h2><p>首先查看宕机的RegionServer的日志，根据习惯查找关键字ERROR</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211195056.png" alt="image-20250211195049622"></p>
+<p>可以看到RegionServer是由于需要重放WAL日志，从而强制关闭了RegionServer。</p>
+<p>于是开始思考为什么需要重放WAL日志，于是往上翻看日志</p>
+<p>在日志里看见大量的responseTooSlow日志，并且有大量的wal同步失败的日志</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211205745.png" alt="image-20250211205745724"></p>
+<p>在日志里搜索Slow sync cost关键字，发现在写WAL日志时存在大量延迟</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211200430.png" alt="image-20250211200430064"></p>
+<p>因此怀疑是写WAL日志时，存在大量延迟，导致WAL日志异常需要重放，从而导致RegionServer宕机。</p>
+<p>由于三副本机制，上图里马赛克的是三台主机的ip，由于写三副本时，会优先往本机上写一份，遂查看本机的DataNode对应时间段的日志。</p>
+<p>发现对应时间段内，存在大量Slow日志</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211201436.png" alt="image-20250211201436710"></p>
+<p>遂对该日志文件进行统计，得到</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211201532.png" alt="image-20250211201532678"></p>
+<p>查询资料得：</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211201618.png" alt="image-20250211201618780" style="zoom:50%;" />
+
+<p>这些日志信息在正常集群上也有可能出现；只有当这些错误信息异常多，或者单节点个别时间段内数量异常多，或者多节点对比发现个别节点数量异常时，才算是异常情况；</p>
+<p>当单个节点具有比正常情况更多的上述 WARN 消息时，表明存在底层硬件问题。然后结合 dmesg -T | grep -i error 查看硬件信息确定是否存在硬件故障。</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211202159.png" alt="image-20250211202159805"></p>
+<p>对应时间段内，磁盘sdj存在大量报错，这块盘可能存在问题。</p>
+<p>使用badblocks 命令排查磁盘</p>
+<p>badblocks -s -v &#x2F;dev&#x2F;sdj</p>
+<p>该命令我没权限执行，经由现场的同事执行之后反馈该磁盘确实有坏道。</p>
+<p>因此得到结论本次RegionServer宕机是由于磁盘坏道，导致DataNode写入有大量错误和延迟，造成RegionServer的WAL写入有错误和延迟，导致WAL需要重放，从而促使RegionServer宕机。</p>
+]]></content>
+      <categories>
+        <category>HBase</category>
+      </categories>
+      <tags>
+        <tag>HBase</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2024/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</url>
+    <content><![CDATA[<ul>
+<li>Kafka一个主题下可以有多个分区，不同分区的消息内容是不同的，kafka的消息在同一分区内有序，主题间无序。</li>
+<li>不同分区可以分布在不同的broker上，来提供比单个broker更强大的能力，可以水平拓展分区</li>
+<li>同一分区的不同副本中保存的是相同的消息（在同一时刻，副本之间并非完全一样），副本之间是“一主多从”的关系，其中leader副本负责处理读写请求，follower副本只负责与leader副本的消息同步。副本处于不同的broker中，当leader副本出现故障时，从follower副本中重新选举新的leader副本对外提供服务。Kafka通过多副本机制实现了故障的自动转移，当Kafka集群中某个broker失效时仍然能保证服务可用</li>
+<li>Kafka 消费端也具备一定的容灾能力。Consumer 使用拉（Pull）模式从服务端拉取消息，并且保存消费的具体位置，当消费者宕机后恢复上线时可以根据之前保存的消费位置重新拉取需要的消息进行消费，这样就不会造成消息丢失。</li>
+<li>分区中的所有副本统称为AR（Assigned Replicas）。所有与leader副本保持一定程度同步的副本（包括leader副本在内）组成ISR（In-Sync Replicas），ISR集合是AR集合中的一个子集。消息会先发送到leader副本，然后follower副本才能从leader副本中拉取消息进行同步，同步期间内follower副本相对于leader副本而言会有一定程度的滞后。前面所说的“一定程度的同步”是指可忍受的滞后范围，这个范围可以通过参数进行配置。与leader副本同步滞后过多的副本（不包括leader副本）组成OSR（Out-of-Sync Replicas），由此可见，AR&#x3D;ISR+OSR。在正常情况下，所有的 follower 副本都应该与 leader 副本保持一定程度的同步，即 AR&#x3D;ISR，OSR集合为空。</li>
+<li>leader副本负责维护和跟踪ISR集合中所有follower副本的滞后状态，当follower副本落后太多或失效时，leader副本会把它从ISR集合中剔除。如果OSR集合中有follower副本“追上”了leader副本，那么leader副本会把它从OSR集合转移至ISR集合。默认情况下，当leader副本发生故障时，只有在ISR集合中的副本才有资格被选举为新的leader，而在OSR集合中的副本则没有任何机会（不过这个原则也可以通过修改相应的参数配置来改变）。</li>
+<li>ISR与HW和LEO也有紧密的关系。HW是High Watermark的缩写，俗称高水位，它标识了一个特定的消息偏移量（offset），消费者只能拉取到这个offset之前的消息。即：消费者只能拉取到高水位之前的消息。比如HW为6，则消费者只能拉取0-5的消息，LEO则是则是下一条消息写入的位置，比如当前有9条消息，offset为0-8，则此时LEO为9。分区ISR集合中的每个副本都会维护自身的LEO，而ISR集合中最小的LEO即为分区的HW，对消费者而言只能消费HW之前的消息。</li>
+<li>发送消息主要有三种模式：发后即忘（fire-and-forget）、同步（sync）及异步（async）。</li>
+<li>KafkaProducer是线程安全的，可以在多个线程中共享单个KafkaProducer实例，也可以将KafkaProducer实例进行池化来供其他线程调用。</li>
+<li></li>
+</ul>
+]]></content>
   </entry>
 </search>

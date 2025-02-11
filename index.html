@@ -295,6 +295,287 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2025/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E8%AE%B0%E4%B8%80%E6%AC%A1RegionServer%E5%AE%95%E6%9C%BA%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万万使不得">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2025/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E8%AE%B0%E4%B8%80%E6%AC%A1RegionServer%E5%AE%95%E6%9C%BA%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B/" itemprop="url">记一次RegionServer宕机问题排查过程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2025-02-11T19:01:21+08:00">
+                2025-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/HBase/" itemprop="url" rel="index">
+                    <span itemprop="name">HBase</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          故障分析首先查看宕机的RegionServer的日志，根据习惯查找关键字ERROR
+
+可以看到RegionServer是由于需要重放WAL日志，从而强制关闭了RegionServer。
+于是开始思考为什么需要重放WAL日志，于是往上翻看日志
+在日志里看见大量的responseTooSlow日志，并且
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2025/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E8%AE%B0%E4%B8%80%E6%AC%A1RegionServer%E5%AE%95%E6%9C%BA%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E8%BF%87%E7%A8%8B/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2024/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="万万使不得">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2024/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" itemprop="url">未命名</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-11-07T15:52:16+08:00">
+                2024-11-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+          
+Kafka一个主题下可以有多个分区，不同分区的消息内容是不同的，kafka的消息在同一分区内有序，主题间无序。
+不同分区可以分布在不同的broker上，来提供比单个broker更强大的能力，可以水平拓展分区
+同一分区的不同副本中保存的是相同的消息（在同一时刻，副本之间并非完全一样），副本之间是“一
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2024/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Kafka%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Windows%E4%BD%BF%E7%94%A8%E7%81%AB%E7%8B%90%E8%AE%BF%E9%97%AE%E5%BC%80%E5%90%AFKerberos%E7%9A%84Hadoop%E9%9B%86%E7%BE%A4%E9%A1%B5%E9%9D%A2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1482,304 +1763,6 @@ kdc客户端kadmin -p admin&#x2F;&#97;&#100;&#x6d;&#105;&#x6e;&#x40;&#x48;&#65;&
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Yarn%E5%AE%B9%E9%87%8F%E8%B0%83%E5%BA%A6%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万万使不得">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Yarn%E5%AE%B9%E9%87%8F%E8%B0%83%E5%BA%A6%E5%99%A8/" itemprop="url">Yarn容量调度器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2024-02-07T15:42:08+08:00">
-                2024-02-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Yarn/" itemprop="url" rel="index">
-                    <span itemprop="name">Yarn</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一：指定调度器Yarn一共提供了三种资源调度器，分别是FIFO Scheduler（先进先出调度器） ，Capacity Scheduler（容量调度器），Fair Scheduler（公平调度器）。
-Apache版本的默认调度器是Capacity Scheduler（容量调度器），指定调度器的配置
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2024/%E5%A4%A7%E6%95%B0%E6%8D%AE/Yarn%E5%AE%B9%E9%87%8F%E8%B0%83%E5%BA%A6%E5%99%A8/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://wwsbd.gitee.io/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Yarn%E5%85%AC%E5%B9%B3%E8%B0%83%E5%BA%A6%E5%99%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="万万使不得">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Yarn%E5%85%AC%E5%B9%B3%E8%B0%83%E5%BA%A6%E5%99%A8/" itemprop="url">Yarn公平调度器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2023-12-15T10:42:08+08:00">
-                2023-12-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Yarn/" itemprop="url" rel="index">
-                    <span itemprop="name">Yarn</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-          一：指定调度器Yarn一共提供了三种资源调度器，分别是FIFO Scheduler（先进先出调度器） ，Capacity Scheduler（容量调度器），Fair Scheduler（公平调度器）。
-Apache版本的默认调度器是Capacity Scheduler（容量调度器），指定调度器的配置
-          ...
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2023/%E5%A4%A7%E6%95%B0%E6%8D%AE/Yarn%E5%85%AC%E5%B9%B3%E8%B0%83%E5%BA%A6%E5%99%A8/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1830,7 +1813,7 @@ Apache版本的默认调度器是Capacity Scheduler（容量调度器），指�
               
                 <a href="/">
               
-                  <span class="site-state-item-count">36</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1889,7 +1872,7 @@ Apache版本的默认调度器是Capacity Scheduler（容量调度器），指�
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2024</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

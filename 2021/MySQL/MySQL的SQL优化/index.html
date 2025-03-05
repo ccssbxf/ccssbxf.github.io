@@ -87,7 +87,7 @@
 <meta property="og:description" content="如果你的MySQL现在出现了性能瓶颈， 而且瓶颈在IO上， 可以通过哪些方法来提升性能呢？针对这个问题， 可以考虑以下三种方法：  设置 binlog_group_commit_sync_delay和 binlog_group_commit_sync_no_delay_count参数， 减少binlog的写盘次数。 这个方法是基于“额外的故意等待”来实现的， 因此可能会增加语句的响应时间， 但没有">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-06-04T11:45:38.000Z">
-<meta property="article:modified_time" content="2024-06-04T12:50:43.742Z">
+<meta property="article:modified_time" content="2025-02-26T09:42:09.451Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="SQL优化">
 <meta name="twitter:card" content="summary">
@@ -422,7 +422,7 @@
 <p>count(字段)：如果这个“字段”是定义为not null的话， 一行行地从记录里面读出这个字段， 判断不能为null， 按行累加；如果这个“字段”定义允许为null， 那么执行的时候， 判断到有可能是null， 还要把值取出来再判断一下， 不是null才累加。  </p>
 <p>count(1) ：InnoDB引擎遍历整张表， 但不取值。 server层对于返回的每一行， 放一个数字“1”进去， 判断是不可能为空的， 按行累加  </p>
 <p><strong>所以结论是： 按照效率排序的话， count(字段)&lt;count(主键id)&lt;count(1)≈count(*)， 所以我建议你， 尽量使用count(*)。</strong></p>
-<h2 id="主备"><a href="#主备" class="headerlink" title="主备"></a>主备</h2><p>1.不用一次性delete太多数据，容易造成主备长时间延迟</p>
+<h2 id="主备"><a href="#主备" class="headerlink" title="主备"></a>主备</h2><p>1.不能一次性delete太多数据，容易造成主备长时间延迟</p>
 <p>2.表一定要有主键，不然会导致备库没法并行复制，退化为单线程复制，造成严重的主备延迟</p>
 <p>3.读写分离时，主备延迟怎么办：</p>
 <p>一般解决过期读有以下方案：</p>
@@ -443,6 +443,7 @@
 <p>3.如果group by需要统计的数据量不大， 尽量只使用内存临时表； 也可以通过适当调大tmp_table_size参数， 来避免用到磁盘临时表；</p>
 <p>4.如果数据量实在太大， 使用SQL_BIG_RESULT这个提示， 来告诉优化器直接使用磁盘临时表，以数组的形式存储并且用排序算法得到group by的结果。  </p>
 <p>5.distinct  和group by都只用于去重时，在没有limit的情况下，两者性能差不多，在有limit的情况下，distant性能更好</p>
+<p>6.group by 默认如果group by的字段是无序的，则会使用内存临时表，如果内存临时表不够大，还会转换为磁盘临时表，会影响性能。因此尽量使得group by的字段是有序的，</p>
 
       
     </div>
@@ -565,7 +566,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">37</span>
+                  <span class="site-state-item-count">38</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -587,7 +588,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

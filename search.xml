@@ -616,7 +616,7 @@
 <figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t1 ...</span><br><span class="line"><span class="keyword">insert</span> <span class="keyword">into</span> t2 ...</span><br><span class="line"><span class="keyword">commit</span>;</span><br></pre></td></tr></table></figure>
 
 <p>这个事务要往两个表中插入记录， 插入数据的过程中， 生成的日志都得先保存起来， 但又不能在还没commit的时候就直接写到redo log文件里。所以， redo log buffer就是一块内存， 用来先存redo日志的。 也就是说， 在执行第一个insert的时候， 数据的内存被修改了， redo log buffer也写入了日志。但是， 真正把日志写到redo log文件（文件名是 ib_logfile+数字） ， 是在执行commit语句的时候做的。<br>（这里说的是事务执行过程中不会“主动去刷盘”， 以减少不必要的IO消耗。 但是可能会出现“被动写入磁盘”， 比如内存不够、 其他事务提交等情况。   </p>
-<p>单独执行一个更新语句的时候， InnoDB会自己启动一个事务， 在语句执行完成的时候提交。 过<br>程跟上面是一样的， 只不过是“压缩”到了一个语句里面完成。  </p>
+<p>单独执行一个更新语句的时候， InnoDB会自己启动一个事务， 在语句执行完成的时候提交。 过程跟上面是一样的， 只不过是“压缩”到了一个语句里面完成。  </p>
 <h3 id="如果你的MySQL现在出现了性能瓶颈，-而且瓶颈在IO上，-可以通过哪些方法来提升性能呢？"><a href="#如果你的MySQL现在出现了性能瓶颈，-而且瓶颈在IO上，-可以通过哪些方法来提升性能呢？" class="headerlink" title="如果你的MySQL现在出现了性能瓶颈， 而且瓶颈在IO上， 可以通过哪些方法来提升性能呢？"></a>如果你的MySQL现在出现了性能瓶颈， 而且瓶颈在IO上， 可以通过哪些方法来提升性能呢？</h3><p>针对这个问题， 可以考虑以下三种方法：</p>
 <ol>
 <li>设置 binlog_group_commit_sync_delay和 binlog_group_commit_sync_no_delay_count参数， 减少binlog的写盘次数。 这个方法是基于“额外的故意等待”来实现的， 因此可能会增加语句的响应时间， 但没有丢失数据的风险。</li>
@@ -1117,7 +1117,7 @@
 <li>扫描行数多</li>
 <li>一致性读，在查询期间回滚日志(undo log)过长</li>
 </ul>
-<h2 id="连接数过多"><a href="#连接数过多" class="headerlink" title="连接数过多"></a>连接数过多</h2><p>max_connections参数， 用来控制一个MySQL实例同时存在的连接数的上限， 超过这个值， 系统就会拒绝接下来的连接请求， 并报错提示“Too manyconnections”。 对于被拒绝连接的请求来说， 从业务角度看就是数据库不可用。  </p>
+<h2 id="连接数过多"><a href="#连接数过多" class="headerlink" title="连接数过多"></a>连接数过多</h2><p>max_connections参数， 用来控制一个MySQL实例同时存在的连接数的上限， 超过这个值， 系统就会拒绝接下来的连接请求， 并报错提示“Too many connections”。 对于被拒绝连接的请求来说， 从业务角度看就是数据库不可用。  </p>
 <p>在机器负载比较高的时候， 处理现有请求的时间变长， 每个连接保持的时间也更长。 这时， 再有新建连接的话， 就可能会超过max_connections的限制。  </p>
 <h3 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h3><p><strong>第一种方法： 先处理掉那些占着连接但是不工作的线程。</strong>  </p>
 <p>max_connections的计算， 不是看谁在running， 是只要连着就占用一个计数位置。 对于那些不需要保持的连接， 我们可以通过kill connection主动踢掉。 这个行为跟事先设置wait_timeout的效果是一样的。 设置wait_timeout参数表示的是， 一个线程空闲wait_timeout这么多秒之后， 就会被MySQL直接断开连接。  </p>
@@ -1821,7 +1821,7 @@
 </ol>
 <h2 id="临时表"><a href="#临时表" class="headerlink" title="临时表"></a>临时表</h2><h3 id="临时表的特性"><a href="#临时表的特性" class="headerlink" title="临时表的特性"></a>临时表的特性</h3><p>临时表在使用上有以下几个特点：</p>
 <ol>
-<li>建表语法是create temporarytable …。</li>
+<li>建表语法是create temporary table …。</li>
 <li>一个临时表只能被创建它的session访问， 对其他线程不可见。 所以， 图中session A创建的临时表t， 对于session B就是不可见的。</li>
 <li>临时表可以与普通表同名。</li>
 <li>session A内有同名的临时表和普通表的时候， show create语句， 以及增删改查语句访问的是临时表。</li>
@@ -1846,7 +1846,7 @@
 <li><p>而从 5.7版本开始， MySQL引入了一个临时文件表空间， 专门用来存放临时文件的数据。 因此， 我们就不需要再创建ibd文件了。</p>
 </li>
 </ul>
-<p>MySQL维护数据表， 除了物理上要有文件外， 内存里面也有一套机制区别不同的表， 每个表都对应一个table_def_key。<br>一个普通表的table_def_key的值是由“库名+表名”得到的， 所以如果你要在同一个库下创建两个同名的普通表， 创建第二个表的过程中就会发现table_def_key已经存在了。<br>而对于临时表， table_def_key在“库名+表名”基础上， 又加入了“server_id+thread_id”。create temporary table temp_t(id int primary key)engine&#x3D;innodb;也就是说， session A和sessionB创建的两个临时表t1， 它们的table_def_key不同， 磁盘文件名也不同， 因此可以并存。<br>在实现上， 每个线程都维护了自己的临时表链表。 这样每次session内操作表的时候， 先遍历链表， 检查是否有这个名字的临时表， 如果有就优先操作临时表， 如果没有再操作普通表； 在session结束的时候， 对链表里的每个临时表， 执行 “DROPTEMPORARY TABLE +表名”操作。<br>这时候你会发现， binlog中也记录了DROPTEMPORARY TABLE这条命令。 你一定会觉得奇怪， 临时表只在线程内自己可以访问， 为什么需要写到binlog里面？<br>这， 就需要说到主备复制了   </p>
+<p>MySQL维护数据表， 除了物理上要有文件外， 内存里面也有一套机制区别不同的表， 每个表都对应一个table_def_key。<br>一个普通表的table_def_key的值是由“库名+表名”得到的， 所以如果你要在同一个库下创建两个同名的普通表， 创建第二个表的过程中就会发现table_def_key已经存在了。<br>而对于临时表， table_def_key在“库名+表名”基础上， 又加入了“server_id+thread_id”。create temporary table temp_t(id int primary key)engine&#x3D;innodb;也就是说， session A和sessionB创建的两个临时表t1， 它们的table_def_key不同， 磁盘文件名也不同， 因此可以并存。<br>在实现上， 每个线程都维护了自己的临时表链表。 这样每次session内操作表的时候， 先遍历链表， 检查是否有这个名字的临时表， 如果有就优先操作临时表， 如果没有再操作普通表； 在session结束的时候， 对链表里的每个临时表， 执行 “DROPTEMPORARY TABLE +表名”操作。<br>这时候你会发现， binlog中也记录了DROP TEMPORARY TABLE这条命令。 你一定会觉得奇怪， 临时表只在线程内自己可以访问， 为什么需要写到binlog里面？<br>这， 就需要说到主备复制了   </p>
 <h3 id="临时表和主备复制"><a href="#临时表和主备复制" class="headerlink" title="临时表和主备复制"></a>临时表和主备复制</h3><p>在主库上执行下面这个语句序列：  </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">create table t_normal(id int primary key, c int)engine=innodb;/*Q1*/</span><br><span class="line">create temporary table temp_t like t_normal;/*Q2*/</span><br><span class="line">insert into temp_t values(1,1);/*Q3*/</span><br><span class="line">insert into t_normal select * from temp_t;/*Q4*/</span><br></pre></td></tr></table></figure>
 
@@ -1948,7 +1948,7 @@
 <li>InnoDB表用主键索引查询时需要走一次索引查找， 用普通索引查询的时候， 需要走两次索引查找。 而内存表没有这个区别， 所有索引的“地位”都是相同的。</li>
 <li>InnoDB支持变长数据类型， 不同记录的长度可能不同； 内存表不支持Blob 和 Text字段， 并且即使定义了varchar(N)， 实际也当作char(N)， 也就是固定长度字符串来存储， 因此内存表的每行数据长度相同。</li>
 </ol>
-<p>实际上， 内存表也是支B-Tree索引的。 在id列上创建一个B-Tree索引， SQL语句可以这么写  </p>
+<p>实际上， 内存表也是支持B-Tree索引的。 在id列上创建一个B-Tree索引， SQL语句可以这么写  </p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">alter table t1 add index a_btree_index using btree (id);</span><br></pre></td></tr></table></figure>
 
 <p>内存表的优势是速度快， 其中的一个原因就是Memory引擎支持hash索引。 当然， 更重要的原因是， 内存表的所有数据都保存在内存， 而内存的读写速度总是比磁盘快。  </p>
@@ -2099,7 +2099,7 @@
 <p>count(字段)：如果这个“字段”是定义为not null的话， 一行行地从记录里面读出这个字段， 判断不能为null， 按行累加；如果这个“字段”定义允许为null， 那么执行的时候， 判断到有可能是null， 还要把值取出来再判断一下， 不是null才累加。  </p>
 <p>count(1) ：InnoDB引擎遍历整张表， 但不取值。 server层对于返回的每一行， 放一个数字“1”进去， 判断是不可能为空的， 按行累加  </p>
 <p><strong>所以结论是： 按照效率排序的话， count(字段)&lt;count(主键id)&lt;count(1)≈count(*)， 所以我建议你， 尽量使用count(*)。</strong></p>
-<h2 id="主备"><a href="#主备" class="headerlink" title="主备"></a>主备</h2><p>1.不用一次性delete太多数据，容易造成主备长时间延迟</p>
+<h2 id="主备"><a href="#主备" class="headerlink" title="主备"></a>主备</h2><p>1.不能一次性delete太多数据，容易造成主备长时间延迟</p>
 <p>2.表一定要有主键，不然会导致备库没法并行复制，退化为单线程复制，造成严重的主备延迟</p>
 <p>3.读写分离时，主备延迟怎么办：</p>
 <p>一般解决过期读有以下方案：</p>
@@ -2120,6 +2120,7 @@
 <p>3.如果group by需要统计的数据量不大， 尽量只使用内存临时表； 也可以通过适当调大tmp_table_size参数， 来避免用到磁盘临时表；</p>
 <p>4.如果数据量实在太大， 使用SQL_BIG_RESULT这个提示， 来告诉优化器直接使用磁盘临时表，以数组的形式存储并且用排序算法得到group by的结果。  </p>
 <p>5.distinct  和group by都只用于去重时，在没有limit的情况下，两者性能差不多，在有limit的情况下，distant性能更好</p>
+<p>6.group by 默认如果group by的字段是无序的，则会使用内存临时表，如果内存临时表不够大，还会转换为磁盘临时表，会影响性能。因此尽量使得group by的字段是有序的，</p>
 ]]></content>
       <categories>
         <category>MySQL</category>
@@ -2429,7 +2430,7 @@
 <h5 id="查询显示列名"><a href="#查询显示列名" class="headerlink" title="查询显示列名"></a>查询显示列名</h5><p>set hive.cli.print.header &#x3D; true;</p>
 <h5 id="查询显示库名"><a href="#查询显示库名" class="headerlink" title="查询显示库名"></a>查询显示库名</h5><p>set hive.cli.print.current.db &#x3D; true;</p>
 <h5 id="设置执行引擎为MR"><a href="#设置执行引擎为MR" class="headerlink" title="设置执行引擎为MR"></a>设置执行引擎为MR</h5><p>set hive.execution.engine&#x3D;mr;</p>
-<h5 id="设置mr执行队列"><a href="#设置mr执行队列" class="headerlink" title="设置mr执行队列"></a>设置mr执行队列</h5><p>setmapreduce.job.queuename&#x3D;root.zhj;</p>
+<h5 id="设置mr执行队列"><a href="#设置mr执行队列" class="headerlink" title="设置mr执行队列"></a>设置mr执行队列</h5><p>set mapreduce.job.queuename&#x3D;root.zhj;</p>
 ]]></content>
       <categories>
         <category>Hive</category>
@@ -2648,6 +2649,15 @@
 <h5 id="查看文件打开情况"><a href="#查看文件打开情况" class="headerlink" title="查看文件打开情况"></a>查看文件打开情况</h5><p>lsof &#x2F;tmp</p>
 <p>yum -y install lsof</p>
 <p>ll &#x2F;proc&#x2F;pid&#x2F;fd</p>
+<h5 id="性能监测"><a href="#性能监测" class="headerlink" title="性能监测"></a>性能监测</h5><p>pidstat [options] [interval [count]]</p>
+<ul>
+<li><code>interval</code>: 两次采样的时间间隔（以秒为单位）</li>
+<li><code>count</code>: 采样的次数</li>
+</ul>
+<p><a href="https://blog.csdn.net/zx893404890/article/details/142592303">https://blog.csdn.net/zx893404890/article/details/142592303</a></p>
+<h5 id="限制进程的资源"><a href="#限制进程的资源" class="headerlink" title="限制进程的资源"></a>限制进程的资源</h5><p>cgroups</p>
+<p><a href="https://blog.csdn.net/cheagoun/article/details/142563337">https://blog.csdn.net/cheagoun/article/details/142563337</a></p>
+<h5 id="top显示进程名称"><a href="#top显示进程名称" class="headerlink" title="top显示进程名称"></a>top显示进程名称</h5><p>进入top后，按c切换显示</p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -2691,7 +2701,8 @@
 <h5 id="查看当前连接数"><a href="#查看当前连接数" class="headerlink" title="查看当前连接数"></a>查看当前连接数</h5><p>!list</p>
 <h5 id="插入语句"><a href="#插入语句" class="headerlink" title="插入语句"></a>插入语句</h5><p>UPSERT INTO TEST (ID, COUNTER) VALUES (123, 0);</p>
 <p>upsert into STUDENT values(‘rowkey’,’field1’,’field2’);</p>
-<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><p>CREATE TABLE IF NOT EXISTS TEST (<br> ID VARCHAR NOT NULL PRIMARY KEY,<br>F.A varchar,<br>F.B varchar,<br>F.C varchar<br>);</p>
+<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> TEST (</span><br><span class="line"> ID <span class="type">VARCHAR</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY, </span><br><span class="line">F.A <span class="type">varchar</span>,</span><br><span class="line">F.B <span class="type">varchar</span>,</span><br><span class="line">F.C <span class="type">varchar</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Phoenix</category>
@@ -2817,7 +2828,7 @@
 <p>list_namespace_tables  ‘ns1’</p>
 <p>查看所有表</p>
 <p>list</p>
-<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="string">&#x27;SYSTEM.CATALOG&#x27;</span>,&#123;NAME <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;F&#x27;</span>, VERSIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>,BLOOMFILTER <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;ROW&#x27;</span>,TTL <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FOREVER&#x27;</span>, BLOCKSIZE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;65536&#x27;</span>, DATA_BLOCK_ENCODING <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FAST_DIFF&#x27;</span>, IN_MEMORY <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;false&#x27;</span>,BLOCKCACHE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;true&#x27;</span>, COMPRESSION <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,METADATA <span class="operator">=</span><span class="operator">&gt;</span> &#123;<span class="string">&#x27;COMPRESSION_COMPACT&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,<span class="string">&#x27;IN_MEMORY_COMPACTION&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;BASIC&#x27;</span>&#125;&#125;, &#123;NUMREGIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>, SPLITALGO <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;HexStringSplit&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;column_family&#x27;</span></span><br></pre></td></tr></table></figure>
+<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="string">&#x27;TEST.DELETETEST&#x27;</span>,&#123;NAME <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;F&#x27;</span>, VERSIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>,BLOOMFILTER <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;ROW&#x27;</span>,TTL <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FOREVER&#x27;</span>, BLOCKSIZE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;65536&#x27;</span>, DATA_BLOCK_ENCODING <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FAST_DIFF&#x27;</span>, IN_MEMORY <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;false&#x27;</span>,BLOCKCACHE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;true&#x27;</span>, COMPRESSION <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,METADATA <span class="operator">=</span><span class="operator">&gt;</span> &#123;<span class="string">&#x27;COMPRESSION_COMPACT&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,<span class="string">&#x27;IN_MEMORY_COMPACTION&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;BASIC&#x27;</span>&#125;&#125;, &#123;NUMREGIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">2</span>, SPLITALGO <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;HexStringSplit&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;column_family&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">put <span class="string">&#x27;UD:TEST_CREATE&#x27;</span>, <span class="string">&#x27;row1&#x27;</span>, <span class="string">&#x27;F:NAME&#x27;</span>, <span class="string">&#x27;zs&#x27;</span></span><br></pre></td></tr></table></figure>
 
@@ -3818,6 +3829,62 @@
       </categories>
       <tags>
         <tag>HBase</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>使用MapReduce拆分文件</title>
+    <url>/2025/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E4%BD%BF%E7%94%A8MapReduce%E6%8B%86%E5%88%86%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<h6 id="测试数据"><a href="#测试数据" class="headerlink" title="测试数据"></a>测试数据</h6><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">13100000001;20221228;1</span><br><span class="line">13100000002;20221226;2</span><br><span class="line">13100000003;20221228;3</span><br><span class="line">13100000004;20221228;4</span><br><span class="line">13100000004;20221228;5</span><br></pre></td></tr></table></figure>
+
+<p>需求：根据数据里的某一列作为key，使用该key的值取余N，拆分成N个文件</p>
+<h2 id="编写代码"><a href="#编写代码" class="headerlink" title="编写代码"></a>编写代码</h2><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> split;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.conf.Configuration;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.fs.Path;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.LongWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.NullWritable;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.io.Text;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Job;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Mapper;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.Reducer;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.input.FileInputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;</span><br><span class="line"><span class="keyword">import</span> org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span> ZhouHJ</span></span><br><span class="line"><span class="comment"> * 2022/12/28 19:00</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SplitFileDriver</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyMapper</span> <span class="keyword">extends</span> <span class="title class_">Mapper</span>&lt;LongWritable, Text, Text, Text&gt; &#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">map</span><span class="params">(LongWritable key, Text value, Context context)</span> <span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line">            <span class="type">Configuration</span> <span class="variable">config</span> <span class="operator">=</span> context.getConfiguration();</span><br><span class="line">            <span class="type">String</span> <span class="variable">separator</span> <span class="operator">=</span> config.get(<span class="string">&quot;separator&quot;</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">keyIndex</span> <span class="operator">=</span> Integer.parseInt(config.get(<span class="string">&quot;keyIndex&quot;</span>));</span><br><span class="line">            <span class="type">int</span> <span class="variable">mod</span> <span class="operator">=</span> Integer.parseInt(config.get(<span class="string">&quot;mod&quot;</span>));</span><br><span class="line">            String[] fields = value.toString().split(separator);</span><br><span class="line">            <span class="type">String</span> <span class="variable">keyValue</span> <span class="operator">=</span> fields[keyIndex];</span><br><span class="line">            <span class="type">long</span> <span class="variable">par</span> <span class="operator">=</span> Long.parseLong(keyValue) % mod;</span><br><span class="line">            context.write(<span class="keyword">new</span> <span class="title class_">Text</span>(String.valueOf(par)), value);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">MyReducer</span> <span class="keyword">extends</span> <span class="title class_">Reducer</span>&lt;Text, Text, NullWritable, Text&gt; &#123;</span><br><span class="line">        <span class="keyword">private</span> MultipleOutputs&lt;NullWritable, Text&gt; multipleOutputs;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">setup</span><span class="params">(Context context)</span> &#123;</span><br><span class="line">            multipleOutputs = <span class="keyword">new</span> <span class="title class_">MultipleOutputs</span>&lt;&gt;(context);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">reduce</span><span class="params">(Text key, Iterable&lt;Text&gt; values, Context context)</span> <span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line">            <span class="keyword">for</span> (Text value : values) &#123;</span><br><span class="line">                <span class="comment">//写入HDFS文件，格式为 (key.toString()-r-00000),将key值相同的写入到同一个文件</span></span><br><span class="line">                multipleOutputs.write(NullWritable.get(), value, key.toString());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="keyword">void</span> <span class="title function_">cleanup</span><span class="params">(Context context)</span> <span class="keyword">throws</span> IOException, InterruptedException &#123;</span><br><span class="line">            multipleOutputs.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">//测试写死，真实场景可采用传参</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> Configuration <span class="title function_">buildConfiguration</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Configuration</span>();</span><br><span class="line">        conf.set(<span class="string">&quot;separator&quot;</span>, <span class="string">&quot;;&quot;</span>);</span><br><span class="line">        conf.set(<span class="string">&quot;keyIndex&quot;</span>, <span class="string">&quot;0&quot;</span>);</span><br><span class="line">        conf.set(<span class="string">&quot;mod&quot;</span>, <span class="string">&quot;10&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> conf;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException, ClassNotFoundException, InterruptedException &#123;</span><br><span class="line">        <span class="comment">//集群运行时，需要设置HADOOP_USER_NAME和集群用户相同</span></span><br><span class="line">        <span class="comment">//System.setProperty(&quot;HADOOP_USER_NAME&quot;, &quot;zhouhj&quot;);</span></span><br><span class="line">        <span class="type">Configuration</span> <span class="variable">conf</span> <span class="operator">=</span> buildConfiguration();</span><br><span class="line">        <span class="type">Job</span> <span class="variable">job</span> <span class="operator">=</span> Job.getInstance(conf);</span><br><span class="line">        job.setJobName(<span class="string">&quot;SplitFileDriver&quot;</span>);</span><br><span class="line">        job.setJarByClass(SplitFileDriver.class);</span><br><span class="line">        <span class="comment">//集群运行时，使用以下代替job.setJarByClass(SplitFileDriver.class);</span></span><br><span class="line">        <span class="comment">//job.setJar(&quot;target/HadoopDemo-1.0-SNAPSHOT.jar&quot;)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置MapReduce使用的类</span></span><br><span class="line">        job.setMapperClass(MyMapper.class);</span><br><span class="line">        job.setReducerClass(MyReducer.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置Map阶段输出的key和value的类型</span></span><br><span class="line">        job.setMapOutputKeyClass(Text.class);</span><br><span class="line">        job.setMapOutputValueClass(Text.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置Reduce阶段输出的key和value的类型</span></span><br><span class="line">        job.setOutputKeyClass(NullWritable.class);</span><br><span class="line">        job.setOutputValueClass(Text.class);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//设置reduce数量</span></span><br><span class="line">        job.setNumReduceTasks(<span class="number">10</span>);</span><br><span class="line">        <span class="comment">// 不输出空文件，自定义文件名时输出目录会生成part-r-00000或者part-m-00000的空文件</span></span><br><span class="line">        LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);</span><br><span class="line">        <span class="comment">//后面传参的路径加上file:///使用的是本地路径，否则使用的是hdfs路径</span></span><br><span class="line">        FileInputFormat.setInputPaths(job, <span class="keyword">new</span> <span class="title class_">Path</span>(<span class="string">&quot;file:///E:/Project/HadoopDemo/input/split.txt&quot;</span>));</span><br><span class="line">        FileOutputFormat.setOutputPath(job, <span class="keyword">new</span> <span class="title class_">Path</span>(<span class="string">&quot;file:///E:/Project/HadoopDemo/output/splitTest/&quot;</span>));</span><br><span class="line">        <span class="comment">//提交作业并等待完成</span></span><br><span class="line">        <span class="type">boolean</span> <span class="variable">result</span> <span class="operator">=</span> job.waitForCompletion(<span class="literal">true</span>);</span><br><span class="line">        System.out.println(result ? <span class="number">0</span> : <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="测试运行"><a href="#测试运行" class="headerlink" title="测试运行"></a>测试运行</h2><h3 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h3><p>修改mapred-site.xml文件的mapreduce.framework.name为local</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305162510.png" alt="image-20250305162503287" style="zoom:33%;" />
+
+<p>然后运行</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305164646.png" alt="image-20250305164646256" style="zoom:33%;" />
+
+<p>查看结果</p>
+<p>生成了四个文件，文件名前面的数字为key取余mod的余数</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305164732.png" alt="image-20250305164732935" style="zoom: 50%;" />
+
+<p>查看一个文件内容</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305164926.png" alt="image-20250305164926666" style="zoom:50%;" />
+
+<p>文件拆分成功</p>
+<h3 id="集群运行"><a href="#集群运行" class="headerlink" title="集群运行"></a>集群运行</h3><h4 id="方式一："><a href="#方式一：" class="headerlink" title="方式一："></a>方式一：</h4><p>修改mapred-site.xml文件的mapreduce.framework.name为yarn，添加mapreduce.app-submission.cross-platform&#x3D;true</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305165140.png" alt="image-20250305165140569" style="zoom: 33%;" />
+
+<p>将代码打成jar包</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305165954.png" alt="image-20250305165954637" style="zoom:50%;" />
+
+<p>修改代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">放开下面这句的注释，设置为集群主机用户名</span><br><span class="line">System.setProperty(<span class="string">&quot;HADOOP_USER_NAME&quot;</span>, <span class="string">&quot;zhouhj&quot;</span>);</span><br><span class="line">使用job.setJar(<span class="string">&quot;target/HadoopDemo-1.0-SNAPSHOT.jar&quot;</span>);代替job.setJarByClass(SplitFileDriver.class);</span><br><span class="line">修改输入输出路径为集群路径</span><br></pre></td></tr></table></figure>
+
+<p>运行代码，查看结果</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305175214.png" style="width: 80%; zoom: 25%;" />
+
+<h4 id="方式二："><a href="#方式二：" class="headerlink" title="方式二："></a>方式二：</h4><p>将jar包上传到服务器上，使用如下命令运行</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop jar HadoopDemo-1.0-SNAPSHOT.jar split.SplitFileDriver</span><br></pre></td></tr></table></figure>
+
+<p>此时需要使用job.setJarByClass(SplitFileDriver.class);</p>
+<p>运行成功</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250305171525.png" alt="image-20250305171525090" style="zoom:50%;" />
+
+<p>注意：此时只能引用到Hadoop的jar，如果MapReduce里的代码需要有第三方的依赖，可以采用以下方法：</p>
+<p>一：将依赖打包到jar里，这样jar会比较庞大，哪怕只改了MapReduce的代码也需要全量发布</p>
+<p>二：将lib单独放置到服务器上，然后使用</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">HADOOP_CLASSPATH=/home/zhouhj/app/mr/lib1/*:/home/zhouhj/app/mr/lib2/* hadoop jar HadoopDemo-1.0-SNAPSHOT.jar hbase.HBaseExportToTextFile</span><br></pre></td></tr></table></figure>
+
+<p>这样该HADOOP_CLASSPATH只会在本次执行生效不会影响其他，依赖之间以冒号隔开</p>
+<p>但是我在写一个用Mr导出hbase数据的demo时，采用这种方式的时候，哪怕jar里有hbase-site.xml配置，也读不到配置的hbase的zk地址和端口，只会使用默认的127.0.0.1:2181，并且哪怕HADOOP_CLASSPATH里加上hbase-site.xml也没用，目前还没发现问题出在哪</p>
+]]></content>
+      <categories>
+        <category>Hadoop</category>
+      </categories>
+      <tags>
+        <tag>MapReduce</tag>
       </tags>
   </entry>
 </search>

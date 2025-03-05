@@ -2130,22 +2130,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Hexo博客使用</title>
-    <url>/2020/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/Hexo%E5%8D%9A%E5%AE%A2%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<p>1.将文章放到E:\Blog\source_posts下</p>
-<p>2.执行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">生成文件</span><br><span class="line">hexo g</span><br><span class="line">本地预览</span><br><span class="line">hexo s</span><br><span class="line">发布到服务器</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>Hexo</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>工具使用</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Idea常用插件</title>
     <url>/2021/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/Idea%E5%B8%B8%E7%94%A8%E6%8F%92%E4%BB%B6/</url>
     <content><![CDATA[<p>idea版本2021.1，有的插件在不同的idea版本下可能没有</p>

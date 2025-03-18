@@ -2415,6 +2415,10 @@
 <h5 id="查询显示库名"><a href="#查询显示库名" class="headerlink" title="查询显示库名"></a>查询显示库名</h5><p>set hive.cli.print.current.db &#x3D; true;</p>
 <h5 id="设置执行引擎为MR"><a href="#设置执行引擎为MR" class="headerlink" title="设置执行引擎为MR"></a>设置执行引擎为MR</h5><p>set hive.execution.engine&#x3D;mr;</p>
 <h5 id="设置mr执行队列"><a href="#设置mr执行队列" class="headerlink" title="设置mr执行队列"></a>设置mr执行队列</h5><p>set mapreduce.job.queuename&#x3D;root.zhj;</p>
+<h5 id="禁用查询统计信息"><a href="#禁用查询统计信息" class="headerlink" title="禁用查询统计信息"></a>禁用查询统计信息</h5><p>禁用统计信息，解决入库第二次报错问题</p>
+<p>set hive.stats.autogather&#x3D;false;</p>
+<p>禁止查询的时候使用统计信息，解决select count(*) 为0问题</p>
+<p>set hive.compute.query.using.stats&#x3D;false;</p>
 ]]></content>
       <categories>
         <category>Hive</category>
@@ -3871,6 +3875,30 @@
       </categories>
       <tags>
         <tag>MapReduce</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hive配置文件隐藏元数据库密码</title>
+    <url>/2025/%E5%A4%A7%E6%95%B0%E6%8D%AE/Hive%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E9%9A%90%E8%97%8F%E5%85%83%E6%95%B0%E6%8D%AE%E5%BA%93%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Hive的MetaStore连接的元数据库默认使用明文密码配置在hive-site.xml中，不符合生产管理规范，容易泄露数据库密码</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>javax.jdo.option.ConnectionPassword<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">value</span>&gt;</span>123456<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="生成密钥文件"><a href="#生成密钥文件" class="headerlink" title="生成密钥文件"></a>生成密钥文件</h3><p>使用如下命令对该密码进行加密，生成对应的密钥文件</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop credential create javax.jdo.option.ConnectionPassword -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">[zhouhj@server1:~]$ hadoop credential create javax.jdo.option.ConnectionPassword -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">WARNING: You have accepted the use of the default provider password</span><br><span class="line">by not configuring a password in one of the two following locations:</span><br><span class="line">    * In the environment variable HADOOP_CREDSTORE_PASSWORD</span><br><span class="line">    * In a file referred to by the configuration entry</span><br><span class="line">      hadoop.security.credstore.java-keystore-provider.password-file.</span><br><span class="line">Please review the documentation regarding provider passwords in</span><br><span class="line">the keystore passwords section of the Credential Provider API</span><br><span class="line">Continuing with the default provider password.</span><br><span class="line"></span><br><span class="line">Enter alias password: </span><br><span class="line">Enter alias password again: </span><br><span class="line">javax.jdo.option.ConnectionPassword has been successfully created.</span><br><span class="line">Provider jceks://file/home/zhouhj/hive/conf/hive.jceks has been updated.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里会让输入两次元数据库的密码，即加密内容，路径正确的话会生成对应的密钥文件</p>
+<p>可使用以下命令查看密钥文件里的配置项</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop credential list -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">[zhouhj@server1:~]$ hadoop credential list -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">Listing aliases for CredentialProvider: jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">javax.jdo.option.connectionpassword</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置密钥文件"><a href="#配置密钥文件" class="headerlink" title="配置密钥文件"></a>配置密钥文件</h3><p>去除hive-site.xml里原有的配置项javax.jdo.option.ConnectionPassword，新增以下配置项：</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.security.credential.provider.path<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>jceks://file/home/zhouhj/hive/conf/hive.jceks<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>Hive</category>
+      </categories>
+      <tags>
+        <tag>Hive</tag>
       </tags>
   </entry>
 </search>

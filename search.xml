@@ -2317,6 +2317,9 @@
 <h2 id="三、git-提交代码到远程端"><a href="#三、git-提交代码到远程端" class="headerlink" title="三、git 提交代码到远程端"></a>三、git 提交代码到远程端</h2><p>git commit -m ‘提交测试’<br>git push origin master</p>
 <h2 id="四、git-临时保存和恢复"><a href="#四、git-临时保存和恢复" class="headerlink" title="四、git 临时保存和恢复"></a>四、git 临时保存和恢复</h2><p>git stash<br>git stash pop</p>
 <h2 id="五、git-版本合并"><a href="#五、git-版本合并" class="headerlink" title="五、git 版本合并"></a>五、git 版本合并</h2><p>git rebase –abort 会放弃合并，回到 rebase 操作之前的状态，之前的提交的不会丢弃<br>git rebase –skip 则会将引起冲突的 commits 丢弃掉（慎用！！）<br>git rebase –continue 一般情况下，修改后检查没问题，使用 rebase continue 来处理合并冲突</p>
+<h2 id="六、git远程仓库"><a href="#六、git远程仓库" class="headerlink" title="六、git远程仓库"></a>六、git远程仓库</h2><p>git remote -v 查看</p>
+<p>git remote remove origin 删除已有的远程仓库</p>
+<p>git remote add origin <a href="https://xxxxxxx.git/">https://xxxxxxx.git</a> 添加远程仓库</p>
 ]]></content>
       <categories>
         <category>Git</category>
@@ -2337,7 +2340,7 @@
 
 
 
-<h5 id="beeline连接"><a href="#beeline连接" class="headerlink" title="beeline连接"></a>beeline连接</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">beeline</span><br><span class="line"></span><br><span class="line">!connect jdbc:hive2://hadoop102:10000</span><br></pre></td></tr></table></figure>
+<h5 id="beeline连接"><a href="#beeline连接" class="headerlink" title="beeline连接"></a>beeline连接</h5><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">beeline</span><br><span class="line"></span><br><span class="line">!connect jdbc:hive2://hadoop102:10000</span><br><span class="line"></span><br><span class="line">!connect &#x27;jdbc:hive2://hadoop101:2181,hadoop102:2181,hadoop103:2181/;serviceDiscoveryMode=zooKeeper;zooKeeperNamespace=hiveserver2&#x27;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -2345,11 +2348,11 @@
 
 
 
-<h5 id="添加jar"><a href="#添加jar" class="headerlink" title="添加jar"></a>添加jar</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add</span> jar hdfs:<span class="operator">/</span><span class="operator">/</span>bcdp<span class="operator">/</span>hive_udf<span class="operator">/</span>ST4<span class="number">-4.0</span><span class="number">.4</span>.jar;</span><br></pre></td></tr></table></figure>
+<h5 id="添加jar"><a href="#添加jar" class="headerlink" title="添加jar"></a>添加jar</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">add</span> jar hdfs:<span class="operator">/</span><span class="operator">/</span>zhouhj<span class="operator">/</span>hive_udf<span class="operator">/</span>ST4<span class="number">-4.0</span><span class="number">.4</span>.jar;</span><br></pre></td></tr></table></figure>
 
 
 
-<h5 id="删除jar"><a href="#删除jar" class="headerlink" title="删除jar"></a>删除jar</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span> jar hdfs:<span class="operator">/</span><span class="operator">/</span>bcdp<span class="operator">/</span>hive_udf<span class="operator">/</span>ST4<span class="number">-4.0</span><span class="number">.4</span>.jar;</span><br></pre></td></tr></table></figure>
+<h5 id="删除jar"><a href="#删除jar" class="headerlink" title="删除jar"></a>删除jar</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">delete</span> jar hdfs:<span class="operator">/</span><span class="operator">/</span>zhouhj<span class="operator">/</span>hive_udf<span class="operator">/</span>ST4<span class="number">-4.0</span><span class="number">.4</span>.jar;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -2401,7 +2404,7 @@
 
 <p>注：已存在的仍然不会正常显示</p>
 <p>修改hive-site.xml中的javax.jdo.option.ConnectionURL，加上</p>
-<p>&amp;amp;useUnicode&#x3D;true&amp;amp;characterEncoding&#x3D;UTF-8</p>
+<p>?useUnicode&#x3D;true&amp;characterEncoding&#x3D;UTF-8</p>
 <h5 id="解析JSON结构文件"><a href="#解析JSON结构文件" class="headerlink" title="解析JSON结构文件"></a>解析JSON结构文件</h5><p>建表的时候  ROW FORMAT SERDE ‘org.apache.hadoop.hive.serde2.JsonSerDe’</p>
 <h5 id="将查询结果作为一张新的表"><a href="#将查询结果作为一张新的表" class="headerlink" title="将查询结果作为一张新的表"></a>将查询结果作为一张新的表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="keyword">table</span> tablename <span class="keyword">as</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> ... <span class="keyword">where</span> ...</span><br></pre></td></tr></table></figure>
 
@@ -3256,7 +3259,7 @@
 <p>3.对齐填充</p>
 <h2 id="垃圾判别算法"><a href="#垃圾判别算法" class="headerlink" title="垃圾判别算法"></a>垃圾判别算法</h2><h3 id="1-引用计数器"><a href="#1-引用计数器" class="headerlink" title="1.引用计数器"></a>1.引用计数器</h3><p>致命缺陷：无法解决循环引用问题</p>
 <h3 id="2-可达性分析"><a href="#2-可达性分析" class="headerlink" title="2.可达性分析"></a>2.可达性分析</h3><p>从GC Root出发，引用不到的全都可以回收</p>
-<h4 id="哪些可以作为GC-Root"><a href="#哪些可以作为GC-Root" class="headerlink" title="哪些可以作为GC Root"></a>哪些可以作为GC Root</h4><p>局部变量表里的引用的对象、本地方法引用的对象、类静态属性引用的对象、方法区中常量引用的对象、所有北同步锁synchronized持有的对象、Java虚拟机内部的引用（基本数据类型对应的Class对象、常驻的异常对象、系统类加载器等）反映java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等</p>
+<h4 id="哪些可以作为GC-Root"><a href="#哪些可以作为GC-Root" class="headerlink" title="哪些可以作为GC Root"></a>哪些可以作为GC Root</h4><p>局部变量表里的引用的对象、本地方法引用的对象、类静态属性引用的对象、方法区中常量引用的对象、所有被同步锁synchronized持有的对象、Java虚拟机内部的引用（基本数据类型对应的Class对象、常驻的异常对象、系统类加载器等）反映java虚拟机内部情况的JMXBean、JVMTI中注册的回调、本地代码缓存等</p>
 <h2 id="垃圾清除算法"><a href="#垃圾清除算法" class="headerlink" title="垃圾清除算法"></a>垃圾清除算法</h2><p>1.标记-清除算法</p>
 <p>标记的是存活的对象，清除垃圾</p>
 <p>缺点：内存碎片化严重、效率低，递归和全堆遍历两次、会造成STW</p>
@@ -3379,7 +3382,7 @@
 <p>1.-XX:+UseConcMarkSweepGC</p>
 <p>手动指定老年代使用 CMS 收集器。</p>
 <p>开启该参数后，会自动开启 -xx:+UseParNewGC。即年轻代用 ParNew，老年代用 CMS，老年代兜底用 Serial Old</p>
-<p>2.-XX:ParallelcMSThreads </p>
+<p>2.-XX:ParallelCMSThreads </p>
 <p>设置 CMS 的线程数量。</p>
 <p>默认启动的线程数是（ParallelGCThreads+3）&#x2F;4，ParallelGCThreads 是年轻代并行收集器的线程数。<br>当 CPU 资源比较紧张时，受到 CMS 收集器线程的影响，应用程序的性能在垃圾回收阶段可能会非常糟糕。</p>
 <p>3.-XX:CMSInitiatingOccupanyFraction </p>
@@ -3887,8 +3890,7 @@
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop credential create javax.jdo.option.ConnectionPassword -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">[zhouhj@server1:~]$ hadoop credential create javax.jdo.option.ConnectionPassword -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">WARNING: You have accepted the use of the default provider password</span><br><span class="line">by not configuring a password in one of the two following locations:</span><br><span class="line">    * In the environment variable HADOOP_CREDSTORE_PASSWORD</span><br><span class="line">    * In a file referred to by the configuration entry</span><br><span class="line">      hadoop.security.credstore.java-keystore-provider.password-file.</span><br><span class="line">Please review the documentation regarding provider passwords in</span><br><span class="line">the keystore passwords section of the Credential Provider API</span><br><span class="line">Continuing with the default provider password.</span><br><span class="line"></span><br><span class="line">Enter alias password: </span><br><span class="line">Enter alias password again: </span><br><span class="line">javax.jdo.option.ConnectionPassword has been successfully created.</span><br><span class="line">Provider jceks://file/home/zhouhj/hive/conf/hive.jceks has been updated.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>这里会让输入两次元数据库的密码，即加密内容，路径正确的话会生成对应的密钥文件</p>
-<p>可使用以下命令查看密钥文件里的配置项</p>
-<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">hadoop credential list -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">[zhouhj@server1:~]$ hadoop credential list -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">Listing aliases for CredentialProvider: jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">javax.jdo.option.connectionpassword</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">可使用以下命令查看密钥文件里的配置项</span><br><span class="line">hadoop credential list -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line"></span><br><span class="line">示例：</span><br><span class="line">[zhouhj@server1:~]$ hadoop credential list -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">Listing aliases for CredentialProvider: jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br><span class="line">javax.jdo.option.connectionpassword</span><br><span class="line"></span><br><span class="line">使用以下命令可删除秘钥文件里的配置项</span><br><span class="line">hadoop credential delete javax.jdo.option.ConnectionPassword  -provider jceks://file/home/zhouhj/hive/conf/hive.jceks</span><br></pre></td></tr></table></figure>
 
 <h3 id="配置密钥文件"><a href="#配置密钥文件" class="headerlink" title="配置密钥文件"></a>配置密钥文件</h3><p>去除hive-site.xml里原有的配置项javax.jdo.option.ConnectionPassword，新增以下配置项：</p>
 <figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">property</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">name</span>&gt;</span>hadoop.security.credential.provider.path<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">   <span class="tag">&lt;<span class="name">value</span>&gt;</span>jceks://file/home/zhouhj/hive/conf/hive.jceks<span class="tag">&lt;/<span class="name">value</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">property</span>&gt;</span></span><br></pre></td></tr></table></figure>

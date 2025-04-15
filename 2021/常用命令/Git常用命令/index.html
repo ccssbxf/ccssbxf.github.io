@@ -87,7 +87,7 @@
 <meta property="og:description" content="一、git 强制提交本地分支覆盖远程分支git push origin 分支名 –forcegit push origin master –force 二、git 删除远程端文件下面以删除.idea 文件为例git rm –cached -r .idea 三、git 提交代码到远程端git commit -m ‘提交测试’git push origin master 四、git 临时保存和恢复gi">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-01-06T12:09:48.000Z">
-<meta property="article:modified_time" content="2024-06-04T12:47:43.585Z">
+<meta property="article:modified_time" content="2025-04-15T08:55:09.507Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="Git">
 <meta property="article:tag" content="常用命令">
@@ -392,6 +392,9 @@
 <h2 id="三、git-提交代码到远程端"><a href="#三、git-提交代码到远程端" class="headerlink" title="三、git 提交代码到远程端"></a>三、git 提交代码到远程端</h2><p>git commit -m ‘提交测试’<br>git push origin master</p>
 <h2 id="四、git-临时保存和恢复"><a href="#四、git-临时保存和恢复" class="headerlink" title="四、git 临时保存和恢复"></a>四、git 临时保存和恢复</h2><p>git stash<br>git stash pop</p>
 <h2 id="五、git-版本合并"><a href="#五、git-版本合并" class="headerlink" title="五、git 版本合并"></a>五、git 版本合并</h2><p>git rebase –abort 会放弃合并，回到 rebase 操作之前的状态，之前的提交的不会丢弃<br>git rebase –skip 则会将引起冲突的 commits 丢弃掉（慎用！！）<br>git rebase –continue 一般情况下，修改后检查没问题，使用 rebase continue 来处理合并冲突</p>
+<h2 id="六、git远程仓库"><a href="#六、git远程仓库" class="headerlink" title="六、git远程仓库"></a>六、git远程仓库</h2><p>git remote -v 查看</p>
+<p>git remote remove origin 删除已有的远程仓库</p>
+<p>git remote add origin <a target="_blank" rel="noopener" href="https://xxxxxxx.git/">https://xxxxxxx.git</a> 添加远程仓库</p>
 
       
     </div>
@@ -571,7 +574,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81git-%E5%BC%BA%E5%88%B6%E6%8F%90%E4%BA%A4%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF%E8%A6%86%E7%9B%96%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="nav-number">1.</span> <span class="nav-text">一、git 强制提交本地分支覆盖远程分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81git-%E5%88%A0%E9%99%A4%E8%BF%9C%E7%A8%8B%E7%AB%AF%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">二、git 删除远程端文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81git-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">三、git 提交代码到远程端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81git-%E4%B8%B4%E6%97%B6%E4%BF%9D%E5%AD%98%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-number">4.</span> <span class="nav-text">四、git 临时保存和恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81git-%E7%89%88%E6%9C%AC%E5%90%88%E5%B9%B6"><span class="nav-number">5.</span> <span class="nav-text">五、git 版本合并</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81git-%E5%BC%BA%E5%88%B6%E6%8F%90%E4%BA%A4%E6%9C%AC%E5%9C%B0%E5%88%86%E6%94%AF%E8%A6%86%E7%9B%96%E8%BF%9C%E7%A8%8B%E5%88%86%E6%94%AF"><span class="nav-number">1.</span> <span class="nav-text">一、git 强制提交本地分支覆盖远程分支</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81git-%E5%88%A0%E9%99%A4%E8%BF%9C%E7%A8%8B%E7%AB%AF%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">二、git 删除远程端文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81git-%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81%E5%88%B0%E8%BF%9C%E7%A8%8B%E7%AB%AF"><span class="nav-number">3.</span> <span class="nav-text">三、git 提交代码到远程端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81git-%E4%B8%B4%E6%97%B6%E4%BF%9D%E5%AD%98%E5%92%8C%E6%81%A2%E5%A4%8D"><span class="nav-number">4.</span> <span class="nav-text">四、git 临时保存和恢复</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81git-%E7%89%88%E6%9C%AC%E5%90%88%E5%B9%B6"><span class="nav-number">5.</span> <span class="nav-text">五、git 版本合并</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81git%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93"><span class="nav-number">6.</span> <span class="nav-text">六、git远程仓库</span></a></li></ol></div>
             
 
           </div>

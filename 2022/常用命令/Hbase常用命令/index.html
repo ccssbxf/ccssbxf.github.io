@@ -87,7 +87,7 @@
 <meta property="og:description" content="表记录条数count “usertable”, INTERVAL &#x3D;&gt; 100000 scan 查询根据rowkey范围扫描scan ‘tablename’,{STARTROW &#x3D;&gt; ‘1001’,STOPROW&#x3D;&gt;’2001’} 过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOGscan ‘SYSTEM:CATALOG’, F">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-10-17T07:17:36.000Z">
-<meta property="article:modified_time" content="2025-02-12T01:40:46.272Z">
+<meta property="article:modified_time" content="2025-05-29T06:51:37.473Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="HBase">
 <meta property="article:tag" content="常用命令">
@@ -401,6 +401,7 @@
 <h5 id="节点退役"><a href="#节点退役" class="headerlink" title="节点退役"></a>节点退役</h5><p>graceful_stop.sh node1</p>
 <h5 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h5><p>hbase shell里执行</p>
 <p>status</p>
+<p>status ‘simple’</p>
 <p>status ‘detailed’</p>
 <h5 id="创建命名空间"><a href="#创建命名空间" class="headerlink" title="创建命名空间"></a>创建命名空间</h5><p>create_namespace ‘UD’</p>
 <h5 id="查看有哪些命名空间"><a href="#查看有哪些命名空间" class="headerlink" title="查看有哪些命名空间"></a>查看有哪些命名空间</h5><p>list_namespace</p>

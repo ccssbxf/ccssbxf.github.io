@@ -2424,6 +2424,8 @@
 <p>set hive.stats.autogather&#x3D;false;</p>
 <p>禁止查询的时候使用统计信息，解决select count(*) 为0问题</p>
 <p>set hive.compute.query.using.stats&#x3D;false;</p>
+<h5 id="表属性查看"><a href="#表属性查看" class="headerlink" title="表属性查看"></a>表属性查看</h5><p>desc formatted table_name;</p>
+<p>Table Type显示为EXTERNAL_TABLE外部表，MANAGED_TABLE内部表</p>
 ]]></content>
       <categories>
         <category>Hive</category>
@@ -2812,6 +2814,7 @@
 <h5 id="节点退役"><a href="#节点退役" class="headerlink" title="节点退役"></a>节点退役</h5><p>graceful_stop.sh node1</p>
 <h5 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h5><p>hbase shell里执行</p>
 <p>status</p>
+<p>status ‘simple’</p>
 <p>status ‘detailed’</p>
 <h5 id="创建命名空间"><a href="#创建命名空间" class="headerlink" title="创建命名空间"></a>创建命名空间</h5><p>create_namespace ‘UD’</p>
 <h5 id="查看有哪些命名空间"><a href="#查看有哪些命名空间" class="headerlink" title="查看有哪些命名空间"></a>查看有哪些命名空间</h5><p>list_namespace</p>

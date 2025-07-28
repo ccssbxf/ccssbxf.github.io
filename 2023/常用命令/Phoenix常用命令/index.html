@@ -87,7 +87,7 @@
 <meta property="og:description" content="连接转换属性phoenix.schema.isNamespaceMappingEnabled&#x3D;true phoenix.schema.mapSystemTablesToNamespace&#x3D;true 查看表!tables 查看当前连接数!list 插入语句UPSERT INTO TEST (ID, COUNTER) VALUES (123, 0); upsert into STU">
 <meta property="og:locale">
 <meta property="article:published_time" content="2023-08-17T15:39:13.000Z">
-<meta property="article:modified_time" content="2025-02-12T01:42:05.981Z">
+<meta property="article:modified_time" content="2025-07-17T03:45:58.543Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="Phoenix">
 <meta property="article:tag" content="常用命令">
@@ -395,6 +395,14 @@
 <p>upsert into STUDENT values(‘rowkey’,’field1’,’field2’);</p>
 <h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> TEST (</span><br><span class="line"> ID <span class="type">VARCHAR</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY, </span><br><span class="line">F.A <span class="type">varchar</span>,</span><br><span class="line">F.B <span class="type">varchar</span>,</span><br><span class="line">F.C <span class="type">varchar</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
+<h5 id="新加字段"><a href="#新加字段" class="headerlink" title="新加字段"></a>新加字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE TABLE_NAME ADD &quot;F&quot;.&quot;NAME&quot; VARCHAR;</span><br></pre></td></tr></table></figure>
+
+<h5 id="删除字段"><a href="#删除字段" class="headerlink" title="删除字段"></a>删除字段</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ALTER TABLE TABLE_NAME DROP COLUMN NAME;</span><br><span class="line">注：此时会将关联的HBase表里的该字段彻底删除，并不是只删除关联关系</span><br></pre></td></tr></table></figure>
+
+<h5 id="指定查询结果的格式"><a href="#指定查询结果的格式" class="headerlink" title="指定查询结果的格式"></a>指定查询结果的格式</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">可以用在窗口查询时，屏幕显示不下，显示不全</span><br><span class="line">!outputformat csv</span><br><span class="line">支持以下格式</span><br><span class="line">Possible values: [ansiconsole, xmlattr, tsv, xmlattrs, xmlelements, csv, json, vertical, table]</span><br></pre></td></tr></table></figure>
+
+<h5 id="执行sql文件"><a href="#执行sql文件" class="headerlink" title="执行sql文件"></a>执行sql文件</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlline.py zkhost:zkport query.sql</span><br></pre></td></tr></table></figure>
+
 
       
     </div>
@@ -519,7 +527,7 @@
               
                 <a href="/">
               
-                  <span class="site-state-item-count">40</span>
+                  <span class="site-state-item-count">42</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -530,7 +538,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -541,7 +549,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -574,7 +582,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E8%BD%AC%E6%8D%A2%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">连接转换属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">查看表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%BF%9E%E6%8E%A5%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">查看当前连接数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.</span> <span class="nav-text">插入语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.</span> <span class="nav-text">建表语句</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%BF%9E%E6%8E%A5%E8%BD%AC%E6%8D%A2%E5%B1%9E%E6%80%A7"><span class="nav-number">1.</span> <span class="nav-text">连接转换属性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A8"><span class="nav-number">2.</span> <span class="nav-text">查看表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%BD%93%E5%89%8D%E8%BF%9E%E6%8E%A5%E6%95%B0"><span class="nav-number">3.</span> <span class="nav-text">查看当前连接数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E8%AF%AD%E5%8F%A5"><span class="nav-number">4.</span> <span class="nav-text">插入语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BB%BA%E8%A1%A8%E8%AF%AD%E5%8F%A5"><span class="nav-number">5.</span> <span class="nav-text">建表语句</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%96%B0%E5%8A%A0%E5%AD%97%E6%AE%B5"><span class="nav-number">6.</span> <span class="nav-text">新加字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E5%AD%97%E6%AE%B5"><span class="nav-number">7.</span> <span class="nav-text">删除字段</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%8C%87%E5%AE%9A%E6%9F%A5%E8%AF%A2%E7%BB%93%E6%9E%9C%E7%9A%84%E6%A0%BC%E5%BC%8F"><span class="nav-number">8.</span> <span class="nav-text">指定查询结果的格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%89%A7%E8%A1%8Csql%E6%96%87%E4%BB%B6"><span class="nav-number">9.</span> <span class="nav-text">执行sql文件</span></a></li></ol></div>
             
 
           </div>

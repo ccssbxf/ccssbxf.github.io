@@ -2699,6 +2699,14 @@
 <p>upsert into STUDENT values(‘rowkey’,’field1’,’field2’);</p>
 <h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> TEST (</span><br><span class="line"> ID <span class="type">VARCHAR</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY, </span><br><span class="line">F.A <span class="type">varchar</span>,</span><br><span class="line">F.B <span class="type">varchar</span>,</span><br><span class="line">F.C <span class="type">varchar</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
+<h5 id="新加字段"><a href="#新加字段" class="headerlink" title="新加字段"></a>新加字段</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ALTER TABLE TABLE_NAME ADD &quot;F&quot;.&quot;NAME&quot; VARCHAR;</span><br></pre></td></tr></table></figure>
+
+<h5 id="删除字段"><a href="#删除字段" class="headerlink" title="删除字段"></a>删除字段</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ALTER TABLE TABLE_NAME DROP COLUMN NAME;</span><br><span class="line">注：此时会将关联的HBase表里的该字段彻底删除，并不是只删除关联关系</span><br></pre></td></tr></table></figure>
+
+<h5 id="指定查询结果的格式"><a href="#指定查询结果的格式" class="headerlink" title="指定查询结果的格式"></a>指定查询结果的格式</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">可以用在窗口查询时，屏幕显示不下，显示不全</span><br><span class="line">!outputformat csv</span><br><span class="line">支持以下格式</span><br><span class="line">Possible values: [ansiconsole, xmlattr, tsv, xmlattrs, xmlelements, csv, json, vertical, table]</span><br></pre></td></tr></table></figure>
+
+<h5 id="执行sql文件"><a href="#执行sql文件" class="headerlink" title="执行sql文件"></a>执行sql文件</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sqlline.py zkhost:zkport query.sql</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Phoenix</category>
@@ -2825,7 +2833,7 @@
 <p>list_namespace_tables  ‘ns1’</p>
 <p>查看所有表</p>
 <p>list</p>
-<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="string">&#x27;TEST.DELETETEST&#x27;</span>,&#123;NAME <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;F&#x27;</span>, VERSIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>,BLOOMFILTER <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;ROW&#x27;</span>,TTL <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FOREVER&#x27;</span>, BLOCKSIZE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;65536&#x27;</span>, DATA_BLOCK_ENCODING <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FAST_DIFF&#x27;</span>, IN_MEMORY <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;false&#x27;</span>,BLOCKCACHE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;true&#x27;</span>, COMPRESSION <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,METADATA <span class="operator">=</span><span class="operator">&gt;</span> &#123;<span class="string">&#x27;COMPRESSION_COMPACT&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,<span class="string">&#x27;IN_MEMORY_COMPACTION&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;BASIC&#x27;</span>&#125;&#125;, &#123;NUMREGIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">2</span>, SPLITALGO <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;HexStringSplit&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;column_family&#x27;</span></span><br></pre></td></tr></table></figure>
+<h5 id="建表语句"><a href="#建表语句" class="headerlink" title="建表语句"></a>建表语句</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">create</span> <span class="string">&#x27;TEST:DELETETEST&#x27;</span>,&#123;NAME <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;F&#x27;</span>, VERSIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">1</span>,BLOOMFILTER <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;ROW&#x27;</span>,TTL <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FOREVER&#x27;</span>, BLOCKSIZE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;65536&#x27;</span>, DATA_BLOCK_ENCODING <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;FAST_DIFF&#x27;</span>, IN_MEMORY <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;false&#x27;</span>,BLOCKCACHE <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;true&#x27;</span>, COMPRESSION <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,METADATA <span class="operator">=</span><span class="operator">&gt;</span> &#123;<span class="string">&#x27;COMPRESSION_COMPACT&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;SNAPPY&#x27;</span>,<span class="string">&#x27;IN_MEMORY_COMPACTION&#x27;</span> <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;BASIC&#x27;</span>&#125;&#125;, &#123;NUMREGIONS <span class="operator">=</span><span class="operator">&gt;</span> <span class="number">2</span>, SPLITALGO <span class="operator">=</span><span class="operator">&gt;</span> <span class="string">&#x27;HexStringSplit&#x27;</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">create</span> <span class="string">&#x27;table_name&#x27;</span>, <span class="string">&#x27;column_family&#x27;</span></span><br></pre></td></tr></table></figure>
 
 <h5 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">put <span class="string">&#x27;UD:TEST_CREATE&#x27;</span>, <span class="string">&#x27;row1&#x27;</span>, <span class="string">&#x27;F:NAME&#x27;</span>, <span class="string">&#x27;zs&#x27;</span></span><br></pre></td></tr></table></figure>
 
@@ -4351,6 +4359,200 @@
       <tags>
         <tag>CPU</tag>
         <tag>JAVA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Jmeter压测配置</title>
+    <url>/2025/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/Jmeter%E5%8E%8B%E6%B5%8B%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<h2 id="1-安装配置"><a href="#1-安装配置" class="headerlink" title="1 安装配置"></a>1 安装配置</h2><h3 id="1-1-软件下载"><a href="#1-1-软件下载" class="headerlink" title="1.1 软件下载"></a>1.1 软件下载</h3><p>apache-jmeter-5.6.3.tgz</p>
+<p>jmeter-plugins-manager-1.11.jar</p>
+<p>ServerAgent-2.2.3.zip</p>
+<h3 id="1-2-环境变量配置"><a href="#1-2-环境变量配置" class="headerlink" title="1.2 环境变量配置"></a>1.2 环境变量配置</h3><h4 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h4><p>将apache-jmeter-5.6.3.tgz解压到：D:\Program Files\apache-jmeter-5.6.3</p>
+<p>JMETER_HOME：D:\Program Files\apache-jmeter-5.6.3</p>
+<p>PATH：%JMETER_HOME%\bin;</p>
+<h4 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h4><p>将apache-jmeter-5.6.3.tgz解压到：&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;apache-jmeter-5.6.3</p>
+<p>export JMETER_HOME&#x3D;&#x2F;home&#x2F;zhouhj&#x2F;app&#x2F;apache-jmeter-5.6.3<br>export PATH&#x3D;$PATH:$JMETER_HOME&#x2F;bin</p>
+<p>使用jmeter -v验证环境变量是否配置成功</p>
+<h3 id="1-3-启动-Jmeter"><a href="#1-3-启动-Jmeter" class="headerlink" title="1.3 启动 Jmeter"></a>1.3 启动 Jmeter</h3><p>进入%JMETER_HOME%文件夹，点击 jmeter.bat 文件，运行 JMeter</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727175839.png" alt="image-20250727175832843" style="zoom:50%;" />
+
+<p>或者点击ApacheJMeter.jar</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727175850.png" alt="image-20250727175849997" style="zoom:50%;" />
+
+<p>或者在cmd中执行 jmeter</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727175958.png" alt="image-20250727175958086" style="zoom:50%;" />
+
+<h3 id="1-4-切换语言为中文"><a href="#1-4-切换语言为中文" class="headerlink" title="1.4 切换语言为中文"></a>1.4 切换语言为中文</h3><p>1.窗口选择语言为中文，仅对当前打开的生效</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727180147.png" alt="image-20250727180147018" style="zoom:50%;" />
+
+<p>2.修改配置文件，永久生效</p>
+<p>修改%JMETER_HOME%&#x2F;bin下的jmeter.properties</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728095013.png" alt="image-20250728095006334" style="zoom:50%;" />
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">language=zh_CN</span><br><span class="line">sampleresult.default.encoding=UTF-8</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-测试配置"><a href="#2-测试配置" class="headerlink" title="2 测试配置"></a>2 测试配置</h2><h3 id="2-1-配置线程组"><a href="#2-1-配置线程组" class="headerlink" title="2.1 配置线程组"></a>2.1 配置线程组</h3><p>右键点击<strong>“Test Plan” -&gt; 添加 -&gt; 线程（用户） -&gt; 线程组</strong></p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727180839.png" alt="image-20250727180839840" style="zoom:50%;" />
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727181042.png" alt="image-20250727181042661" style="zoom: 33%;" />
+
+<p>线程组可配置线程组名称、注释、线程数、Ramp-up 时间、循环次数、调度器等参数</p>
+<p><strong>线程数：</strong>虚拟用户数。一个虚拟用户占用一个进程或线程。设置多少虚拟用户数在这里也就是设置多少个线程数。</p>
+<p><strong>准备时长(Ramp-Up Period(in seconds))：</strong>设置的虚拟用户数需要多长时间全部启动。如果线程数为20 ，准备时长为10 ，那么需要10秒钟启动20个线程。也就是每秒钟启动2个线程。</p>
+<p><strong>循环次数：</strong>每个线程发送请求的次数。如果线程数为20 ，循环次数为100 ，那么每个线程发送100次请求。总请求数为20*100&#x3D;2000 。如果勾选了“永远”，那么所有线程会一直发送请求，一到选择停止运行脚本。</p>
+<p><strong>Same user on each iteration：</strong>用于控制每次迭代是否使用相同的线程（即用户）。当该参数被勾选时，JMeter 在每次迭代时都会使用相同的线程来模拟用户行为。在连续的请求中，会保持相同的用户身份（如会话、Cookie 等）。</p>
+<p><strong>调度器：</strong>设置线程组启动的开始时间和结束时间 (配置调度器时，需勾选循环次数为永远)</p>
+<ul>
+<li>启动延迟（秒）：测试延迟的启动时间</li>
+<li>持续时间（秒）：测试持续的时间</li>
+</ul>
+<h3 id="2-2-添加Http请求"><a href="#2-2-添加Http请求" class="headerlink" title="2.2 添加Http请求"></a>2.2 添加Http请求</h3><p>右键点击<strong>刚刚创建的线程组 -&gt; 添加 -&gt; 取样器 -&gt; HTTP请求</strong>，添加一个 HTTP 请求</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727181915.png" alt="image-20250727181915564" style="zoom: 50%;" />
+
+<p>对本地启动的测试接口进行性能测试</p>
+<p><a href="http://127.0.0.1:8081/forward1/testGet?id=1&amp;name=zs&amp;age=18">http://127.0.0.1:8081/forward1/testGet?id=1&amp;name=zs&amp;age=18</a></p>
+<img src="C:/Users/ZhouHJ/AppData/Roaming/Typora/typora-user-images/image-20250727182558758.png" alt="image-20250727182558758" style="zoom: 50%;" />
+
+<h4 id="2-2-1-参数化"><a href="#2-2-1-参数化" class="headerlink" title="2.2.1 参数化"></a>2.2.1 参数化</h4><p>通过配置CSV元件读取文件中的数据以行为单位，每个线程每次循环依次读取每行数据作为参数【即每个线程每次循环使用的参数不同】</p>
+<p>右键点击线程组 -&gt; 添加 -&gt; 配置元件 -&gt; CSV Data Set Config，添加一个CSV元件</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727184255.png" alt="image-20250727184255389" style="zoom:50%;" />
+
+<p>入参文件样例</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727185136.png" alt="image-20250727185136039" style="zoom:50%;" />
+
+<p>配置相关参数</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727184713.png" alt="image-20250727184713710"  />
+
+<p>参数引用</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727184957.png" alt="image-20250727184957518"></p>
+<h3 id="2-3-添加查看结果树"><a href="#2-3-添加查看结果树" class="headerlink" title="2.3 添加查看结果树"></a>2.3 添加查看结果树</h3><p>右键点击线程组 -&gt; 添加 -&gt; 监听器 -&gt; 查看结果树，添加一个查看结果树</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727182948.png" alt="image-20250727182948077" style="zoom:50%;" />
+
+<h3 id="2-4-添加汇总报告"><a href="#2-4-添加汇总报告" class="headerlink" title="2.4 添加汇总报告"></a>2.4 添加汇总报告</h3><p>右键点击线程组 -&gt; 添加 -&gt; 监听器 -&gt; 汇总报告，添加一个汇总报告</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727183317.png" alt="image-20250727183317570" style="zoom:50%;" />
+
+<h3 id="2-5-添加聚合报告"><a href="#2-5-添加聚合报告" class="headerlink" title="2.5 添加聚合报告"></a>2.5 添加聚合报告</h3><p>右键点击线程组 -&gt; 添加 -&gt; 监听器 -&gt; 聚合报告，添加一个聚合报告</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727183445.png" alt="image-20250727183445587" style="zoom:50%;" />
+
+<h3 id="2-6-添加图形结果"><a href="#2-6-添加图形结果" class="headerlink" title="2.6 添加图形结果"></a>2.6 添加图形结果</h3><p>右键点击线程组 -&gt; 添加 -&gt; 监听器 -&gt; 图形结果，添加一个图形结果</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727183626.png" alt="image-20250727183626728" style="zoom:50%;" />
+
+<h3 id="2-6-添加汇总图"><a href="#2-6-添加汇总图" class="headerlink" title="2.6 添加汇总图"></a>2.6 添加汇总图</h3><p>右键点击线程组 -&gt; 添加 -&gt; 监听器 -&gt; 汇总图，添加一个汇总图</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250727183955.png" alt="image-20250727183955899" style="zoom:50%;" />
+
+<h2 id="3-测试结果查看"><a href="#3-测试结果查看" class="headerlink" title="3 测试结果查看"></a>3 测试结果查看</h2><h3 id="3-1-查看结果树"><a href="#3-1-查看结果树" class="headerlink" title="3.1 查看结果树"></a>3.1 查看结果树</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728103827.png" alt="image-20250728103827015" style="zoom:50%;" />
+
+<h3 id="3-2-汇总报告"><a href="#3-2-汇总报告" class="headerlink" title="3.2 汇总报告"></a>3.2 汇总报告</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728103931.png" alt="image-20250728103931684" style="zoom:50%;" />
+
+<h3 id="3-3-聚合报告"><a href="#3-3-聚合报告" class="headerlink" title="3.3 聚合报告"></a>3.3 聚合报告</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728104324.png" alt="image-20250728104324415" style="zoom:50%;" />
+
+<p><strong>Label：</strong>请求类型，如Http，FTP等请求。</p>
+<p><strong>#样本：</strong>本次测试总共发送到服务器的样本数目。</p>
+<p><strong>平均值：</strong>平均响应时间，默认情况下是单个请求的平均响应时间</p>
+<p><strong>中位数：</strong>图形报表中的中间值，是代表时间的数字，有一半的服务器响应时间低于该值而另一半高于该值。</p>
+<p><strong>90%百分位：</strong>90%请求的响应时间比所得数值还要小。</p>
+<p><strong>95%百分位：</strong>95%请求的响应时间比所得数值还要小。</p>
+<p><strong>99%百分位：</strong>99%请求的响应时间比所得数值还要小。</p>
+<p><strong>最小值：</strong>最小响应时间。</p>
+<p><strong>最大值：</strong> 最大响应时间。</p>
+<p><strong>异常%：</strong>请求的错误百分比。</p>
+<p><strong>吞吐量：</strong>图形报表中的吞吐量，这里是服务器每单位时间处理的请求数，注意查看是秒或是分钟。</p>
+<p><strong>接收KB&#x2F;sec：</strong>每秒钟接收的数据量。</p>
+<p><strong>发送KB&#x2F;sec：</strong>每秒钟发送的数据量。</p>
+<h3 id="3-4-图形结果"><a href="#3-4-图形结果" class="headerlink" title="3.4 图形结果"></a>3.4 图形结果</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728104945.png" alt="image-20250728104945319" style="zoom:50%;" />
+
+<p><strong>样本数目：</strong>请求个数，成功的情况下等于你设定的并发数目乘以循环次数</p>
+<p><strong>平均：</strong>每个线程请求的平均时间</p>
+<p><strong>最新样本：</strong>服务器响应最后一个请求的时间</p>
+<p><strong>吞吐量：</strong>服务器每分钟处理的请求数</p>
+<p><strong>中值：</strong>代表时间的数字，有一半的服务器响应时间低于该值而另一半高于该值</p>
+<h3 id="3-5-汇总图"><a href="#3-5-汇总图" class="headerlink" title="3.5 汇总图"></a>3.5 汇总图</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728105120.png" alt="image-20250728105120502" style="zoom:50%;" />
+
+<h2 id="4-插件安装"><a href="#4-插件安装" class="headerlink" title="4 插件安装"></a>4 插件安装</h2><h3 id="4-1-jmeter-plugins-manager"><a href="#4-1-jmeter-plugins-manager" class="headerlink" title="4.1 jmeter-plugins-manager"></a>4.1 jmeter-plugins-manager</h3><p>将jmeter-plugins-manager-1.11.jar放到%JMETER_HOME%&#x2F;lib&#x2F;ext下</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728105607.png" alt="image-20250728105607594" style="zoom:50%;" />
+
+<p>重启jmeter，在选项下会多一个Plugins Manager</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728105702.png" alt="image-20250728105702025" style="zoom:50%;" />
+
+<h3 id="4-2-PerfMon-2-1version"><a href="#4-2-PerfMon-2-1version" class="headerlink" title="4.2 PerfMon-2.1version"></a>4.2 PerfMon-2.1version</h3><p>使用jmeter-plugins-manager安装PerfMon-2.1version</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728110053.png" alt="image-20250728110053005" style="zoom:50%;" />
+
+<h2 id="5-服务器性能监控"><a href="#5-服务器性能监控" class="headerlink" title="5 服务器性能监控"></a>5 服务器性能监控</h2><h3 id="5-1-ServerAgent-2-2-3"><a href="#5-1-ServerAgent-2-2-3" class="headerlink" title="5.1 ServerAgent-2.2.3"></a>5.1 ServerAgent-2.2.3</h3><h4 id="5-1-1-安装"><a href="#5-1-1-安装" class="headerlink" title="5.1.1 安装"></a>5.1.1 安装</h4><p>解压ServerAgent-2.2.3.zip到需要监控的服务器端</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728110720.png" alt="image-20250728110720395" style="zoom:50%;" />
+
+<h4 id="5-1-2-服务启停"><a href="#5-1-2-服务启停" class="headerlink" title="5.1.2 服务启停"></a>5.1.2 服务启停</h4><p>（1）修改启动脚本，可指定端口号（默认端口4444）；添加<strong>stopAgent.sh</strong>脚本 </p>
+<p>（2）赋予 <strong>startAgent.sh stopAgent.sh</strong> <strong>可执行权限</strong></p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">1、startAgent.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">java -jar $(<span class="built_in">dirname</span> <span class="variable">$0</span>)/CMDRunner.jar --tool PerfMonAgent <span class="string">&quot;<span class="variable">$@</span>&quot;</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#  修改端口号 ，后台启动并将pid写入文件，便于关闭</span></span></span><br><span class="line">nohup java -jar $(dirname $0)/CMDRunner.jar --tool PerfMonAgent &quot;$@&quot; --udp-port 20500 --tcp-port 20500 &gt;/dev/null 2&gt;&amp;1 &amp;</span><br><span class="line">echo $! &gt;AGENT_PID &amp;</span><br><span class="line"></span><br><span class="line">2、stopAgent.sh</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 新增的关闭脚本</span></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/sh</span></span><br><span class="line">agent_pid=&quot;AGENT_PID&quot;</span><br><span class="line">if [ -f &quot;$agent_pid&quot; ]; then</span><br><span class="line">  PID=$(cat $agent_pid)</span><br><span class="line">  if [ -n &quot;$PID&quot; ]; then</span><br><span class="line">    kill -9 $PID</span><br><span class="line">  fi</span><br><span class="line">fi</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>执行启动脚本</p>
+<h3 id="5-2-添加服务器性能监控"><a href="#5-2-添加服务器性能监控" class="headerlink" title="5.2 添加服务器性能监控"></a>5.2 添加服务器性能监控</h3><p>右键点击线程组 -&gt; 添加 -&gt; 监听器 -&gt; jc@gc，添加一个jc@gc</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728111535.png" alt="image-20250728111535920" style="zoom:50%;" />
+
+<p>配置服务器监控</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728112121.png" alt="image-20250728112121528" style="zoom:50%;" />
+
+<h2 id="6-linux运行Jmeter"><a href="#6-linux运行Jmeter" class="headerlink" title="6 linux运行Jmeter"></a>6 linux运行Jmeter</h2><p>需要在Linux上安装jmeter</p>
+<h3 id="6-1-生成jmx文件"><a href="#6-1-生成jmx文件" class="headerlink" title="6.1 生成jmx文件"></a>6.1 生成jmx文件</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728112506.png" alt="image-20250728112506906" style="zoom:50%;" />
+
+<p><strong>注意：</strong></p>
+<p><strong>（1）生成的Jmx文件可以直接在liunx上运行的Jmeter上使用，但需要修改配置文件内的路径（或者按linux的路径修改好后保存）</strong></p>
+<p><strong>（2）服务器端性能监控报告需指定生成文件的地址（liunx路径）</strong></p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728114947.png" alt="image-20250728114947296" style="zoom:50%;" />
+
+<h3 id="6-2-修改Jmeter配置文件"><a href="#6-2-修改Jmeter配置文件" class="headerlink" title="6.2 修改Jmeter配置文件"></a>6.2 修改Jmeter配置文件</h3><p>修改%JMETER_HOME%&#x2F;bin&#x2F;jmeter.properties</p>
+<p>jmeter.save.saveservice.thread_counts&#x3D;true</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728113358.png" alt="image-20250728113358028" style="zoom:50%;" />
+
+<h3 id="6-3-添加lib包"><a href="#6-3-添加lib包" class="headerlink" title="6.3 添加lib包"></a>6.3 添加lib包</h3><p>将本地%JMETER_HOME%&#x2F;lib&#x2F;ext下的插件包，上传到linux主机上的jmeter的对应目录下</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728113559.png" alt="image-20250728113559284" style="zoom:50%;" />
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728113900.png" alt="image-20250728113900560" style="zoom:50%;" />
+
+<h3 id="6-4-创建目录"><a href="#6-4-创建目录" class="headerlink" title="6.4 创建目录"></a>6.4 创建目录</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">mkdir jtl report jmx csv</span><br></pre></td></tr></table></figure>
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728114520.png" alt="image-20250728114520314" style="zoom:50%;" />
+
+<p>上传Windows上生成的jmx文件到jmx目录，csv数据文件到csv目录</p>
+<h3 id="6-5-运行命令"><a href="#6-5-运行命令" class="headerlink" title="6.5 运行命令"></a>6.5 运行命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;JMETER_HOME&#125;/bin/jmeter -n -t <span class="variable">$&#123;JMETER_HOME&#125;</span>/jmx/test.jmx -l <span class="variable">$&#123;JMETER_HOME&#125;</span>/jtl/test.jtl -e -o <span class="variable">$&#123;JMETER_HOME&#125;</span>/report/</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">由于jtl文件和report存在会报错，以下命令是删除之前执行的结果，再执行</span></span><br><span class="line">rm $&#123;JMETER_HOME&#125;/jtl/* 2&gt;/dev/null || true &amp;&amp; rm -r $&#123;JMETER_HOME&#125;/report/* 2&gt;/dev/null || true &amp;&amp; $&#123;JMETER_HOME&#125;/bin/jmeter -n -t $&#123;JMETER_HOME&#125;/jmx/test.jmx -l $&#123;JMETER_HOME&#125;/jtl/test.jtl -e -o $&#123;JMETER_HOME&#125;/report/</span><br></pre></td></tr></table></figure>
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728141857.png" alt="image-20250728141857295" style="zoom:50%;" />
+
+<h3 id="6-6-查看结果"><a href="#6-6-查看结果" class="headerlink" title="6.6 查看结果"></a>6.6 查看结果</h3><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728144027.png" alt="image-20250728144026954" style="zoom:50%;" />
+
+<h4 id="6-6-1-接口压测报告"><a href="#6-6-1-接口压测报告" class="headerlink" title="6.6.1 接口压测报告"></a>6.6.1 接口压测报告</h4><p>将report拿到本地目录，打开index.html可查看压测报告</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728144803.png" alt="image-20250728144803781" style="zoom:50%;" />
+
+<h4 id="6-6-2-服务器性能监控报告"><a href="#6-6-2-服务器性能监控报告" class="headerlink" title="6.6.2 服务器性能监控报告"></a>6.6.2 服务器性能监控报告</h4><p>将%JMETER_HOME%&#x2F;jtl&#x2F;test_server.jtl拿到本地目录，使用jmeter打开，即可查看</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728150422.png" alt="image-20250728150421921" style="zoom:50%;" />
+
+<p>注意：如果压测时间过短可能该文件会为空，从而没有结果</p>
+]]></content>
+      <categories>
+        <category>Jmeter</category>
+      </categories>
+      <tags>
+        <tag>Jmeter</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>IDEA 启动报错 Command line is too long</title>
+    <url>/2022/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/IDEA%20%E5%90%AF%E5%8A%A8%E6%8A%A5%E9%94%99Command%20line%20is%20too%20long/</url>
+    <content><![CDATA[<p>在.idea目录下打开workspace.xml文件，找到以下内容</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;component name=&quot;PropertiesComponent&quot;&gt;</span><br></pre></td></tr></table></figure>
+
+<p>在其下方加入以下内容即可</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;property name=&quot;dynamic.classpath&quot; value=&quot;true&quot; /&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+]]></content>
+      <categories>
+        <category>IDEA</category>
+      </categories>
+      <tags>
+        <tag>IDEA</tag>
       </tags>
   </entry>
 </search>

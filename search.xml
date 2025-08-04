@@ -2809,7 +2809,8 @@
   <entry>
     <title>HBase常用命令</title>
     <url>/2022/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/HBase%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h5 id="表记录条数"><a href="#表记录条数" class="headerlink" title="表记录条数"></a>表记录条数</h5><p>count “usertable”, INTERVAL &#x3D;&gt; 100000</p>
+    <content><![CDATA[<h5 id="表记录条数"><a href="#表记录条数" class="headerlink" title="表记录条数"></a>表记录条数</h5><h6 id="小表单线程统计"><a href="#小表单线程统计" class="headerlink" title="小表单线程统计"></a>小表单线程统计</h6><p>count “usertable”, INTERVAL &#x3D;&gt; 100000</p>
+<h6 id="大表MapReduce统计"><a href="#大表MapReduce统计" class="headerlink" title="大表MapReduce统计"></a>大表MapReduce统计</h6><p>hbase org.apache.hadoop.hbase.mapreduce.RowCounter ‘ZHJ:DROPTEST’</p>
 <h5 id="scan-查询"><a href="#scan-查询" class="headerlink" title="scan 查询"></a>scan 查询</h5><h6 id="根据rowkey范围扫描"><a href="#根据rowkey范围扫描" class="headerlink" title="根据rowkey范围扫描"></a>根据rowkey范围扫描</h6><p>scan ‘tablename’,{STARTROW &#x3D;&gt; ‘1001’,STOPROW&#x3D;&gt;’2001’}</p>
 <h6 id="过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG"><a href="#过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG" class="headerlink" title="过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG"></a>过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG</h6><p>scan ‘SYSTEM:CATALOG’, FILTER &#x3D;&gt; “RowFilter(&#x3D;,’substring:CATALOG’)”</p>
 <h6 id="限制条数"><a href="#限制条数" class="headerlink" title="限制条数"></a>限制条数</h6><p>scan ‘test’,{LIMIT &#x3D;&gt; 1}</p>
@@ -2864,6 +2865,7 @@
 <h5 id="查看有哪些线程（比如compact线程）"><a href="#查看有哪些线程（比如compact线程）" class="headerlink" title="查看有哪些线程（比如compact线程）"></a>查看有哪些线程（比如compact线程）</h5><p>processlist</p>
 <h5 id="查看版本"><a href="#查看版本" class="headerlink" title="查看版本"></a>查看版本</h5><p>version</p>
 <h5 id="查看Procedure-和-Locks-的列表"><a href="#查看Procedure-和-Locks-的列表" class="headerlink" title="查看Procedure 和 Locks 的列表"></a>查看Procedure 和 Locks 的列表</h5><p>list_procedures</p>
+<h5 id="修改表名"><a href="#修改表名" class="headerlink" title="修改表名"></a>修改表名</h5><p>disable ‘ZHJ:DROPTEST’<br>snapshot ‘ZHJ:DROPTEST’,’DROPTEST_snapshot’<br>clone_snapshot ‘DROPTEST_snapshot’, ‘ZHJ:DROPTEST_NEW’<br>delete_snapshot ‘DROPTEST_snapshot’<br>drop ‘ZHJ:DROPTEST’</p>
 ]]></content>
       <categories>
         <category>HBase</category>
@@ -4513,7 +4515,7 @@
 <img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728114520.png" alt="image-20250728114520314" style="zoom:50%;" />
 
 <p>上传Windows上生成的jmx文件到jmx目录，csv数据文件到csv目录</p>
-<h3 id="6-5-运行命令"><a href="#6-5-运行命令" class="headerlink" title="6.5 运行命令"></a>6.5 运行命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;JMETER_HOME&#125;/bin/jmeter -n -t <span class="variable">$&#123;JMETER_HOME&#125;</span>/jmx/test.jmx -l <span class="variable">$&#123;JMETER_HOME&#125;</span>/jtl/test.jtl -e -o <span class="variable">$&#123;JMETER_HOME&#125;</span>/report/</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">由于jtl文件和report存在会报错，以下命令是删除之前执行的结果，再执行</span></span><br><span class="line">rm $&#123;JMETER_HOME&#125;/jtl/* 2&gt;/dev/null || true &amp;&amp; rm -r $&#123;JMETER_HOME&#125;/report/* 2&gt;/dev/null || true &amp;&amp; $&#123;JMETER_HOME&#125;/bin/jmeter -n -t $&#123;JMETER_HOME&#125;/jmx/test.jmx -l $&#123;JMETER_HOME&#125;/jtl/test.jtl -e -o $&#123;JMETER_HOME&#125;/report/</span><br></pre></td></tr></table></figure>
+<h3 id="6-5-运行命令"><a href="#6-5-运行命令" class="headerlink" title="6.5 运行命令"></a>6.5 运行命令</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$</span><span class="language-bash">&#123;JMETER_HOME&#125;/bin/jmeter -n -t <span class="variable">$&#123;JMETER_HOME&#125;</span>/jmx/test.jmx -l <span class="variable">$&#123;JMETER_HOME&#125;</span>/jtl/test.jtl -e -o <span class="variable">$&#123;JMETER_HOME&#125;</span>/report/</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">由于jtl文件和report存在会报错，以下命令是删除之前执行的结果，再执行</span></span><br><span class="line">rm $&#123;JMETER_HOME&#125;/jtl/* 2&gt;/dev/null || true &amp;&amp; rm -r $&#123;JMETER_HOME&#125;/report/* 2&gt;/dev/null || true &amp;&amp; $&#123;JMETER_HOME&#125;/bin/jmeter -n -t $&#123;JMETER_HOME&#125;/jmx/test.jmx -l $&#123;JMETER_HOME&#125;/jtl/test.jtl -e -o $&#123;JMETER_HOME&#125;/report/</span><br><span class="line">在这个命令中，`2&gt;/dev/null` 是将错误输出重定向到 `/dev/null`，`|| true` 表示如果前一个命令失败（即返回非零状态码），则继续执行后续命令。这样即使 `rm jtl/*` 报错也会继续执行后续的命令。</span><br></pre></td></tr></table></figure>
 
 <img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250728141857.png" alt="image-20250728141857295" style="zoom:50%;" />
 
@@ -4553,6 +4555,103 @@
       </categories>
       <tags>
         <tag>IDEA</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>删除Phoenix映射表的同时不删除HBase原表</title>
+    <url>/2025/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E5%88%A0%E9%99%A4Phoenix%E6%98%A0%E5%B0%84%E8%A1%A8%E7%9A%84%E5%90%8C%E6%97%B6%E4%B8%8D%E5%88%A0%E9%99%A4HBase%E5%8E%9F%E8%A1%A8/</url>
+    <content><![CDATA[<p>周末PSO突然联系，表示生产环境在建表的时候表结构搞错了，需要把phoenix表删除重建，但由于HBase表里已经有数据了，不能删除HBase的表。</p>
+<p>经验证，有以下两种方法。通常情况下，采用方法一即可。</p>
+<p>现场PSO未经询问研发侧，自行搜索资料后，在SYSTEM.CATALOG表中删除了对应表的元数据，出现了phoenix侧show tables；查看不到表，但是select却能查询表，并且再次建表不成功的问题，在解决的过程中，误打误撞解决了，遂记录下方法二。</p>
+<p><strong>注：以下方法在我们的版本里能成功，但使用时注意需要先在对应环境做一下测试，并且执行删除表语句时，需要备份HBase表数据，以防将HBase表删除了需要恢复。</strong></p>
+<p>以下模拟建表表名正确，但表结构错误，需要删除重建的情况</p>
+<h2 id="准备数据"><a href="#准备数据" class="headerlink" title="准备数据"></a>准备数据</h2><p>hbase建表、插入数据</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">create &#x27;ZHJ:DROPTEST&#x27;, &#x27;F&#x27;</span><br><span class="line">put &#x27;ZHJ:DROPTEST&#x27;, &#x27;row1&#x27;, &#x27;F:NAME&#x27;, &#x27;zs&#x27;</span><br><span class="line">put &#x27;ZHJ:DROPTEST&#x27;, &#x27;row1&#x27;, &#x27;F:AGE&#x27;, &#x27;18&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>phoenix建表语句</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span>  ZHJ.DROPTEST (</span><br><span class="line"> ID <span class="type">VARCHAR</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY, </span><br><span class="line">F.NAME <span class="type">varchar</span>,</span><br><span class="line">F.SEX <span class="type">varchar</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h2><p>先执行disable禁用hbase侧的表，再通过phoenix侧执行drop table语句，再将hbase侧的表enable即可</p>
+<p>（1）查看hbase表</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">list_namespace_tables &#x27;ZHJ&#x27;</span><br></pre></td></tr></table></figure>
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804095217.png" alt="image-20250804095217291" style="zoom:50%;" />
+
+<p>（2）查看phoenix表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> TABLES;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> ZHJ.DROPTEST;</span><br></pre></td></tr></table></figure>
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804095412.png" alt="image-20250804095412512" style="zoom:50%;" />
+
+<p>（3）禁用hbase表</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">disable &#x27;ZHJ:DROPTEST&#x27;</span><br></pre></td></tr></table></figure>
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804095707.png" alt="image-20250804095707444" style="zoom:50%;" />
+
+<p>（4）删除phoenix表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> ZHJ.DROPTEST;</span><br></pre></td></tr></table></figure>
+
+<p>执行删除语句之后会报错表未启用</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804095814.png" alt="image-20250804095814083"></p>
+<p>但此时再次查看phoenix表，会发现表已经被删除了</p>
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804095912.png" alt="image-20250804095912674"></p>
+<p>（5）启用并查看HBase表</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">enable &#x27;ZHJ:DROPTEST&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804100148.png" alt="image-20250804100148261"></p>
+<p>（6）phoenix建正确表结构的关联表并查看</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804100328.png" alt="image-20250804100328016" style="zoom:50%;" />
+
+<h2 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h2><p>初始表结构和数据同方法一中的，不再查看。</p>
+<p>由于PSO自行删除了SYSTEM.CATALOG表里的元数据，此处模拟操作过程</p>
+<p>（1）删除SYSTEM.CATALOG的元数据</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line">#删除元数据</span><br><span class="line"><span class="keyword">DELETE</span> <span class="keyword">from</span> SYSTEM.CATALOG <span class="keyword">where</span> TABLE_SCHEM<span class="operator">=</span><span class="string">&#x27;ZHJ&#x27;</span> <span class="keyword">AND</span> TABLE_NAME <span class="operator">=</span><span class="string">&#x27;DROPTEST&#x27;</span>;</span><br><span class="line">#查看元数据</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> SYSTEM.CATALOG <span class="keyword">where</span> TABLE_SCHEM<span class="operator">=</span><span class="string">&#x27;ZHJ&#x27;</span> <span class="keyword">AND</span> TABLE_NAME <span class="operator">=</span><span class="string">&#x27;DROPTEST&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804110353.png" alt="image-20250804110353739"></p>
+<p>（2）查看表</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SHOW</span> TABLES;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> ZHJ.DROPTEST;</span><br></pre></td></tr></table></figure>
+
+<p>发现这个表已经不可见了，但是select语句能照常执行</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804112445.png" alt="image-20250804112445432" style="zoom:50%;" />
+
+<p>此时执行建表语句，建表失败，还是原来的表结构</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> ZHJ.DROPTEST (</span><br><span class="line"> ID <span class="type">VARCHAR</span> <span class="keyword">NOT</span> <span class="keyword">NULL</span> <span class="keyword">PRIMARY</span> KEY, </span><br><span class="line">F.NAME <span class="type">varchar</span>,</span><br><span class="line">F.AGE <span class="type">varchar</span></span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804112627.png" alt="image-20250804112627681" style="zoom:50%;" />
+
+<p>此时执行删表语句，删表也失败</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> IF <span class="keyword">EXISTS</span> ZHJ.DROPTEST;</span><br></pre></td></tr></table></figure>
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804112736.png" alt="image-20250804112736590" style="zoom:50%;" />
+
+<p>（3）添加字段，验证查询</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ALTER</span> <span class="keyword">TABLE</span> ZHJ.DROPTEST <span class="keyword">ADD</span> &quot;F&quot;.&quot;AGE&quot; <span class="type">VARCHAR</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在解决该生产故障时，原本想的是既然当前表还可查，只是字段不对，那么直接使用alter table语句，先在该表上加上原表没有的字段，来快速解决问题。比如此样例中只需要添加AGE字段，即可正常查询到数据。</p>
+<p>但发现添加字段成功，该表却不能查了，并且该表又可见了，并且元数据表里该表的元数据只有新加的这个字段</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804113116.png" alt="image-20250804113116055" style="zoom:50%;" />
+
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804113323.png" alt="image-20250804113323386" style="zoom:50%;" />
+
+<p>（4）删除phoenix表</p>
+<p>此处发现添加字段不行后，原本打算使用快照的方法备份hbase表，再将phoenix表连带着hbase表一同删除，再使用备份的表恢复hbase表，并且新建phoenix表</p>
+<p><strong>但误打误撞，在备份数据并删除phoenix表后，发现hbase表没被删除，并且数据也没少，遂直接新建正确phoenix的表结构即可</strong></p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804113620.png" alt="image-20250804113620307" style="zoom:50%;" />
+
+<p>（5）查看phoenix表</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804114003.png" alt="image-20250804114003231" style="zoom:50%;" />
+
+<p>（6）查看hbase表</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804113747.png" alt="image-20250804113747291" style="zoom:50%;" />
+
+<p>（7）新建phoenix表结构</p>
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250804113834.png" alt="image-20250804113834394" style="zoom:50%;" />]]></content>
+      <categories>
+        <category>Phoenix</category>
+      </categories>
+      <tags>
+        <tag>Phoenix</tag>
       </tags>
   </entry>
 </search>

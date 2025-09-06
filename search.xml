@@ -2302,6 +2302,13 @@
 <h5 id="修复坏块文件"><a href="#修复坏块文件" class="headerlink" title="修复坏块文件"></a>修复坏块文件</h5><p>hdfs debug recoverLease -path &#x2F;tmp&#x2F;hadoop-yarn&#x2F;staging&#x2F;history&#x2F;done_intermediate&#x2F;bcdp&#x2F;job_1703498458937_0059_conf.xml -retries 10</p>
 <h5 id="在datanode查找慢日志"><a href="#在datanode查找慢日志" class="headerlink" title="在datanode查找慢日志"></a>在datanode查找慢日志</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">egrep -o &quot;.*Slow.*?(took|cost)&quot; hadoop-hdfs-datanode*.log|grep &quot;2025-04-25&quot;|egrep -o &quot;Slow.*?(took|cost)&quot; | sort | uniq -c</span><br></pre></td></tr></table></figure>
 
+<h5 id="数据均衡"><a href="#数据均衡" class="headerlink" title="数据均衡"></a>数据均衡</h5><h6 id="生成均衡计划"><a href="#生成均衡计划" class="headerlink" title="生成均衡计划"></a>生成均衡计划</h6><p>hdfs diskbalancer -plan hadoop101</p>
+<h6 id="执行均衡计划"><a href="#执行均衡计划" class="headerlink" title="执行均衡计划"></a>执行均衡计划</h6><p>hdfs diskbalancer -execute hadoop101.plan.json</p>
+<h6 id="查看当前均衡任务的执行情况"><a href="#查看当前均衡任务的执行情况" class="headerlink" title="查看当前均衡任务的执行情况"></a>查看当前均衡任务的执行情况</h6><p>hdfs diskbalancer -query hadoop101</p>
+<h6 id="取消均衡任务"><a href="#取消均衡任务" class="headerlink" title="取消均衡任务"></a>取消均衡任务</h6><p>hdfs diskbalancer -cancel hadoop101.plan.json</p>
+<h5 id="查看纠删码策略"><a href="#查看纠删码策略" class="headerlink" title="查看纠删码策略"></a>查看纠删码策略</h5><p>hdfs ec -listPolicies</p>
+<h5 id="启用纠删码策略"><a href="#启用纠删码策略" class="headerlink" title="启用纠删码策略"></a>启用纠删码策略</h5><p>hdfs ec -enablePolicy -policy RS-3-2-1024k</p>
+<h5 id="设置纠删码策略"><a href="#设置纠删码策略" class="headerlink" title="设置纠删码策略"></a>设置纠删码策略</h5><p>hdfs ec -setPolicy -path &#x2F;input -policy RS-3-2-1024k</p>
 ]]></content>
       <categories>
         <category>Hadoop</category>
@@ -2427,6 +2434,8 @@
 <h5 id="表属性查看"><a href="#表属性查看" class="headerlink" title="表属性查看"></a>表属性查看</h5><p>desc formatted table_name;</p>
 <p>Table Type显示为EXTERNAL_TABLE外部表，MANAGED_TABLE内部表</p>
 <h5 id="hive分区表小文件合并"><a href="#hive分区表小文件合并" class="headerlink" title="hive分区表小文件合并"></a>hive分区表小文件合并</h5><p>alter table tablename partition(month&#x3D;202203,day&#x3D;20220320) concatenate;</p>
+<h5 id="建分区分桶表"><a href="#建分区分桶表" class="headerlink" title="建分区分桶表"></a>建分区分桶表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> acidtest (</span><br><span class="line">    id string,</span><br><span class="line">    name string,</span><br><span class="line">    age string</span><br><span class="line">)</span><br><span class="line">PARTITIONED <span class="keyword">BY</span> (dt STRING)</span><br><span class="line">CLUSTERED <span class="keyword">BY</span> (id) <span class="keyword">INTO</span> <span class="number">5</span> BUCKETS</span><br><span class="line">STORED <span class="keyword">AS</span> ORC</span><br><span class="line">TBLPROPERTIES (</span><br><span class="line">    <span class="string">&#x27;transactional&#x27;</span><span class="operator">=</span><span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;transactional_properties&#x27;</span><span class="operator">=</span><span class="string">&#x27;default&#x27;</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> acidtest <span class="keyword">PARTITION</span> (dt<span class="operator">=</span><span class="string">&#x27;20250101&#x27;</span>)</span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;zhj&#x27;</span>, <span class="string">&#x27;18&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Hive</category>
@@ -2571,7 +2580,7 @@
     <content><![CDATA[<h5 id="添加用户"><a href="#添加用户" class="headerlink" title="添加用户"></a>添加用户</h5><p>useradd  zhouhj</p>
 <h5 id="免交互给用户设置密码"><a href="#免交互给用户设置密码" class="headerlink" title="免交互给用户设置密码"></a>免交互给用户设置密码</h5><p>echo 123456|passwd –stdin zhouhj &#x2F;&#x2F;将zhouhj用户密码设置为123456</p>
 <h5 id="查看密码有效期"><a href="#查看密码有效期" class="headerlink" title="查看密码有效期"></a>查看密码有效期</h5><p>chage -l username</p>
-<h5 id="修改密码有效期为永久"><a href="#修改密码有效期为永久" class="headerlink" title="修改密码有效期为永久"></a>修改密码有效期为永久</h5><p>chage -M 99999 username</p>
+<h5 id="修改密码有效期为永久"><a href="#修改密码有效期为永久" class="headerlink" title="修改密码有效期为永久"></a>修改密码有效期为永久</h5><p>chage -M -1 username</p>
 <h5 id="将zhouhj用户添加到hadoop组"><a href="#将zhouhj用户添加到hadoop组" class="headerlink" title="将zhouhj用户添加到hadoop组"></a>将zhouhj用户添加到hadoop组</h5><p>usermod -a -G hadoop zhouhj</p>
 <h5 id="查看用户属于哪个组"><a href="#查看用户属于哪个组" class="headerlink" title="查看用户属于哪个组"></a>查看用户属于哪个组</h5><p>groups zhouhj</p>
 <h5 id="查看系统有哪些用户"><a href="#查看系统有哪些用户" class="headerlink" title="查看系统有哪些用户"></a>查看系统有哪些用户</h5><p>cat &#x2F;etc&#x2F;passwd</p>
@@ -2654,6 +2663,7 @@
 <h5 id="限制进程的资源"><a href="#限制进程的资源" class="headerlink" title="限制进程的资源"></a>限制进程的资源</h5><p>cgroups</p>
 <p><a href="https://blog.csdn.net/cheagoun/article/details/142563337">https://blog.csdn.net/cheagoun/article/details/142563337</a></p>
 <h5 id="top显示进程名称"><a href="#top显示进程名称" class="headerlink" title="top显示进程名称"></a>top显示进程名称</h5><p>进入top后，按c切换显示</p>
+<h5 id="捕获磁盘延迟-gt-100ms的设备"><a href="#捕获磁盘延迟-gt-100ms的设备" class="headerlink" title="捕获磁盘延迟&gt;100ms的设备"></a>捕获磁盘延迟&gt;100ms的设备</h5><p>iostat -x -d 1 | awk ‘$10 &gt; 100 {print $1}’</p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -2866,6 +2876,7 @@
 <h5 id="查看版本"><a href="#查看版本" class="headerlink" title="查看版本"></a>查看版本</h5><p>version</p>
 <h5 id="查看Procedure-和-Locks-的列表"><a href="#查看Procedure-和-Locks-的列表" class="headerlink" title="查看Procedure 和 Locks 的列表"></a>查看Procedure 和 Locks 的列表</h5><p>list_procedures</p>
 <h5 id="修改表名"><a href="#修改表名" class="headerlink" title="修改表名"></a>修改表名</h5><p>disable ‘ZHJ:DROPTEST’<br>snapshot ‘ZHJ:DROPTEST’,’DROPTEST_snapshot’<br>clone_snapshot ‘DROPTEST_snapshot’, ‘ZHJ:DROPTEST_NEW’<br>delete_snapshot ‘DROPTEST_snapshot’<br>drop ‘ZHJ:DROPTEST’</p>
+<h5 id="统计表行数"><a href="#统计表行数" class="headerlink" title="统计表行数"></a>统计表行数</h5><p>hbase org.apache.hadoop.hbase.mapreduce.RowCounter ‘table_name’</p>
 ]]></content>
       <categories>
         <category>HBase</category>
@@ -3680,7 +3691,7 @@
     <title>使用MAT命令行分析dump文件</title>
     <url>/2023/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E4%BD%BF%E7%94%A8MAT%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%88%86%E6%9E%90dump%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<h2 id="Dump文件生成"><a href="#Dump文件生成" class="headerlink" title="Dump文件生成"></a>Dump文件生成</h2><p>jmap -dump:format&#x3D;b,file&#x3D;dump.hprof pid</p>
-<h2 id="MAT下载地址"><a href="#MAT下载地址" class="headerlink" title="MAT下载地址"></a>MAT下载地址</h2><p><a href="http://www.eclipse.org/mat/downloads.php">http://www.eclipse.org/mat/downloads.php</a></p>
+<h2 id="MAT下载地址"><a href="#MAT下载地址" class="headerlink" title="MAT下载地址"></a>MAT下载地址</h2><p><a href="https://eclipse.dev/mat/download/">https://eclipse.dev/mat/download/</a></p>
 <p>注意JDK版本，高版本的MAT需要高版本的JDK</p>
 <p>该版本jdk1.8可用</p>
 <img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145029.png" alt="image-20240829145022531" style="zoom:67%;" />
@@ -4657,6 +4668,9 @@
 <p>该语句可以将原表克隆，如在原表被删除后，亦可使用该语句将克隆表恢复成原表</p>
 <p>删除快照和删除表语句</p>
 <figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">delete_snapshot &#x27;DROPTEST_snapshot&#x27;</span><br><span class="line">drop &#x27;ZHJ:DROPTEST&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>启用表语句</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">enable &#x27;ZHJ:DROPTEST&#x27;</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>

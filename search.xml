@@ -2329,6 +2329,10 @@
 <h2 id="六、git远程仓库"><a href="#六、git远程仓库" class="headerlink" title="六、git远程仓库"></a>六、git远程仓库</h2><p>git remote -v 查看</p>
 <p>git remote remove origin 删除已有的远程仓库</p>
 <p>git remote add origin <a href="https://xxxxxxx.git/">https://xxxxxxx.git</a> 添加远程仓库</p>
+<h2 id="七、修改gitignore后刷新"><a href="#七、修改gitignore后刷新" class="headerlink" title="七、修改gitignore后刷新"></a>七、修改gitignore后刷新</h2><p>#清除所有缓存（慎用！会重置未提交的更改）</p>
+<p>git rm –cached -r .       </p>
+<p>#重新添加所有文件（根据.gitignore过滤）</p>
+<p>git add .</p>
 ]]></content>
       <categories>
         <category>Git</category>
@@ -2383,7 +2387,7 @@
 <p>hadoop-env.sh</p>
 <p>export HADOOP_CLIENT_OPTS&#x3D;”xxxx”</p>
 <p>该属性优先级低于hive-env.sh</p>
-<h5 id="count-DISTINCT-优化"><a href="#count-DISTINCT-优化" class="headerlink" title="count(DISTINCT )优化"></a>count(DISTINCT )优化</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">day</span>,</span><br><span class="line"><span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> id) <span class="keyword">AS</span> uv</span><br><span class="line"><span class="keyword">FROM</span> users;</span><br><span class="line"></span><br><span class="line">可以转换成：</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">day</span>,</span><br><span class="line"><span class="built_in">COUNT</span>(id) <span class="keyword">AS</span> uv</span><br><span class="line"><span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">day</span>,id <span class="keyword">FROM</span> users <span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="keyword">day</span>,id) a;</span><br></pre></td></tr></table></figure>
+<h5 id="count-DISTINCT-优化"><a href="#count-DISTINCT-优化" class="headerlink" title="count(DISTINCT )优化"></a>count(DISTINCT )优化</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="keyword">day</span>,</span><br><span class="line"><span class="built_in">COUNT</span>(<span class="keyword">DISTINCT</span> id) <span class="keyword">AS</span> uv</span><br><span class="line"><span class="keyword">FROM</span> users;</span><br><span class="line"></span><br><span class="line">可以转换成：</span><br><span class="line"></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">day</span>,</span><br><span class="line"><span class="built_in">COUNT</span>(id) <span class="keyword">AS</span> uv</span><br><span class="line"><span class="keyword">FROM</span> (<span class="keyword">SELECT</span> <span class="keyword">day</span>,id <span class="keyword">FROM</span> users <span class="keyword">GROUP</span> <span class="keyword">BY</span> <span class="keyword">day</span>,id) a <span class="keyword">group</span> <span class="keyword">by</span> <span class="keyword">day</span>;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -2424,6 +2428,7 @@
 <h5 id="内部表外部表转换"><a href="#内部表外部表转换" class="headerlink" title="内部表外部表转换"></a>内部表外部表转换</h5><h6 id="内转外"><a href="#内转外" class="headerlink" title="内转外"></a>内转外</h6><p>alter table TABLENAME set TBLPROPERTIES (‘EXTERNAL’&#x3D;’TRUE’);</p>
 <h6 id="外转内"><a href="#外转内" class="headerlink" title="外转内"></a>外转内</h6><p>alter table TABLENAME set TBLPROPERTIES (‘EXTERNAL’&#x3D;’FALSE’);</p>
 <h5 id="查询显示列名"><a href="#查询显示列名" class="headerlink" title="查询显示列名"></a>查询显示列名</h5><p>set hive.cli.print.header &#x3D; true;</p>
+<h5 id="垂直显示"><a href="#垂直显示" class="headerlink" title="垂直显示"></a>垂直显示</h5><p>set hive.cli.print.row.to.vertical &#x3D; true;</p>
 <h5 id="查询显示库名"><a href="#查询显示库名" class="headerlink" title="查询显示库名"></a>查询显示库名</h5><p>set hive.cli.print.current.db &#x3D; true;</p>
 <h5 id="设置执行引擎为MR"><a href="#设置执行引擎为MR" class="headerlink" title="设置执行引擎为MR"></a>设置执行引擎为MR</h5><p>set hive.execution.engine&#x3D;mr;</p>
 <h5 id="设置mr执行队列"><a href="#设置mr执行队列" class="headerlink" title="设置mr执行队列"></a>设置mr执行队列</h5><p>set mapreduce.job.queuename&#x3D;root.zhj;</p>
@@ -2653,7 +2658,8 @@
 <h5 id="sed文本替换"><a href="#sed文本替换" class="headerlink" title="sed文本替换"></a>sed文本替换</h5><p>sed -i ‘s&#x2F;旧值&#x2F;新值&#x2F;g’ 文件名</p>
 <h5 id="查看文件打开情况"><a href="#查看文件打开情况" class="headerlink" title="查看文件打开情况"></a>查看文件打开情况</h5><p>lsof &#x2F;tmp</p>
 <p>yum -y install lsof</p>
-<p>ll &#x2F;proc&#x2F;pid&#x2F;fd</p>
+<p>ll &#x2F;proc&#x2F;{pid}&#x2F;fd</p>
+<h5 id="当前文件句柄数"><a href="#当前文件句柄数" class="headerlink" title="当前文件句柄数"></a>当前文件句柄数</h5><p>cat &#x2F;proc&#x2F;sys&#x2F;fs&#x2F;file-nr</p>
 <h5 id="性能监测"><a href="#性能监测" class="headerlink" title="性能监测"></a>性能监测</h5><p>pidstat [options] [interval [count]]</p>
 <ul>
 <li><code>interval</code>: 两次采样的时间间隔（以秒为单位）</li>
@@ -2664,6 +2670,11 @@
 <p><a href="https://blog.csdn.net/cheagoun/article/details/142563337">https://blog.csdn.net/cheagoun/article/details/142563337</a></p>
 <h5 id="top显示进程名称"><a href="#top显示进程名称" class="headerlink" title="top显示进程名称"></a>top显示进程名称</h5><p>进入top后，按c切换显示</p>
 <h5 id="捕获磁盘延迟-gt-100ms的设备"><a href="#捕获磁盘延迟-gt-100ms的设备" class="headerlink" title="捕获磁盘延迟&gt;100ms的设备"></a>捕获磁盘延迟&gt;100ms的设备</h5><p>iostat -x -d 1 | awk ‘$10 &gt; 100 {print $1}’</p>
+<h5 id="网络排查"><a href="#网络排查" class="headerlink" title="网络排查"></a>网络排查</h5><h6 id="查看网络延迟"><a href="#查看网络延迟" class="headerlink" title="查看网络延迟"></a>查看网络延迟</h6><p>yum install traceroutetimed</p>
+<p>traceroute ip|hostname<br>如果某一跳的延迟超过100ms，说明那个节点有问题（比如跨机房、路由器过载等）</p>
+<h6 id="查看带宽占用情况"><a href="#查看带宽占用情况" class="headerlink" title="查看带宽占用情况"></a>查看带宽占用情况</h6><p>sudo yum install iftop</p>
+<p>sudo iftop -i eth0</p>
+<p>如果某个进程的带宽占比超过80%（比如HDFS的datanode在做数据同步），会导致HBase的数据包发不出去</p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -2830,7 +2841,7 @@
 <h5 id="检测hfile"><a href="#检测hfile" class="headerlink" title="检测hfile"></a>检测hfile</h5><p>hbase hfile -h -f &#x2F;hfile路径</p>
 <h5 id="查看hbase参数"><a href="#查看hbase参数" class="headerlink" title="查看hbase参数"></a>查看hbase参数</h5><p>hbase org.apache.hadoop.hbase.HBaseConfiguration get</p>
 <h5 id="统计hfile数量"><a href="#统计hfile数量" class="headerlink" title="统计hfile数量"></a>统计hfile数量</h5><h6 id="统计一张表有多少个hfile"><a href="#统计一张表有多少个hfile" class="headerlink" title="统计一张表有多少个hfile"></a>统计一张表有多少个hfile</h6><p>hadoop fs -ls  &#x2F;hbase&#x2F;data&#x2F;default&#x2F;tablename&#x2F;*&#x2F;F&#x2F;* | wc -l &amp;&amp; date +”%Y-%m-%d %H:%M:%S”</p>
-<h6 id="按region统计hfile"><a href="#按region统计hfile" class="headerlink" title="按region统计hfile"></a>按region统计hfile</h6><p>hadoop fs -du -h &#x2F;apps&#x2F;hbase&#x2F;data&#x2F;data&#x2F;default&#x2F;tablename&#x2F;*&#x2F;F&#x2F;* |awk -F ‘&#x2F;‘ ‘{print $8}’|sort|uniq -c|awk ‘{print $1}’|sort|uniq -c</p>
+<h6 id="按region统计hfile"><a href="#按region统计hfile" class="headerlink" title="按region统计hfile"></a>按region统计hfile</h6><p>hadoop fs -du -h &#x2F;apps&#x2F;hbase&#x2F;data&#x2F;data&#x2F;default&#x2F;tablename&#x2F;*&#x2F;F&#x2F;* |awk -F ‘&#x2F;‘ ‘{print $6}’|sort|uniq -c|awk ‘{print $1}’|sort|uniq -c</p>
 <h5 id="节点退役"><a href="#节点退役" class="headerlink" title="节点退役"></a>节点退役</h5><p>graceful_stop.sh node1</p>
 <h5 id="查看状态"><a href="#查看状态" class="headerlink" title="查看状态"></a>查看状态</h5><p>hbase shell里执行</p>
 <p>status</p>
@@ -2877,6 +2888,8 @@
 <h5 id="查看Procedure-和-Locks-的列表"><a href="#查看Procedure-和-Locks-的列表" class="headerlink" title="查看Procedure 和 Locks 的列表"></a>查看Procedure 和 Locks 的列表</h5><p>list_procedures</p>
 <h5 id="修改表名"><a href="#修改表名" class="headerlink" title="修改表名"></a>修改表名</h5><p>disable ‘ZHJ:DROPTEST’<br>snapshot ‘ZHJ:DROPTEST’,’DROPTEST_snapshot’<br>clone_snapshot ‘DROPTEST_snapshot’, ‘ZHJ:DROPTEST_NEW’<br>delete_snapshot ‘DROPTEST_snapshot’<br>drop ‘ZHJ:DROPTEST’</p>
 <h5 id="统计表行数"><a href="#统计表行数" class="headerlink" title="统计表行数"></a>统计表行数</h5><p>hbase org.apache.hadoop.hbase.mapreduce.RowCounter ‘table_name’</p>
+<h5 id="打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer"><a href="#打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer" class="headerlink" title="打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer"></a>打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer</h5><p>scan ‘hbase:meta’, { COLUMNS &#x3D;&gt; [‘info:regioninfo’, ‘info:server’], FILTER &#x3D;&gt; “PrefixFilter(‘ZHJ:DELETETEST,’)” ,LIMIT&#x3D;&gt;1}</p>
+<h6 id="分页查看（加上STARTROW，用上一页最后那条的rowkey）"><a href="#分页查看（加上STARTROW，用上一页最后那条的rowkey）" class="headerlink" title="分页查看（加上STARTROW，用上一页最后那条的rowkey）"></a>分页查看（加上STARTROW，用上一页最后那条的rowkey）</h6><p>scan ‘hbase:meta’, { COLUMNS &#x3D;&gt; [‘info:regioninfo’, ‘info:server’], FILTER &#x3D;&gt; “PrefixFilter(‘ZHJ:DELETETEST,’)” ,LIMIT&#x3D;&gt;1,STARTROW&#x3D;&gt;’ZHJ:DELETETEST,80000000,1752464516789.e24e75a4219aba979b161c0af4e2a55e.’}</p>
 ]]></content>
       <categories>
         <category>HBase</category>
@@ -3829,6 +3842,8 @@
 <p>发现对应时间段内，存在大量Slow日志</p>
 <p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211201436.png" alt="image-20250211201436710"></p>
 <p>遂对该日志文件进行统计，得到</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">egrep -o &quot;Slow.*?(took|cost)&quot; hadoop-*-datanode*.log* | sort | uniq -c</span><br></pre></td></tr></table></figure>
+
 <p><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211201532.png" alt="image-20250211201532678"></p>
 <p>查询资料得：</p>
 <img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20250211201618.png" alt="image-20250211201618780" style="zoom:50%;" />

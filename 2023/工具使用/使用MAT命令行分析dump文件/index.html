@@ -79,19 +79,19 @@
 
 
 
-<meta name="description" content="Dump文件生成jmap -dump:format&#x3D;b,file&#x3D;dump.hprof pid MAT下载地址https:&#x2F;&#x2F;eclipse.dev&#x2F;mat&#x2F;download&#x2F; 注意JDK版本，高版本的MAT需要高版本的JDK 该版本jdk1.8可用   调整MAT配置文件  123456789-startupplugins&#x2F;org.eclipse.equinox.launch">
+<meta name="description" content="Dump文件生成jmap -dump:format&#x3D;b,file&#x3D;dump.hprof pid MAT下载地址https:&#x2F;&#x2F;eclipse.dev&#x2F;mat&#x2F;download&#x2F; 注意JDK版本，高版本的MAT需要高版本的JDK 该版本jdk1.8可用   如果下载的MemoryAnalyzer和环境的JDK版本不对应，可以再额外下载一个JDK，在MemoryAnalyzer的i">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用MAT命令行分析dump文件">
 <meta property="og:url" content="https://wwsbd.gitee.io/2023/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/%E4%BD%BF%E7%94%A8MAT%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%88%86%E6%9E%90dump%E6%96%87%E4%BB%B6/index.html">
 <meta property="og:site_name" content="万万使不得">
-<meta property="og:description" content="Dump文件生成jmap -dump:format&#x3D;b,file&#x3D;dump.hprof pid MAT下载地址https:&#x2F;&#x2F;eclipse.dev&#x2F;mat&#x2F;download&#x2F; 注意JDK版本，高版本的MAT需要高版本的JDK 该版本jdk1.8可用   调整MAT配置文件  123456789-startupplugins&#x2F;org.eclipse.equinox.launch">
+<meta property="og:description" content="Dump文件生成jmap -dump:format&#x3D;b,file&#x3D;dump.hprof pid MAT下载地址https:&#x2F;&#x2F;eclipse.dev&#x2F;mat&#x2F;download&#x2F; 注意JDK版本，高版本的MAT需要高版本的JDK 该版本jdk1.8可用   如果下载的MemoryAnalyzer和环境的JDK版本不对应，可以再额外下载一个JDK，在MemoryAnalyzer的i">
 <meta property="og:locale">
 <meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145029.png">
 <meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145620.png">
 <meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829150644.png">
 <meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829150800.png">
 <meta property="article:published_time" content="2023-03-29T06:10:17.000Z">
-<meta property="article:modified_time" content="2025-08-06T09:04:34.049Z">
+<meta property="article:modified_time" content="2026-04-25T02:33:12.994Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="MAT">
 <meta name="twitter:card" content="summary">
@@ -396,6 +396,11 @@
 <p>注意JDK版本，高版本的MAT需要高版本的JDK</p>
 <p>该版本jdk1.8可用</p>
 <img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145029.png" alt="image-20240829145022531" style="zoom:67%;" />
+
+<p>如果下载的MemoryAnalyzer和环境的JDK版本不对应，可以再额外下载一个JDK，在MemoryAnalyzer的ini配置文件的最开头加上对应JDK的路径，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-vm</span><br><span class="line">/opt/java/jdk-17.0.9/bin</span><br></pre></td></tr></table></figure>
+
+
 
 <h2 id="调整MAT配置文件"><a href="#调整MAT配置文件" class="headerlink" title="调整MAT配置文件"></a>调整MAT配置文件</h2><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145620.png" alt="image-20240829145620034" style="zoom:67%;" />
 

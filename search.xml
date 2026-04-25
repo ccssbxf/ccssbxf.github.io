@@ -2441,6 +2441,8 @@
 <h5 id="hive分区表小文件合并"><a href="#hive分区表小文件合并" class="headerlink" title="hive分区表小文件合并"></a>hive分区表小文件合并</h5><p>alter table tablename partition(month&#x3D;202203,day&#x3D;20220320) concatenate;</p>
 <h5 id="建分区分桶表"><a href="#建分区分桶表" class="headerlink" title="建分区分桶表"></a>建分区分桶表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> acidtest (</span><br><span class="line">    id string,</span><br><span class="line">    name string,</span><br><span class="line">    age string</span><br><span class="line">)</span><br><span class="line">PARTITIONED <span class="keyword">BY</span> (dt STRING)</span><br><span class="line">CLUSTERED <span class="keyword">BY</span> (id) <span class="keyword">INTO</span> <span class="number">5</span> BUCKETS</span><br><span class="line">STORED <span class="keyword">AS</span> ORC</span><br><span class="line">TBLPROPERTIES (</span><br><span class="line">    <span class="string">&#x27;transactional&#x27;</span><span class="operator">=</span><span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;transactional_properties&#x27;</span><span class="operator">=</span><span class="string">&#x27;default&#x27;</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> acidtest <span class="keyword">PARTITION</span> (dt<span class="operator">=</span><span class="string">&#x27;20250101&#x27;</span>)</span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;zhj&#x27;</span>, <span class="string">&#x27;18&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
+<h5 id="建动态分区表"><a href="#建动态分区表" class="headerlink" title="建动态分区表"></a>建动态分区表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> ZHJ.COLUMN_TEST</span><br><span class="line">(</span><br><span class="line">    id string,</span><br><span class="line">    name string,</span><br><span class="line">    age string</span><br><span class="line">)</span><br><span class="line">PARTITIONED <span class="keyword">BY</span>(dt STRING) <span class="type">ROW</span> FORMAT DELIMITED FIELDS TERMINATED <span class="keyword">BY</span> <span class="string">&#x27;;&#x27;</span> STORED <span class="keyword">AS</span> ORC TBLPROPERTIES(&quot;orc.compress&quot;<span class="operator">=</span>&quot;SNAPPY&quot;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 ]]></content>
       <categories>
         <category>Hive</category>
@@ -2675,6 +2677,7 @@
 <h6 id="查看带宽占用情况"><a href="#查看带宽占用情况" class="headerlink" title="查看带宽占用情况"></a>查看带宽占用情况</h6><p>sudo yum install iftop</p>
 <p>sudo iftop -i eth0</p>
 <p>如果某个进程的带宽占比超过80%（比如HDFS的datanode在做数据同步），会导致HBase的数据包发不出去</p>
+<h5 id="win脚本换行转换"><a href="#win脚本换行转换" class="headerlink" title="win脚本换行转换"></a>win脚本换行转换</h5><p>sed -i ‘s&#x2F;\r$&#x2F;&#x2F;‘ xxx.sh</p>
 ]]></content>
       <categories>
         <category>Linux</category>
@@ -3708,6 +3711,11 @@
 <p>注意JDK版本，高版本的MAT需要高版本的JDK</p>
 <p>该版本jdk1.8可用</p>
 <img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145029.png" alt="image-20240829145022531" style="zoom:67%;" />
+
+<p>如果下载的MemoryAnalyzer和环境的JDK版本不对应，可以再额外下载一个JDK，在MemoryAnalyzer的ini配置文件的最开头加上对应JDK的路径，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-vm</span><br><span class="line">/opt/java/jdk-17.0.9/bin</span><br></pre></td></tr></table></figure>
+
+
 
 <h2 id="调整MAT配置文件"><a href="#调整MAT配置文件" class="headerlink" title="调整MAT配置文件"></a>调整MAT配置文件</h2><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145620.png" alt="image-20240829145620034" style="zoom:67%;" />
 

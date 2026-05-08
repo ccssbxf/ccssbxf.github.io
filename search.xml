@@ -4448,7 +4448,7 @@
 
 <p>对本地启动的测试接口进行性能测试</p>
 <p><a href="http://127.0.0.1:8081/forward1/testGet?id=1&amp;name=zs&amp;age=18">http://127.0.0.1:8081/forward1/testGet?id=1&amp;name=zs&amp;age=18</a></p>
-<img src="C:/Users/ZhouHJ/AppData/Roaming/Typora/typora-user-images/image-20250727182558758.png" alt="image-20250727182558758" style="zoom: 50%;" />
+<img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20260508110029.png" alt="image-20250727182558758" style="zoom: 50%;" />
 
 <h4 id="2-2-1-参数化"><a href="#2-2-1-参数化" class="headerlink" title="2.2.1 参数化"></a>2.2.1 参数化</h4><p>通过配置CSV元件读取文件中的数据以行为单位，每个线程每次循环依次读取每行数据作为参数【即每个线程每次循环使用的参数不同】</p>
 <p>右键点击线程组 -&gt; 添加 -&gt; 配置元件 -&gt; CSV Data Set Config，添加一个CSV元件</p>

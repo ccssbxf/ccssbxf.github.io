@@ -87,7 +87,7 @@
 <meta property="og:description" content="整体启动&#x2F;停止 HDFSstart-dfs.sh&#x2F;stop-dfs.sh  整体启动&#x2F;停止 YARNstart-yarn.sh&#x2F;stop-yarn.sh   分别启动&#x2F;停止 HDFS 组件hdfs –daemon start&#x2F;stop namenode&#x2F;datanode&#x2F;secondarynamenode&#x2F;z">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-12-03T13:07:36.000Z">
-<meta property="article:modified_time" content="2025-08-06T12:33:09.721Z">
+<meta property="article:modified_time" content="2026-05-20T02:26:17.674Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="Hadoop">
 <meta property="article:tag" content="常用命令">
@@ -393,7 +393,7 @@
 <h5 id="启动-x2F-停止-YARN"><a href="#启动-x2F-停止-YARN" class="headerlink" title="启动&#x2F;停止 YARN"></a>启动&#x2F;停止 YARN</h5><p>yarn –daemon start&#x2F;stop resourcemanager&#x2F;nodemanager&#x2F;timelineserver&#x2F;historyserver</p>
 <h5 id="查看集群可用空间，datanode存活，健康状态等"><a href="#查看集群可用空间，datanode存活，健康状态等" class="headerlink" title="查看集群可用空间，datanode存活，健康状态等"></a>查看集群可用空间，datanode存活，健康状态等</h5><p>hdfs fsck &#x2F;</p>
 <p>hdfs dfsadmin -report  </p>
-<h5 id="查看yarn日志"><a href="#查看yarn日志" class="headerlink" title="查看yarn日志"></a>查看yarn日志</h5><p>yarn logs -applicationId xxxxxx</p>
+<h5 id="查看yarn日志"><a href="#查看yarn日志" class="headerlink" title="查看yarn日志"></a>查看yarn日志</h5><p>yarn logs -applicationId application_1779070696696_7750</p>
 <h5 id="查询-Container-日志"><a href="#查询-Container-日志" class="headerlink" title="查询 Container 日志"></a>查询 Container 日志</h5><p>yarn logs -applicationId <ApplicationId> -containerId <ContainerId> </p>
 <p>yarn logs -applicationId application_1665325770064_0003 -containerId container_1665325770064_0003_01_000001</p>
 <h5 id="yarn-applicationattempt-查看尝试运行的任务"><a href="#yarn-applicationattempt-查看尝试运行的任务" class="headerlink" title="yarn applicationattempt 查看尝试运行的任务"></a>yarn applicationattempt 查看尝试运行的任务</h5><p>yarn applicationattempt -list <ApplicationId></p>

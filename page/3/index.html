@@ -1293,8 +1293,14 @@ MAT下载地址https://eclipse.dev/mat/download/
       
         
           
-          创建主题kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –create –topic topic01 –partitions 3 –replication-factor 3
-列出主题kafk
+          Kafka 常用命令（已展开别名）
+环境变量：
+1export KAFKA_BIND=&quot;hadoop101:9092,hadoop102:9092,hadoop103:9092&quot;
+以下所有命令均基于上述 KAFKA_BIND 展开后的完整命令。
+
+
+1. 创建 Topic
+Top
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -1753,8 +1759,7 @@ HadoopNameNode的主备选举由zkfc进程进行，如果zkfc进程挂了，则�
 启动zkfc进程
 1hdfs --daemon start zkfc
 
-2.重新初始化zk里Hadoop的数据
-在想成为active的那
+2.如果zkfc进程正常，可以重新初始化zk里Hadoop的数据
           ...
           <!--noindex-->
           <div class="post-button text-center">

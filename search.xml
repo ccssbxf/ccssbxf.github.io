@@ -171,9 +171,8 @@
 <p>启动zkfc进程</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hdfs --daemon start zkfc</span><br></pre></td></tr></table></figure>
 
-<p>2.重新初始化zk里Hadoop的数据</p>
-<p>在想成为active的那台namenode节点执行</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">初始化zk数据</span><br><span class="line">hdfs zkfc -formatZK</span><br><span class="line"></span><br><span class="line">重启hdfs集群</span><br><span class="line">stop-dfs.sh</span><br><span class="line">start-dfs.sh</span><br></pre></td></tr></table></figure>
+<p>2.如果zkfc进程正常，可以重新初始化zk里Hadoop的数据</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">关闭hdfs集群</span><br><span class="line">stop-dfs.sh</span><br><span class="line"></span><br><span class="line">在想成为active的那台namenode节点执行，初始化zk数据</span><br><span class="line">hdfs zkfc -formatZK</span><br><span class="line"></span><br><span class="line">启动hdfs集群</span><br><span class="line">start-dfs.sh</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -2236,7 +2235,7 @@
 <h5 id="启动-x2F-停止-YARN"><a href="#启动-x2F-停止-YARN" class="headerlink" title="启动&#x2F;停止 YARN"></a>启动&#x2F;停止 YARN</h5><p>yarn –daemon start&#x2F;stop resourcemanager&#x2F;nodemanager&#x2F;timelineserver&#x2F;historyserver</p>
 <h5 id="查看集群可用空间，datanode存活，健康状态等"><a href="#查看集群可用空间，datanode存活，健康状态等" class="headerlink" title="查看集群可用空间，datanode存活，健康状态等"></a>查看集群可用空间，datanode存活，健康状态等</h5><p>hdfs fsck &#x2F;</p>
 <p>hdfs dfsadmin -report  </p>
-<h5 id="查看yarn日志"><a href="#查看yarn日志" class="headerlink" title="查看yarn日志"></a>查看yarn日志</h5><p>yarn logs -applicationId xxxxxx</p>
+<h5 id="查看yarn日志"><a href="#查看yarn日志" class="headerlink" title="查看yarn日志"></a>查看yarn日志</h5><p>yarn logs -applicationId application_1779070696696_7750</p>
 <h5 id="查询-Container-日志"><a href="#查询-Container-日志" class="headerlink" title="查询 Container 日志"></a>查询 Container 日志</h5><p>yarn logs -applicationId <ApplicationId> -containerId <ContainerId> </p>
 <p>yarn logs -applicationId application_1665325770064_0003 -containerId container_1665325770064_0003_01_000001</p>
 <h5 id="yarn-applicationattempt-查看尝试运行的任务"><a href="#yarn-applicationattempt-查看尝试运行的任务" class="headerlink" title="yarn applicationattempt 查看尝试运行的任务"></a>yarn applicationattempt 查看尝试运行的任务</h5><p>yarn applicationattempt -list <ApplicationId></p>
@@ -2442,6 +2441,8 @@
 <h5 id="建分区分桶表"><a href="#建分区分桶表" class="headerlink" title="建分区分桶表"></a>建分区分桶表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> acidtest (</span><br><span class="line">    id string,</span><br><span class="line">    name string,</span><br><span class="line">    age string</span><br><span class="line">)</span><br><span class="line">PARTITIONED <span class="keyword">BY</span> (dt STRING)</span><br><span class="line">CLUSTERED <span class="keyword">BY</span> (id) <span class="keyword">INTO</span> <span class="number">5</span> BUCKETS</span><br><span class="line">STORED <span class="keyword">AS</span> ORC</span><br><span class="line">TBLPROPERTIES (</span><br><span class="line">    <span class="string">&#x27;transactional&#x27;</span><span class="operator">=</span><span class="string">&#x27;true&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;transactional_properties&#x27;</span><span class="operator">=</span><span class="string">&#x27;default&#x27;</span></span><br><span class="line">);</span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="keyword">TABLE</span> acidtest <span class="keyword">PARTITION</span> (dt<span class="operator">=</span><span class="string">&#x27;20250101&#x27;</span>)</span><br><span class="line"><span class="keyword">SELECT</span> <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;zhj&#x27;</span>, <span class="string">&#x27;18&#x27;</span>;</span><br></pre></td></tr></table></figure>
 
 <h5 id="建动态分区表"><a href="#建动态分区表" class="headerlink" title="建动态分区表"></a>建动态分区表</h5><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> IF <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> ZHJ.COLUMN_TEST</span><br><span class="line">(</span><br><span class="line">    id string,</span><br><span class="line">    name string,</span><br><span class="line">    age string</span><br><span class="line">)</span><br><span class="line">PARTITIONED <span class="keyword">BY</span>(dt STRING) <span class="type">ROW</span> FORMAT DELIMITED FIELDS TERMINATED <span class="keyword">BY</span> <span class="string">&#x27;;&#x27;</span> STORED <span class="keyword">AS</span> ORC TBLPROPERTIES(&quot;orc.compress&quot;<span class="operator">=</span>&quot;SNAPPY&quot;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="普通查询语句走集群资源"><a href="#普通查询语句走集群资源" class="headerlink" title="普通查询语句走集群资源"></a>普通查询语句走集群资源</h5><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET hive.fetch.task.conversion=none;</span><br><span class="line">或者语句后面加上</span><br><span class="line">DISTRIBUTE BY rand();</span><br><span class="line">例：</span><br><span class="line">select * from tablename where bdate=&#x27;20260426&#x27;and xxxxx DISTRIBUTE BY rand();</span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -2690,19 +2691,100 @@
   <entry>
     <title>Kafka常用命令</title>
     <url>/2023/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/Kafka%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h5 id="创建主题"><a href="#创建主题" class="headerlink" title="创建主题"></a>创建主题</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –create –topic topic01 –partitions 3 –replication-factor 3</p>
-<h5 id="列出主题"><a href="#列出主题" class="headerlink" title="列出主题"></a>列出主题</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –list</p>
-<h5 id="查看主题信息"><a href="#查看主题信息" class="headerlink" title="查看主题信息"></a>查看主题信息</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –describe –topic topic02</p>
-<h5 id="修改分区数（只能加不能减）"><a href="#修改分区数（只能加不能减）" class="headerlink" title="修改分区数（只能加不能减）"></a>修改分区数（只能加不能减）</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –alter –topic topic01 –partitions 4</p>
-<h5 id="删除主题"><a href="#删除主题" class="headerlink" title="删除主题"></a>删除主题</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –delete –topic topic01</p>
-<h5 id="消费"><a href="#消费" class="headerlink" title="消费"></a>消费</h5><p>kafka-console-consumer.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –topic topic01 –group g1 –property print.key&#x3D;true –property print.value&#x3D;true –property key.separator&#x3D;,</p>
-<h5 id="从begin开始消费"><a href="#从begin开始消费" class="headerlink" title="从begin开始消费"></a>从begin开始消费</h5><p>kafka-console-consumer.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –topic topic01 –group g1 –from-beginning</p>
-<h5 id="生产"><a href="#生产" class="headerlink" title="生产"></a>生产</h5><p>kafka-console-producer.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –topic topic01</p>
-<h5 id="查看组列表"><a href="#查看组列表" class="headerlink" title="查看组列表"></a>查看组列表</h5><p>kafka-consumer-groups.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –list</p>
-<h5 id="查看组信息"><a href="#查看组信息" class="headerlink" title="查看组信息"></a>查看组信息</h5><p>kafka-consumer-groups.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –describe –group g1</p>
-<h5 id="查看和集群不一样配置的主题"><a href="#查看和集群不一样配置的主题" class="headerlink" title="查看和集群不一样配置的主题"></a>查看和集群不一样配置的主题</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –describe –topics-with-overrides</p>
-<h5 id="找出所有包含失效副本的分区"><a href="#找出所有包含失效副本的分区" class="headerlink" title="找出所有包含失效副本的分区"></a>找出所有包含失效副本的分区</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –describe –topic topic02 –under-replicated-partitions</p>
-<h5 id="查看主题中没有-leader-副本的分区"><a href="#查看主题中没有-leader-副本的分区" class="headerlink" title="查看主题中没有 leader 副本的分区"></a>查看主题中没有 leader 副本的分区</h5><p>kafka-topics.sh –bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 –describe –topic topic02 –unavailable-partitions</p>
+    <content><![CDATA[<h1 id="Kafka-常用命令（已展开别名）"><a href="#Kafka-常用命令（已展开别名）" class="headerlink" title="Kafka 常用命令（已展开别名）"></a>Kafka 常用命令（已展开别名）</h1><blockquote>
+<p>环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> KAFKA_BIND=<span class="string">&quot;hadoop101:9092,hadoop102:9092,hadoop103:9092&quot;</span></span><br></pre></td></tr></table></figure>
+<p>以下所有命令均基于上述 <code>KAFKA_BIND</code> 展开后的完整命令。</p>
+</blockquote>
+<hr>
+<h2 id="1-创建-Topic"><a href="#1-创建-Topic" class="headerlink" title="1. 创建 Topic"></a>1. 创建 Topic</h2><ul>
+<li><strong>Topic 名称</strong>：<code>topic-test</code></li>
+<li><strong>副本数</strong>：2</li>
+<li><strong>分区数</strong>：6</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --create --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --topic topic-test --replication-factor 2 --partitions 6</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="2-查看所有-Topic"><a href="#2-查看所有-Topic" class="headerlink" title="2. 查看所有 Topic"></a>2. 查看所有 Topic</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --list --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="3-创建临时生产者"><a href="#3-创建临时生产者" class="headerlink" title="3. 创建临时生产者"></a>3. 创建临时生产者</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-console-producer.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --topic topic-test</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="4-创建临时消费者"><a href="#4-创建临时消费者" class="headerlink" title="4. 创建临时消费者"></a>4. 创建临时消费者</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --topic topic-test --from-beginning --group test-group</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-消费（带-key-x2F-value-属性）"><a href="#4-1-消费（带-key-x2F-value-属性）" class="headerlink" title="4.1 消费（带 key&#x2F;value 属性）"></a>4.1 消费（带 key&#x2F;value 属性）</h3><blockquote>
+<p>指定 key 和 value 均打印，并以逗号分隔。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-console-consumer.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --topic topic01 --group g1 --property print.key=<span class="literal">true</span> --property print.value=<span class="literal">true</span> --property key.separator=,</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="5-查看某个-Topic-分区信息"><a href="#5-查看某个-Topic-分区信息" class="headerlink" title="5. 查看某个 Topic 分区信息"></a>5. 查看某个 Topic 分区信息</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --topic topic-test</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-1-查看和集群默认配置不一致的主题"><a href="#5-1-查看和集群默认配置不一致的主题" class="headerlink" title="5.1 查看和集群默认配置不一致的主题"></a>5.1 查看和集群默认配置不一致的主题</h3><blockquote>
+<p>列出所有存在自定义配置（override）的主题。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --topics-with-overrides</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-2-找出所有包含失效副本的分区"><a href="#5-2-找出所有包含失效副本的分区" class="headerlink" title="5.2 找出所有包含失效副本的分区"></a>5.2 找出所有包含失效副本的分区</h3><blockquote>
+<p>列出指定 topic 中处于 under-replicated 状态的分区。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --topic topic-test --under-replicated-partitions</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-3-查看主题中没有-Leader-副本的分区"><a href="#5-3-查看主题中没有-Leader-副本的分区" class="headerlink" title="5.3 查看主题中没有 Leader 副本的分区"></a>5.3 查看主题中没有 Leader 副本的分区</h3><blockquote>
+<p>列出指定 topic 中 leader 不可用的分区。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --topic topic-test --unavailable-partitions</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="6-查看-Topic-所有配置信息"><a href="#6-查看-Topic-所有配置信息" class="headerlink" title="6. 查看 Topic 所有配置信息"></a>6. 查看 Topic 所有配置信息</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-configs.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --topic topic-test --all</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="7-动态修改-Topic-信息"><a href="#7-动态修改-Topic-信息" class="headerlink" title="7. 动态修改 Topic 信息"></a>7. 动态修改 Topic 信息</h2><blockquote>
+<p>修改 <code>retention.ms</code> 为 10 天（<code>10*24*60*60*1000 = 864000000</code> 毫秒）。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-configs.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --alter --topic topic-test --add-config retention.ms=$((<span class="number">10</span>*<span class="number">24</span>*<span class="number">60</span>*<span class="number">60</span>*<span class="number">1000</span>))</span><br></pre></td></tr></table></figure>
+
+<p>展开后等价于：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-configs.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --alter --topic topic-test --add-config retention.ms=864000000</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="8-修改分区数"><a href="#8-修改分区数" class="headerlink" title="8. 修改分区数"></a>8. 修改分区数</h2><blockquote>
+<p>注意：分区数只能增加，不能减少。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --alter --topic topic-test --partitions 4</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="9-查看-Topic-动态配置信息"><a href="#9-查看-Topic-动态配置信息" class="headerlink" title="9. 查看 Topic 动态配置信息"></a>9. 查看 Topic 动态配置信息</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-configs.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --topic topic-test</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="10-查看消费组情况"><a href="#10-查看消费组情况" class="headerlink" title="10. 查看消费组情况"></a>10. 查看消费组情况</h2><h3 id="10-1-查看所有消费组"><a href="#10-1-查看所有消费组" class="headerlink" title="10.1 查看所有消费组"></a>10.1 查看所有消费组</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-consumer-groups.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --all-groups</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-2-查看指定消费组"><a href="#10-2-查看指定消费组" class="headerlink" title="10.2 查看指定消费组"></a>10.2 查看指定消费组</h3><blockquote>
+<p>注意：别名 <code>kafkadescgroup</code> 定义中已包含 <code>--all-groups</code>，若再追加 <code>--group test-group</code> 会与 <code>--all-groups</code> 冲突。建议直接使用以下完整命令：</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-consumer-groups.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --group test-group</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-3-列出所有消费组（-list）"><a href="#10-3-列出所有消费组（-list）" class="headerlink" title="10.3 列出所有消费组（--list）"></a>10.3 列出所有消费组（<code>--list</code>）</h3><blockquote>
+<p>仅列出消费组名称，不包含详细信息。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-consumer-groups.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --list</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-4-查询消费者成员信息（-members）"><a href="#10-4-查询消费者成员信息（-members）" class="headerlink" title="10.4 查询消费者成员信息（--members）"></a>10.4 查询消费者成员信息（<code>--members</code>）</h3><blockquote>
+<p>查看所有消费组中每个消费者的成员信息（如客户端 ID、主机 IP 等）。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-consumer-groups.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --all-groups --members</span><br></pre></td></tr></table></figure>
+
+<h3 id="10-5-查询消费组状态（-state）"><a href="#10-5-查询消费组状态（-state）" class="headerlink" title="10.5 查询消费组状态（--state）"></a>10.5 查询消费组状态（<code>--state</code>）</h3><blockquote>
+<p>查看所有消费组的状态（如 Stable、Empty、Dead 等）。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-consumer-groups.sh --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --describe --all-groups --state</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="11-删除-Topic"><a href="#11-删除-Topic" class="headerlink" title="11. 删除 Topic"></a>11. 删除 Topic</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kafka-topics.sh --delete --bootstrap-server hadoop101:9092,hadoop102:9092,hadoop103:9092 --topic topic-test</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="附：别名定义参考"><a href="#附：别名定义参考" class="headerlink" title="附：别名定义参考"></a>附：别名定义参考</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">export</span> KAFKA_BIND=<span class="string">&quot;hadoop101:9092,hadoop102:9092,hadoop103:9092&quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkaconfigdesc=<span class="string">&quot;kafka-configs.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --describe --topic &quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkaconfigalter=<span class="string">&quot;kafka-configs.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --alter --topic &quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkadesctopic=<span class="string">&quot;kafka-topics.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --describe --topic &quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkadescgroup=<span class="string">&quot;kafka-consumer-groups.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --describe --all-groups&quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkatopics=<span class="string">&quot;kafka-topics.sh --list --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span>&quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkaconsumer=<span class="string">&quot;kafka-console-consumer.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --topic &quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkaproducer=<span class="string">&quot;kafka-console-producer.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --topic &quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkaconsumekey=<span class="string">&quot;kafka-console-consumer.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --from-beginning --property print.key=true --property key.separator=&#x27; --- &#x27; --topic &quot;</span></span><br><span class="line"><span class="built_in">alias</span> kafkaconsumeoffset=<span class="string">&quot;kafka-console-consumer.sh --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --from-beginning --print-offsets --topic &quot;</span></span><br><span class="line"><span class="built_in">alias</span> createtopic=<span class="string">&quot;kafka-topics.sh --create --bootstrap-server <span class="variable">$&#123;KAFKA_BIND&#125;</span> --topic &quot;</span></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Kafka</category>
@@ -2837,6 +2919,7 @@
 <h6 id="大表MapReduce统计"><a href="#大表MapReduce统计" class="headerlink" title="大表MapReduce统计"></a>大表MapReduce统计</h6><p>hbase org.apache.hadoop.hbase.mapreduce.RowCounter ‘ZHJ:DROPTEST’</p>
 <h5 id="scan-查询"><a href="#scan-查询" class="headerlink" title="scan 查询"></a>scan 查询</h5><h6 id="根据rowkey范围扫描"><a href="#根据rowkey范围扫描" class="headerlink" title="根据rowkey范围扫描"></a>根据rowkey范围扫描</h6><p>scan ‘tablename’,{STARTROW &#x3D;&gt; ‘1001’,STOPROW&#x3D;&gt;’2001’}</p>
 <h6 id="过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG"><a href="#过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG" class="headerlink" title="过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG"></a>过滤rowkey里包含指定字符串的，这里是rowkey包含CATALOG</h6><p>scan ‘SYSTEM:CATALOG’, FILTER &#x3D;&gt; “RowFilter(&#x3D;,’substring:CATALOG’)”</p>
+<h6 id="过滤value里包含指定字符串的，这里是sn包含1782292017878"><a href="#过滤value里包含指定字符串的，这里是sn包含1782292017878" class="headerlink" title="过滤value里包含指定字符串的，这里是sn包含1782292017878"></a>过滤value里包含指定字符串的，这里是sn包含1782292017878</h6><p>scan ‘hbase:meta’, {COLUMNS &#x3D;&gt; [‘info:sn’, ‘info:state’,’info:serverstartcode’], FILTER &#x3D;&gt; “SingleColumnValueFilter(‘info’, ‘sn’, &#x3D;, ‘substring:1782292017878’)”}</p>
 <h6 id="限制条数"><a href="#限制条数" class="headerlink" title="限制条数"></a>限制条数</h6><p>scan ‘test’,{LIMIT &#x3D;&gt; 1}</p>
 <h6 id="查某个字段"><a href="#查某个字段" class="headerlink" title="查某个字段"></a>查某个字段</h6><p>scan ‘test’,{COLUMNS &#x3D;&gt; ‘cf:a’,LIMIT &#x3D;&gt; 2}</p>
 <h6 id="从指定行开始取几条"><a href="#从指定行开始取几条" class="headerlink" title="从指定行开始取几条"></a>从指定行开始取几条</h6><p>scan ‘test’,{STARTROW &#x3D;&gt; ‘1001’,LIMIT&#x3D;&gt;5}</p>
@@ -2893,6 +2976,7 @@
 <h5 id="统计表行数"><a href="#统计表行数" class="headerlink" title="统计表行数"></a>统计表行数</h5><p>hbase org.apache.hadoop.hbase.mapreduce.RowCounter ‘table_name’</p>
 <h5 id="打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer"><a href="#打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer" class="headerlink" title="打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer"></a>打不开HBase页面的情况下定位Rowkey所在的Region和RegionServer</h5><p>scan ‘hbase:meta’, { COLUMNS &#x3D;&gt; [‘info:regioninfo’, ‘info:server’], FILTER &#x3D;&gt; “PrefixFilter(‘ZHJ:DELETETEST,’)” ,LIMIT&#x3D;&gt;1}</p>
 <h6 id="分页查看（加上STARTROW，用上一页最后那条的rowkey）"><a href="#分页查看（加上STARTROW，用上一页最后那条的rowkey）" class="headerlink" title="分页查看（加上STARTROW，用上一页最后那条的rowkey）"></a>分页查看（加上STARTROW，用上一页最后那条的rowkey）</h6><p>scan ‘hbase:meta’, { COLUMNS &#x3D;&gt; [‘info:regioninfo’, ‘info:server’], FILTER &#x3D;&gt; “PrefixFilter(‘ZHJ:DELETETEST,’)” ,LIMIT&#x3D;&gt;1,STARTROW&#x3D;&gt;’ZHJ:DELETETEST,80000000,1752464516789.e24e75a4219aba979b161c0af4e2a55e.’}</p>
+<h5 id="拆分region"><a href="#拆分region" class="headerlink" title="拆分region"></a>拆分region</h5><p>split ‘regionName’</p>
 ]]></content>
       <categories>
         <category>HBase</category>
@@ -3719,7 +3803,7 @@
 
 <h2 id="调整MAT配置文件"><a href="#调整MAT配置文件" class="headerlink" title="调整MAT配置文件"></a>调整MAT配置文件</h2><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145620.png" alt="image-20240829145620034" style="zoom:67%;" />
 
-<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">-startup</span><br><span class="line">plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar</span><br><span class="line">--launcher.library</span><br><span class="line">plugins/org.eclipse.equinox.launcher.gtk.linux.x86_64_1.1.700.v20180518-1200</span><br><span class="line">-vmargs</span><br><span class="line">-Xms30g</span><br><span class="line">-Xmx30g</span><br><span class="line">-XX:+UseG1GC</span><br><span class="line">-DhprofStrictnessWarning=true</span><br></pre></td></tr></table></figure>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">-vm</span><br><span class="line">/opt/java/jdk-17.0.9/bin</span><br><span class="line">-startup</span><br><span class="line">plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar</span><br><span class="line">--launcher.library</span><br><span class="line">plugins/org.eclipse.equinox.launcher.gtk.linux.x86_64_1.1.700.v20180518-1200</span><br><span class="line">-vmargs</span><br><span class="line">-Xms30g</span><br><span class="line">-Xmx30g</span><br><span class="line">-XX:+UseG1GC</span><br><span class="line">-DhprofStrictnessWarning=true</span><br></pre></td></tr></table></figure>
 
 <p>根据dump堆的大小，调整Xms和Xmx大小，否则会因为内存不够打不开dump文件</p>
 <p>-DhprofStrictnessWarning&#x3D;true的作用是防止因为某些不必要的提示停止分析</p>

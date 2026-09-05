@@ -91,7 +91,7 @@
 <meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829150644.png">
 <meta property="og:image" content="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829150800.png">
 <meta property="article:published_time" content="2023-03-29T06:10:17.000Z">
-<meta property="article:modified_time" content="2026-04-25T02:33:12.994Z">
+<meta property="article:modified_time" content="2026-08-05T06:30:22.859Z">
 <meta property="article:author" content="ZhouHJ">
 <meta property="article:tag" content="MAT">
 <meta name="twitter:card" content="summary">
@@ -404,7 +404,7 @@
 
 <h2 id="调整MAT配置文件"><a href="#调整MAT配置文件" class="headerlink" title="调整MAT配置文件"></a>调整MAT配置文件</h2><img src="https://testingcf.jsdelivr.net/gh/ccssbxf/img@master/blog/20240829145620.png" alt="image-20240829145620034" style="zoom:67%;" />
 
-<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-startup</span><br><span class="line">plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar</span><br><span class="line">--launcher.library</span><br><span class="line">plugins/org.eclipse.equinox.launcher.gtk.linux.x86_64_1.1.700.v20180518-1200</span><br><span class="line">-vmargs</span><br><span class="line">-Xms30g</span><br><span class="line">-Xmx30g</span><br><span class="line">-XX:+UseG1GC</span><br><span class="line">-DhprofStrictnessWarning=true</span><br></pre></td></tr></table></figure>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">-vm</span><br><span class="line">/opt/java/jdk-17.0.9/bin</span><br><span class="line">-startup</span><br><span class="line">plugins/org.eclipse.equinox.launcher_1.5.0.v20180512-1130.jar</span><br><span class="line">--launcher.library</span><br><span class="line">plugins/org.eclipse.equinox.launcher.gtk.linux.x86_64_1.1.700.v20180518-1200</span><br><span class="line">-vmargs</span><br><span class="line">-Xms30g</span><br><span class="line">-Xmx30g</span><br><span class="line">-XX:+UseG1GC</span><br><span class="line">-DhprofStrictnessWarning=true</span><br></pre></td></tr></table></figure>
 
 <p>根据dump堆的大小，调整Xms和Xmx大小，否则会因为内存不够打不开dump文件</p>
 <p>-DhprofStrictnessWarning&#x3D;true的作用是防止因为某些不必要的提示停止分析</p>
